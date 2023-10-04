@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,6 +9,9 @@ namespace BarryFileMan.ViewModels
 {
     public partial class MainWindowViewModel : ViewModelBase
     {
+        private readonly ComicsViewModel _comicsViewModel = new();
+        private readonly FlattenViewModel _flattenViewModel = new();
+        private readonly RenameViewModel _renameViewModel = new();
         private readonly SettingsViewModel _settingsViewModel = new();
 
         [ObservableProperty]
@@ -52,6 +56,9 @@ namespace BarryFileMan.ViewModels
         {
             ViewContent = tool switch
             {
+                "comics" => _comicsViewModel,
+                "flatten" => _flattenViewModel,
+                "rename" => _renameViewModel,
                 "settings" => _settingsViewModel,
                 _ => null,
             };

@@ -20,6 +20,9 @@
 	<Window.Resources>
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
+				<ResourceInclude Source="/Views/ComicsViewTemplate.axaml"/>
+				<ResourceInclude Source="/Views/FlattenViewTemplate.axaml"/>
+				<ResourceInclude Source="/Views/RenameViewTemplate.axaml"/>
 				<ResourceInclude Source="/Views/SettingsViewTemplate.axaml"/>
 			</ResourceDictionary.MergedDictionaries>
 		</ResourceDictionary>
@@ -108,6 +111,9 @@
 
 		<Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
 			<Grid.DataTemplates>
+				<StaticResource ResourceKey="comicsView"/>
+				<StaticResource ResourceKey="flattenView"/>
+				<StaticResource ResourceKey="renameView"/>
 				<StaticResource ResourceKey="settingsView"/>
 			</Grid.DataTemplates>
 

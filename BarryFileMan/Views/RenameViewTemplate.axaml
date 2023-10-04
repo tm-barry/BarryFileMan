@@ -1,0 +1,29 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:vm="using:BarryFileMan.ViewModels">
+	<!-- Preview DataTemplate -->
+	<Design.PreviewWith>
+		<Grid Width="600" Height="450">
+			<Grid.Resources>
+				<ResourceDictionary>
+					<ResourceDictionary.MergedDictionaries>
+						<ResourceInclude Source="/Views/RenameViewTemplate.axaml"/>
+					</ResourceDictionary.MergedDictionaries>
+				</ResourceDictionary>
+			</Grid.Resources>
+			<Grid.DataTemplates>
+				<StaticResource ResourceKey="renameView"/>
+			</Grid.DataTemplates>
+
+			<ContentControl>
+				<vm:RenameViewModel/>
+			</ContentControl>
+		</Grid>
+	</Design.PreviewWith>
+
+	<DataTemplate x:Key="renameView" x:DataType="vm:RenameViewModel">
+		<Grid Margin="5">
+			<TextBlock Text="Rename" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+		</Grid>
+	</DataTemplate>
+</ResourceDictionary>
