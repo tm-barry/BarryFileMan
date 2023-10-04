@@ -29,10 +29,14 @@ namespace BarryFileMan.ViewModels
         };
 
         [RelayCommand]
-        private async Task ThemeChanged(Theme theme)
+        private static async Task ThemeChanged(Theme theme)
         {
             ThemeHelper.ChangeTheme(theme);
-            await AppManager.UserConfig.UpdateThemeAsync(theme);
+
+            if (AppManager.UserConfig.Config.Theme != theme)
+            {
+                await AppManager.UserConfig.UpdateThemeAsync(theme);
+            }
         }
     }
 }

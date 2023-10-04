@@ -8,7 +8,7 @@ namespace BarryFileMan.ViewModels
 {
     public partial class MainWindowViewModel : ViewModelBase
     {
-        private SettingsViewModel _settingsViewModel = new();
+        private readonly SettingsViewModel _settingsViewModel = new();
 
         [ObservableProperty]
         private object? _viewContent;
@@ -31,8 +31,16 @@ namespace BarryFileMan.ViewModels
         [RelayCommand]
         private void ToolPaneItemSelected(string item)
         {
-            SelectedToolPaneItem = item;
-            ChangeViewContent(item);
+            if (SelectedToolPaneItem != item)
+            {
+                SelectedToolPaneItem = item;
+                ChangeViewContent(item);
+            }
+            else
+            {
+                // Doing this to keep the UI in sync
+                OnPropertyChanged(nameof(SelectedToolPaneItem));
+            }
         }
 
         public MainWindowViewModel()
@@ -42,18 +50,11 @@ namespace BarryFileMan.ViewModels
 
         private void ChangeViewContent(string tool)
         {
-            switch(tool)
+            ViewContent = tool switch
             {
-                case "settings":
-                    ViewContent = _settingsViewModel;
-                    break;
-                case "rename":
-                case "flatten":
-                case "comics":
-                default:
-                    ViewContent = null;
-                    break;
-            }
+                "settings" => _settingsViewModel,
+                _ => null,
+            };
         }
     }
 }
