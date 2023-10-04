@@ -1,6 +1,8 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:BarryFileMan.ViewModels"
+		xmlns:v="using:BarryFileMan.Views"
+		xmlns:cc="using:BarryFileMan.Converters"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
@@ -12,79 +14,106 @@
 		Name="mainWindow">
 
     <Design.DataContext>
-        <!-- This only sets the DataContext for the previewer in an IDE,
-             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-	<DockPanel>
-		<Menu DockPanel.Dock="Top" ItemsSource="{Binding MenuItems}">
-			<Menu.Styles>
-				<Style Selector="MenuItem" x:DataType="vm:MenuItemViewModel">
-					<Setter Property="Header" Value="{Binding Header}"/>
-					<Setter Property="ItemsSource" Value="{Binding Items}"/>
-					<Setter Property="Command" Value="{Binding Command}"/>
-					<Setter Property="CommandParameter" Value="{Binding CommandParameter}"/>
-					<Setter Property="Icon">
-						<Template>
-							<materialIcons:MaterialIcon 
-								Kind="{Binding Icon}"
-								IsVisible="{Binding Icon, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
-						</Template>
-					</Setter>
-				</Style>
-			</Menu.Styles>
-			
-		</Menu>
+	<Window.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceInclude Source="/Views/SettingsViewTemplate.axaml"/>
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+		
+		<cc:ToolPaneItemIsCheckedConverter x:Key="toolPaneItemConverter"/>
+	</Window.Resources>
 
-		<SplitView IsPaneOpen="{Binding ToolPaneOpen}" DisplayMode="CompactInline" CompactPaneLength="69" OpenPaneLength="200">
-			<SplitView.Pane>
-				<Grid>
-					<Grid.RowDefinitions>
-						<RowDefinition Height="*"/>
-						<RowDefinition Height="Auto"/>
-					</Grid.RowDefinitions>
-					
-					<ItemsControl Grid.Row="0" Margin="5">
-						<ToggleButton HorizontalAlignment="Stretch" Margin="5">
-							<Grid>
-								<Grid.ColumnDefinitions>
-									<ColumnDefinition Width="Auto"/>
-									<ColumnDefinition Width="*"/>
-								</Grid.ColumnDefinitions>
-								<materialIcons:MaterialIcon Grid.Column="0" Kind="Rename" Height="32" Width="32"/>
-								<TextBlock Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Text="Rename"/>
-							</Grid>
-						</ToggleButton>
-						<ToggleButton HorizontalAlignment="Stretch" Margin="5">
-							<Grid>
-								<Grid.ColumnDefinitions>
-									<ColumnDefinition Width="Auto"/>
-									<ColumnDefinition Width="*"/>
-								</Grid.ColumnDefinitions>
-								<materialIcons:MaterialIcon Grid.Column="0" Kind="Bulldozer" Height="32" Width="32"/>
-								<TextBlock Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Text="Flatten"/>
-							</Grid>
-						</ToggleButton>
-						<ToggleButton HorizontalAlignment="Stretch" Margin="5">
-							<Grid>
-								<Grid.ColumnDefinitions>
-									<ColumnDefinition Width="Auto"/>
-									<ColumnDefinition Width="*"/>
-								</Grid.ColumnDefinitions>
-								<materialIcons:MaterialIcon Grid.Column="0" Kind="NewspaperVariant" Height="32" Width="32"/>
-								<TextBlock Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Text="Comics"/>
-							</Grid>
-						</ToggleButton>
-					</ItemsControl>
-					
-					<Button Grid.Row="1" Height="42" HorizontalAlignment="Stretch" Command="{Binding ToggleToolPaneCommand}">
-						<materialIcons:MaterialIcon Kind="{Binding ToolPaneExpandIcon}"/>
-					</Button>
-				</Grid>
-			</SplitView.Pane>
-		</SplitView>
+	<SplitView IsPaneOpen="{Binding ToolPaneOpen}" DisplayMode="CompactInline" CompactPaneLength="69" OpenPaneLength="200">
+		<SplitView.Pane>
+			<Grid>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="*"/>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
+				</Grid.RowDefinitions>
 
-	</DockPanel>
+				<ItemsControl Grid.Row="0" Margin="5">
+					<ToggleButton HorizontalAlignment="Stretch" Margin="5"
+								  Command="{Binding ToolPaneItemSelectedCommand}"
+							      CommandParameter="rename"
+								  IsChecked="{Binding SelectedToolPaneItem, Mode=OneWay,
+									Converter={StaticResource toolPaneItemConverter},
+									ConverterParameter=rename}">
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="Auto"/>
+								<ColumnDefinition Width="*"/>
+							</Grid.ColumnDefinitions>
+							<materialIcons:MaterialIcon Grid.Column="0" Kind="Rename" Height="32" Width="32"/>
+							<TextBlock Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Text="Rename"/>
+						</Grid>
+					</ToggleButton>
+					<ToggleButton HorizontalAlignment="Stretch" Margin="5"
+								  Command="{Binding ToolPaneItemSelectedCommand}"
+							      CommandParameter="flatten"
+								  IsChecked="{Binding SelectedToolPaneItem, Mode=OneWay,
+									Converter={StaticResource toolPaneItemConverter},
+									ConverterParameter=flatten}">
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="Auto"/>
+								<ColumnDefinition Width="*"/>
+							</Grid.ColumnDefinitions>
+							<materialIcons:MaterialIcon Grid.Column="0" Kind="Bulldozer" Height="32" Width="32"/>
+							<TextBlock Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Text="Flatten"/>
+						</Grid>
+					</ToggleButton>
+					<ToggleButton HorizontalAlignment="Stretch" Margin="5"
+								  Command="{Binding ToolPaneItemSelectedCommand}"
+								  CommandParameter="comics"
+								  IsChecked="{Binding SelectedToolPaneItem, Mode=OneWay,
+									Converter={StaticResource toolPaneItemConverter},
+									ConverterParameter=comics}">
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="Auto"/>
+								<ColumnDefinition Width="*"/>
+							</Grid.ColumnDefinitions>
+							<materialIcons:MaterialIcon Grid.Column="0" Kind="NewspaperVariant" Height="32" Width="32"/>
+							<TextBlock Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Text="Comics"/>
+						</Grid>
+					</ToggleButton>
+				</ItemsControl>
+
+				<ToggleButton HorizontalAlignment="Stretch" Margin="10" Grid.Row="1"
+							  Command="{Binding ToolPaneItemSelectedCommand}"
+							  CommandParameter="settings"
+							  IsChecked="{Binding SelectedToolPaneItem, Mode=OneWay,
+									Converter={StaticResource toolPaneItemConverter},
+									ConverterParameter=settings}">
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="Auto"/>
+							<ColumnDefinition Width="*"/>
+						</Grid.ColumnDefinitions>
+						<materialIcons:MaterialIcon Grid.Column="0" Kind="Cog" Height="32" Width="32"/>
+						<TextBlock Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Text="Settings" IsVisible="{Binding ToolPaneOpen}"/>
+					</Grid>
+				</ToggleButton>
+
+				<Button Grid.Row="2" Height="42" HorizontalAlignment="Stretch" Command="{Binding ToggleToolPaneCommand}">
+					<materialIcons:MaterialIcon Kind="{Binding ToolPaneExpandIcon}"/>
+				</Button>
+			</Grid>
+		</SplitView.Pane>
+
+		<Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+			<Grid.DataTemplates>
+				<StaticResource ResourceKey="settingsView"/>
+			</Grid.DataTemplates>
+
+			<ContentControl Content="{Binding ViewContent}">
+			</ContentControl>
+		</Grid>
+	</SplitView>
 
 </Window>

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using BarryFileMan.Models.Config;
+using System.Threading.Tasks;
 
 namespace BarryFileMan.Managers.Config
 {
@@ -12,5 +13,7 @@ namespace BarryFileMan.Managers.Config
         public Task<T> GetConfigAsync();
         public T RestoreDefaultConfig();
         public Task<T> RestoreDefaultConfigAsync();
+        public T UpdateTheme(Theme theme);
+        public Task<T> UpdateThemeAsync(Theme theme);
     }
 }

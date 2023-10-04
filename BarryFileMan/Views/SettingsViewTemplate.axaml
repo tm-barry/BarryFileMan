@@ -1,0 +1,45 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:vm="using:BarryFileMan.ViewModels">
+
+	<!-- Preview DataTemplate -->
+	<Design.PreviewWith>
+		<Grid Width="600" Height="450">
+			<Grid.Resources>
+				<ResourceDictionary>
+					<ResourceDictionary.MergedDictionaries>
+						<ResourceInclude Source="/Views/SettingsViewTemplate.axaml"/>
+					</ResourceDictionary.MergedDictionaries>
+				</ResourceDictionary>
+			</Grid.Resources>
+			<Grid.DataTemplates>
+				<StaticResource ResourceKey="settingsView"/>
+			</Grid.DataTemplates>
+
+			<ContentControl>
+				<vm:SettingsViewModel/>
+			</ContentControl>
+		</Grid>
+	</Design.PreviewWith>
+	
+	<DataTemplate x:Key="settingsView" x:DataType="vm:SettingsViewModel">
+		<StackPanel Margin="5">
+			<TextBlock x:Name="themeHeader" FontWeight="Bold" Margin="10,5,5,5"
+					   Text="Theme"/>
+			<Border BorderThickness="2" CornerRadius="3" Padding="10" 
+					BorderBrush="{Binding #themeHeader.Foreground}">
+				<ItemsControl ItemsSource="{Binding Themes}">
+					<ItemsControl.ItemTemplate>
+						<DataTemplate>
+							<RadioButton GroupName="theme" 
+										 Content="{Binding Display}"
+										 IsChecked="{Binding Selected}"
+										 Command="{Binding Command}"
+										 CommandParameter="{Binding CommandParameter}"/>
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
+			</Border>
+		</StackPanel>
+	</DataTemplate>
+</ResourceDictionary>

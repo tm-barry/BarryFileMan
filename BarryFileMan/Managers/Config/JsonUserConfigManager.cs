@@ -79,16 +79,36 @@ namespace BarryFileMan.Managers.Config
 
         public UserConfig SetConfig(UserConfig config)
         {
-            File.WriteAllText(_filePath, JsonSerializer.Serialize(config));
-            Config = config;
+            try
+            {
+                File.WriteAllText(_filePath, JsonSerializer.Serialize(config));
+                Config = config;
+            }
+            catch { }
             return config;
         }
 
         public async Task<UserConfig> SetConfigAsync(UserConfig config)
         {
-            await File.WriteAllTextAsync(_filePath, JsonSerializer.Serialize(config));
-            Config = config;
+            try
+            {
+                await File.WriteAllTextAsync(_filePath, JsonSerializer.Serialize(config));
+                Config = config;
+            }
+            catch { }
             return config;
+        }
+
+        public UserConfig UpdateTheme(Theme theme)
+        {
+            Config.Theme = theme;
+            return SetConfig(Config);
+        }
+
+        public async Task<UserConfig> UpdateThemeAsync(Theme theme)
+        {
+            Config.Theme = theme;
+            return await SetConfigAsync(Config);
         }
     }
 }

@@ -1,11 +1,20 @@
-﻿using Avalonia.Styling;
+﻿using Avalonia;
+using Avalonia.Styling;
 using BarryFileMan.Models.Config;
 
 namespace BarryFileMan.Helpers
 {
     public static class ThemeHelper
     {
-        public static ThemeVariant GetThemeVariant(Theme theme)
+        public static void ChangeTheme(Theme theme)
+        {
+            if (Application.Current != null)
+            {
+                Application.Current.RequestedThemeVariant = GetThemeVariant(theme);
+            }
+        }
+
+        private static ThemeVariant GetThemeVariant(Theme theme)
         {
             return theme switch
             {

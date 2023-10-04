@@ -18,6 +18,8 @@ namespace BarryFileMan
 
         public override void OnFrameworkInitializationCompleted()
         {
+            ThemeHelper.ChangeTheme(AppManager.UserConfig.Config.Theme);
+
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
                 // Line below is needed to remove Avalonia data validation.
@@ -28,9 +30,6 @@ namespace BarryFileMan
                     DataContext = new MainWindowViewModel(),
                 };
             }
-
-            if (Application.Current != null)
-                Application.Current.RequestedThemeVariant = ThemeHelper.GetThemeVariant(AppManager.UserConfig.Config.Theme);
 
             base.OnFrameworkInitializationCompleted();
         }
