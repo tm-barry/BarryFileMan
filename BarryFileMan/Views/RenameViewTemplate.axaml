@@ -22,7 +22,7 @@
 	</Design.PreviewWith>
 
 	<DataTemplate x:Key="renameView" x:DataType="vm:RenameViewModel">
-		<Grid Margin="5">
+		<Grid>
 			<TextBlock Text="Rename" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 		</Grid>
 	</DataTemplate>

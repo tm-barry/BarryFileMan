@@ -22,7 +22,7 @@
 	</Design.PreviewWith>
 
 	<DataTemplate x:Key="comicsView" x:DataType="vm:ComicsViewModel">
-		<Grid Margin="5">
+		<Grid>
 			<TextBlock Text="Comics" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 		</Grid>
 	</DataTemplate>

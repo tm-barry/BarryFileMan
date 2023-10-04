@@ -117,8 +117,7 @@
 				<StaticResource ResourceKey="settingsView"/>
 			</Grid.DataTemplates>
 
-			<ContentControl Content="{Binding ViewContent}">
-			</ContentControl>
+			<ContentControl Content="{Binding ViewContent}" Margin="10"/>
 		</Grid>
 	</SplitView>
 

@@ -23,23 +23,25 @@
 	</Design.PreviewWith>
 	
 	<DataTemplate x:Key="settingsView" x:DataType="vm:SettingsViewModel">
-		<StackPanel Margin="5">
-			<TextBlock x:Name="themeHeader" FontWeight="Bold" Margin="10,5,5,5"
-					   Text="Theme"/>
-			<Border BorderThickness="2" CornerRadius="3" Padding="10" 
-					BorderBrush="{Binding #themeHeader.Foreground}">
-				<ItemsControl ItemsSource="{Binding Themes}">
-					<ItemsControl.ItemTemplate>
-						<DataTemplate>
-							<RadioButton GroupName="theme" 
-										 Content="{Binding Display}"
-										 IsChecked="{Binding Selected}"
-										 Command="{Binding Command}"
-										 CommandParameter="{Binding CommandParameter}"/>
-						</DataTemplate>
-					</ItemsControl.ItemTemplate>
-				</ItemsControl>
-			</Border>
-		</StackPanel>
+		<ScrollViewer>
+			<StackPanel>
+				<TextBlock x:Name="themeHeader" FontWeight="Bold" Margin="10,5,5,5"
+						   Text="Theme"/>
+				<Border BorderThickness="2" CornerRadius="3" Padding="10" 
+						BorderBrush="{Binding #themeHeader.Foreground}">
+					<ItemsControl ItemsSource="{Binding Themes}">
+						<ItemsControl.ItemTemplate>
+							<DataTemplate>
+								<RadioButton GroupName="theme" 
+											 Content="{Binding Display}"
+											 IsChecked="{Binding Selected}"
+											 Command="{Binding Command}"
+											 CommandParameter="{Binding CommandParameter}"/>
+							</DataTemplate>
+						</ItemsControl.ItemTemplate>
+					</ItemsControl>
+				</Border>
+			</StackPanel>
+		</ScrollViewer>
 	</DataTemplate>
 </ResourceDictionary>
