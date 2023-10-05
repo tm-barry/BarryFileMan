@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -32,16 +33,7 @@ namespace BarryFileMan.ViewModels
                     AllowMultiple = true,
                 });
 
-                if (folders != null && folders.Count > 0)
-                {
-                    foreach (var folder in folders)
-                    {
-                        var folderItems = await folder.GetItemsAsync().ToListAsync();
-                        var files = folderItems.Where((item) => item is IStorageFile).Cast<IStorageFile>();
-
-                        AddFiles(files);
-                    }
-                }
+                await AddStorageItems(folders);
             }
         }
 
@@ -56,19 +48,38 @@ namespace BarryFileMan.ViewModels
                     AllowMultiple = true,
                 });
 
-                AddFiles(files);
+
+                await AddStorageItems(files);
             }
         }
 
-        private void AddFiles(IEnumerable<IStorageFile>? files)
+        private async Task AddStorageItems(IEnumerable<IStorageItem>? items)
         {
-            if (files != null && files.Count() > 0)
+            if(items != null && items.Any())
             {
-                foreach (var file in files)
+                foreach(var item in items)
                 {
-                    Files.Add(new RenameFileViewModel(file));
+                    if (item is IStorageFile file)
+                    {
+                        AddStorageFile(file);
+                    }
+                    else if (item is IStorageFolder folder)
+                    {
+                        await AddStorageFolder(folder);
+                    }
                 }
             }
+        }
+
+        private void AddStorageFile(IStorageFile file)
+        {
+            Files.Add(new RenameFileViewModel(file));
+        }
+
+        private async Task AddStorageFolder(IStorageFolder folder)
+        {
+            var storageItems = await folder.GetItemsAsync().ToListAsync();
+            await AddStorageItems(storageItems);
         }
     }
 }
