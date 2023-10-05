@@ -53,6 +53,27 @@ namespace BarryFileMan.ViewModels
             }
         }
 
+        [RelayCommand]
+        private void ClearFiles()
+        {
+            Files.Clear();
+        }
+
+        [RelayCommand]
+        private async Task CopyRenameFile(RenameFileViewModel renameFile)
+        {
+            if (AppManager.MainWindow != null)
+            {
+                await AppManager.MainWindow.ClipboardSetTextAsync(renameFile.File.Name);
+            }
+        }
+
+        [RelayCommand]
+        private void RemoveRenameFile(RenameFileViewModel renameFile)
+        {
+            Files.Remove(renameFile);
+        }
+
         private async Task AddStorageItems(IEnumerable<IStorageItem>? items)
         {
             if(items != null && items.Any())

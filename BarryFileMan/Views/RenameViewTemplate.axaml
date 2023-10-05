@@ -28,7 +28,7 @@
 	</Design.PreviewWith>
 
 	<DataTemplate x:Key="renameView" x:DataType="vm:RenameViewModel">
-		<Grid>
+		<Grid x:Name="renameGrid">
 			<Grid.Styles>
 				<StyleInclude Source="avares://Avalonia.Xaml.Interactions.Draggable/Styles.axaml" />
 
@@ -67,12 +67,28 @@
 						<ColumnDefinition MinWidth="250"/>
 					</Grid.ColumnDefinitions>
 
-					<ListBox x:Name="originalFilesListBox" Grid.Column="0" ScrollViewer.VerticalScrollBarVisibility="Disabled"
+					<ListBox Grid.Column="0" ScrollViewer.VerticalScrollBarVisibility="Disabled"
 							 ItemsSource="{Binding Files}"
 							 SelectedValue="{Binding SelectedFile}"
 							 DragDrop.AllowDrop="True"
 							 Classes="draggable fileDragAndDrop">
+						<ListBox.KeyBindings>
+							<KeyBinding Gesture="Ctrl+C" Command="{Binding CopyRenameFileCommand}" CommandParameter="{Binding SelectedFile}"/>
+							<KeyBinding Gesture="Delete" Command="{Binding RemoveRenameFileCommand}" CommandParameter="{Binding SelectedFile}"/>
+						</ListBox.KeyBindings>
 						<ListBox.Styles>
+							<Style Selector="ListBoxItem">
+								<Setter Property="ContextFlyout">
+									<MenuFlyout>
+										<MenuItem Header="Copy" InputGesture="Ctrl+C" 
+												  Command="{Binding #renameGrid.((vm:RenameViewModel)DataContext).CopyRenameFileCommand}"
+												  CommandParameter="{Binding}"/>
+										<MenuItem Header="Delete" InputGesture="Delete"
+												  Command="{Binding #renameGrid.((vm:RenameViewModel)DataContext).RemoveRenameFileCommand}"
+												  CommandParameter="{Binding}"/>
+									</MenuFlyout>
+								</Setter>
+							</Style>
 							<Style Selector="ListBoxItem > TextBlock">
 								<Setter Property="HorizontalAlignment" Value="Left" />
 							</Style>
@@ -99,7 +115,23 @@
 							 ItemsSource="{Binding Files}"
 							 SelectedValue="{Binding SelectedFile}"
 							 Classes="draggable">
+						<ListBox.KeyBindings>
+							<KeyBinding Gesture="Ctrl+C" Command="{Binding CopyRenameFileCommand}" CommandParameter="{Binding SelectedFile}"/>
+							<KeyBinding Gesture="Delete" Command="{Binding RemoveRenameFileCommand}" CommandParameter="{Binding SelectedFile}"/>
+						</ListBox.KeyBindings>
 						<ListBox.Styles>
+							<Style Selector="ListBoxItem">
+								<Setter Property="ContextFlyout">
+									<MenuFlyout>
+										<MenuItem Header="Copy" InputGesture="Ctrl+C"
+												  Command="{Binding #renameGrid.((vm:RenameViewModel)DataContext).CopyRenameFileCommand}"
+												  CommandParameter="{Binding}"/>
+										<MenuItem Header="Delete" InputGesture="Delete"
+												  Command="{Binding #renameGrid.((vm:RenameViewModel)DataContext).RemoveRenameFileCommand}"
+												  CommandParameter="{Binding}"/>
+									</MenuFlyout>
+								</Setter>
+							</Style>
 							<Style Selector="ListBoxItem > TextBlock">
 								<Setter Property="HorizontalAlignment" Value="Left" />
 							</Style>
@@ -143,6 +175,17 @@
 						</Grid.ColumnDefinitions>
 						<materialIcons:MaterialIcon Grid.Column="0" Kind="FileDocumentMultiple"/>
 						<TextBlock Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Text="Load Files"/>
+					</Grid>
+				</Button>
+				<Button Content="Load Files" Margin="5"
+						Command="{Binding ClearFilesCommand}">
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="Auto"/>
+							<ColumnDefinition Width="*"/>
+						</Grid.ColumnDefinitions>
+						<materialIcons:MaterialIcon Grid.Column="0" Kind="Clear"/>
+						<TextBlock Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Text="Clear Files"/>
 					</Grid>
 				</Button>
 			</StackPanel>

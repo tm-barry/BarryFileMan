@@ -33,5 +33,14 @@ namespace BarryFileMan.Views
 
             return null;
         }
+
+        public async Task ClipboardSetTextAsync(string? text)
+        {
+            var topLevel = GetTopLevel(this);
+            if (topLevel?.Clipboard != null)
+            {
+                await topLevel.Clipboard.SetTextAsync(text);
+            }
+        }
     }
 }
