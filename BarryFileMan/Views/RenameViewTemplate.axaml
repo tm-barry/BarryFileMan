@@ -1,6 +1,9 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-					xmlns:vm="using:BarryFileMan.ViewModels">
+					xmlns:vm="using:BarryFileMan.ViewModels"
+					xmlns:i="using:Avalonia.Xaml.Interactivity"
+					xmlns:id="using:Avalonia.Xaml.Interactions.Draggable"
+					xmlns:ia="using:Avalonia.Xaml.Interactions.Core">
 	<!-- Preview DataTemplate -->
 	<Design.PreviewWith>
 		<Grid Width="600" Height="450">
@@ -23,7 +26,76 @@
 
 	<DataTemplate x:Key="renameView" x:DataType="vm:RenameViewModel">
 		<Grid>
-			<TextBlock Text="Rename" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+			<Grid.Styles>
+				<StyleInclude Source="avares://Avalonia.Xaml.Interactions.Draggable/Styles.axaml" />
+			</Grid.Styles>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="*"/>
+				<RowDefinition Height="Auto"/>
+			</Grid.RowDefinitions>
+			
+			<TextBlock Grid.Row="2" HorizontalAlignment="Left" Margin="5"
+					   Text="Original Files"/>
+
+			<TextBlock Grid.Row="2" HorizontalAlignment="Right" Margin="5"
+					   Text="New Names"/>
+
+			<ScrollViewer Grid.Row="3">
+				<Grid Grid.Row="2">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition MinWidth="250"/>
+						<ColumnDefinition Width="10"/>
+						<ColumnDefinition MinWidth="250"/>
+					</Grid.ColumnDefinitions>
+
+					<ListBox x:Name="originalFilesListBox" Grid.Column="0" ScrollViewer.VerticalScrollBarVisibility="Disabled"
+							 ItemsSource="{Binding Files}"
+							 SelectedValue="{Binding SelectedFile}"
+							 DragDrop.AllowDrop="True"
+							 Classes="draggable">
+						<ListBox.Styles>
+							<Style Selector="ListBoxItem > TextBlock">
+								<Setter Property="HorizontalAlignment" Value="Left" />
+							</Style>
+							<Style Selector="ListBoxItem:not(:dragging)">
+								<Setter Property="Transitions">
+									<Setter.Value>
+										<Transitions>
+											<TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.1" />
+										</Transitions>
+									</Setter.Value>
+								</Setter>
+							</Style>
+						</ListBox.Styles>
+					</ListBox>
+				
+					<GridSplitter Grid.Column="1" ResizeDirection="Columns"/>
+
+					<ListBox Grid.Column="2" ScrollViewer.VerticalScrollBarVisibility="Disabled"
+							 ItemsSource="{Binding Files}"
+							 SelectedValue="{Binding SelectedFile}"
+							 DragDrop.AllowDrop="True"
+							 Classes="draggable">
+						<ListBox.Styles>
+							<Style Selector="ListBoxItem > TextBlock">
+								<Setter Property="HorizontalAlignment" Value="Left" />
+							</Style>
+							<Style Selector="ListBoxItem:not(:dragging)">
+								<Setter Property="Transitions">
+									<Setter.Value>
+										<Transitions>
+											<TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.1" />
+										</Transitions>
+									</Setter.Value>
+								</Setter>
+							</Style>
+						</ListBox.Styles>
+					</ListBox>
+				</Grid>
+			</ScrollViewer>
 		</Grid>
 	</DataTemplate>
 </ResourceDictionary>

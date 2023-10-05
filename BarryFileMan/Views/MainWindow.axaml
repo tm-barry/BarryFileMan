@@ -11,6 +11,7 @@
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
         Title="BarryFileMan"
+		MinWidth="750" MinHeight="400"
 		Name="mainWindow">
 
     <Design.DataContext>
