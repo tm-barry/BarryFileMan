@@ -10,7 +10,7 @@ namespace BarryFileMan.Converters
         public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
             if (value is string valueString && parameter is string paramString
-            && targetType.IsAssignableTo(typeof(bool?)))
+                && targetType.IsAssignableTo(typeof(bool?)))
             {
                 return valueString == paramString;
             }

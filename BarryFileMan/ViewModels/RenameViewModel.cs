@@ -22,6 +22,23 @@ namespace BarryFileMan.ViewModels
         [ObservableProperty]
         private RenameFileViewModel? _selectedFile;
 
+        public bool HasFiles => Files.Any();
+
+        public RenameViewModel()
+        {
+            Files.CollectionChanged += Files_CollectionChanged;
+        }
+
+        ~ RenameViewModel()
+        {
+            Files.CollectionChanged -= Files_CollectionChanged;
+        }
+
+        private void Files_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            OnPropertyChanged(nameof(HasFiles));
+        }
+
         [RelayCommand]
         private async Task LoadFolder()
         {
