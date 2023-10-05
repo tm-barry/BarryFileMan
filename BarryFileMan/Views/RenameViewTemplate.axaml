@@ -180,7 +180,7 @@
 							<ColumnDefinition Width="Auto"/>
 							<ColumnDefinition Width="*"/>
 						</Grid.ColumnDefinitions>
-						<materialIcons:MaterialIcon Grid.Column="0" Kind="FileDocumentMultiple"/>
+						<materialIcons:MaterialIcon Grid.Column="0" Kind="FileMultiple"/>
 						<TextBlock Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Text="Load Files"/>
 					</Grid>
 				</Button>
@@ -191,7 +191,7 @@
 							<ColumnDefinition Width="Auto"/>
 							<ColumnDefinition Width="*"/>
 						</Grid.ColumnDefinitions>
-						<materialIcons:MaterialIcon Grid.Column="0" Kind="Clear"/>
+						<materialIcons:MaterialIcon Grid.Column="0" Kind="CloseBox"/>
 						<TextBlock Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Text="Clear Files"/>
 					</Grid>
 				</Button>

@@ -33,7 +33,7 @@
 
 	<SplitView IsPaneOpen="{Binding ToolPaneOpen}" DisplayMode="CompactInline" CompactPaneLength="69" OpenPaneLength="200">
 		<SplitView.Pane>
-			<Grid>
+			<Grid x:Name="toolPaneGrid">
 				<Grid.RowDefinitions>
 					<RowDefinition Height="*"/>
 					<RowDefinition Height="Auto"/>
@@ -110,15 +110,30 @@
 			</Grid>
 		</SplitView.Pane>
 
-		<Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-			<Grid.DataTemplates>
-				<StaticResource ResourceKey="comicsView"/>
-				<StaticResource ResourceKey="flattenView"/>
-				<StaticResource ResourceKey="renameView"/>
-				<StaticResource ResourceKey="settingsView"/>
-			</Grid.DataTemplates>
+		<Grid>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+			
+			<!-- View Header -->
+			<Grid Grid.Row="0">
+				<TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"
+						   FontSize="22" FontWeight="Bold"
+						   Text="{Binding Title}"/>
+			</Grid>
 
-			<ContentControl Content="{Binding ViewContent}" Margin="10"/>
+			<!-- View Content -->
+			<Grid Grid.Row="1">
+				<Grid.DataTemplates>
+					<StaticResource ResourceKey="comicsView"/>
+					<StaticResource ResourceKey="flattenView"/>
+					<StaticResource ResourceKey="renameView"/>
+					<StaticResource ResourceKey="settingsView"/>
+				</Grid.DataTemplates>
+
+				<ContentControl Content="{Binding ViewContent}" Margin="10"/>
+			</Grid>
 		</Grid>
 	</SplitView>
 

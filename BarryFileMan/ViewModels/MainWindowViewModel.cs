@@ -24,7 +24,23 @@ namespace BarryFileMan.ViewModels
         public string ToolPaneExpandIcon => ToolPaneOpen ? "ArrowExpandLeft" : "ArrowExpandRight";
 
         [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(Title))]
         private string _selectedToolPaneItem = "rename";
+
+        public string Title
+        {
+            get
+            {
+                return SelectedToolPaneItem switch
+                {
+                    "comics" => "Comics",
+                    "flatten" => "Flatten",
+                    "rename" => "Rename",
+                    "settings" => "Settings",
+                    _ => string.Empty,
+                };
+            }
+        }
 
         [RelayCommand]
         private void ToggleToolPane()
