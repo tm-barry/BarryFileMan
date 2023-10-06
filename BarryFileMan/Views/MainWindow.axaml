@@ -31,7 +31,10 @@
 		<cc:ToolPaneItemIsCheckedConverter x:Key="toolPaneItemConverter"/>
 	</Window.Resources>
 
-	<SplitView IsPaneOpen="{Binding ToolPaneOpen}" DisplayMode="CompactInline" CompactPaneLength="69" OpenPaneLength="200">
+	<SplitView IsPaneOpen="{Binding ToolPaneOpen}" 
+			   DisplayMode="CompactInline" 
+			   CompactPaneLength="69" 
+			   OpenPaneLength="150">
 		<SplitView.Pane>
 			<Grid x:Name="toolPaneGrid">
 				<Grid.RowDefinitions>

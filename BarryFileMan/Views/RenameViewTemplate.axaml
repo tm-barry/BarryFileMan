@@ -162,7 +162,7 @@
 			</ScrollViewer>
 
 			<StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,5,0,0">
-				<SplitButton Margin="0,5,5,5" Command="{Binding SelectedLoadOption.Command}">
+				<SplitButton Margin="0,5,5,5" Command="{Binding SelectedLoadOption.Command}" Height="32">
 					<SplitButton.Styles>
 						<Style Selector="MenuItem" x:DataType="vm:RenameLoadOptionViewModel">
 							<Setter Property="Command" Value="{Binding Command}"/>
@@ -193,7 +193,7 @@
 						<TextBlock Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Text="Load"/>
 					</Grid>
 				</SplitButton>
-				<Button Content="Clear" Margin="5"
+				<Button Content="Clear" Margin="5" Height="32"
 						Command="{Binding ClearFilesCommand}">
 					<Grid>
 						<Grid.ColumnDefinitions>
@@ -202,6 +202,19 @@
 						</Grid.ColumnDefinitions>
 						<materialIcons:MaterialIcon Grid.Column="0" Kind="CloseBox"/>
 						<TextBlock Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Text="Clear"/>
+					</Grid>
+				</Button>
+			</StackPanel>
+
+			<StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,5,0,0">
+				<Button Content="Clear" Margin="5,5,0,5" Height="32">
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="Auto"/>
+							<ColumnDefinition Width="*"/>
+						</Grid.ColumnDefinitions>
+						<materialIcons:MaterialIcon Grid.Column="0" Kind="Rename"/>
+						<TextBlock Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Text="Rename"/>
 					</Grid>
 				</Button>
 			</StackPanel>
