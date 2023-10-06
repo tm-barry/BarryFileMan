@@ -25,21 +25,54 @@
 	<DataTemplate x:Key="settingsView" x:DataType="vm:SettingsViewModel">
 		<ScrollViewer>
 			<StackPanel>
-				<TextBlock x:Name="themeHeader" FontWeight="Bold" Margin="10,5,5,5"
-						   Text="Theme"/>
+				<!--Themes-->
+				<TextBlock x:Name="generalHeader" FontWeight="Bold" Margin="10,5,5,5"
+						   Text="General"/>
 				<Border BorderThickness="2" CornerRadius="3" Padding="10" 
-						BorderBrush="{Binding #themeHeader.Foreground}">
-					<ItemsControl ItemsSource="{Binding Themes}">
-						<ItemsControl.ItemTemplate>
-							<DataTemplate>
-								<RadioButton GroupName="theme" 
-											 Content="{Binding Display}"
-											 IsChecked="{Binding Selected}"
-											 Command="{Binding Command}"
-											 CommandParameter="{Binding CommandParameter}"/>
-							</DataTemplate>
-						</ItemsControl.ItemTemplate>
-					</ItemsControl>
+						BorderBrush="{Binding #generalHeader.Foreground}">
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition/>
+							<ColumnDefinition/>
+						</Grid.ColumnDefinitions>
+						<TextBlock Grid.Column="0" Text="Theme:" VerticalAlignment="Center"/>
+						<ItemsControl Grid.Column="1" ItemsSource="{Binding Themes}" HorizontalAlignment="Left">
+							<ItemsControl.ItemTemplate>
+								<DataTemplate>
+									<RadioButton GroupName="theme" 
+												 Content="{Binding Display}"
+												 IsChecked="{Binding Selected}"
+												 Command="{Binding Command}"
+												 CommandParameter="{Binding CommandParameter}"/>
+								</DataTemplate>
+							</ItemsControl.ItemTemplate>
+						</ItemsControl>
+					</Grid>
+				</Border>
+
+				<!--Rename-->
+				<TextBlock x:Name="renameHeader" FontWeight="Bold" Margin="10,20,5,5"
+						   Text="Rename"/>
+				<Border BorderThickness="2" CornerRadius="3" Padding="10"
+						BorderBrush="{Binding #renameHeader.Foreground}">
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition/>
+							<ColumnDefinition/>
+						</Grid.ColumnDefinitions>
+						<TextBlock Grid.Column="0" Text="Default Load Option:" VerticalAlignment="Center"/>
+						<ItemsControl Grid.Column="1" ItemsSource="{Binding RenameLoadOptions}" HorizontalAlignment="Left">
+							<ItemsControl.ItemTemplate>
+								<DataTemplate>
+									<RadioButton GroupName="renameDefaultLoadOptions"
+												 Content="{Binding Display}"
+												 IsChecked="{Binding Selected}"
+												 Command="{Binding Command}"
+												 CommandParameter="{Binding CommandParameter}"/>
+								</DataTemplate>
+							</ItemsControl.ItemTemplate>
+						</ItemsControl>
+					</Grid>
 				</Border>
 			</StackPanel>
 		</ScrollViewer>

@@ -1,5 +1,8 @@
 ﻿using BarryFileMan.Models.Config;
+using System;
 using System.IO;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -10,11 +13,14 @@ namespace BarryFileMan.Managers.Config
         private readonly string _filePath = "user.json";
         private readonly UserConfig _defaultUserConfig = new();
 
+        private Subject<UserConfig> _configSubject = new Subject<UserConfig>();
+        public IObservable<UserConfig> ConfigObservable => _configSubject.AsObservable();
         public UserConfig Config { get; private set; }
 
         public JsonUserConfigManager()
         {
-            Config = GetConfig();
+            Config = _defaultUserConfig;
+            UpdateConfigSubject(GetConfig());
         }
 
         public UserConfig GetConfig()
@@ -82,7 +88,7 @@ namespace BarryFileMan.Managers.Config
             try
             {
                 File.WriteAllText(_filePath, JsonSerializer.Serialize(config));
-                Config = config;
+                UpdateConfigSubject(config);
             }
             catch { }
             return config;
@@ -93,7 +99,7 @@ namespace BarryFileMan.Managers.Config
             try
             {
                 await File.WriteAllTextAsync(_filePath, JsonSerializer.Serialize(config));
-                Config = config;
+                UpdateConfigSubject(config);
             }
             catch { }
             return config;
@@ -109,6 +115,12 @@ namespace BarryFileMan.Managers.Config
         {
             Config.Theme = theme;
             return await SetConfigAsync(Config);
+        }
+
+        private void UpdateConfigSubject(UserConfig config)
+        {
+            Config = config;
+            _configSubject.OnNext(config);
         }
     }
 }

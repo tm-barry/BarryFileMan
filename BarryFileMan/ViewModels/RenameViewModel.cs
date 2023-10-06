@@ -2,6 +2,7 @@
 using Avalonia.Controls;
 using Avalonia.Platform.Storage;
 using BarryFileMan.Managers;
+using BarryFileMan.Models.Config;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
@@ -11,6 +12,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace BarryFileMan.ViewModels
 {
@@ -24,9 +26,22 @@ namespace BarryFileMan.ViewModels
 
         public bool HasFiles => Files.Any();
 
+        public ReadOnlyCollection<RenameLoadOptionViewModel> LoadOptions => new List<RenameLoadOptionViewModel>()
+        {
+            new RenameLoadOptionViewModel(RenameLoadOption.Files, "Files", "FileMultiple", LoadFilesCommand),
+            new RenameLoadOptionViewModel(RenameLoadOption.Folders, "Folders", "FolderMultiple", LoadFoldersCommand),
+        }.AsReadOnly();
+
+        [ObservableProperty]
+        private RenameLoadOptionViewModel _selectedLoadOption;
+
         public RenameViewModel()
         {
             Files.CollectionChanged += Files_CollectionChanged;
+
+            // Load default option from config
+            SelectedLoadOption = LoadOptions.FirstOrDefault((option) => option.Type == AppManager.UserConfig.Config.DefaultRenameLoadOption) ?? LoadOptions.First();
+            AppManager.UserConfig.ConfigObservable.Subscribe(OnUserConfigChanged);
         }
 
         ~ RenameViewModel()
@@ -39,12 +54,22 @@ namespace BarryFileMan.ViewModels
             OnPropertyChanged(nameof(HasFiles));
         }
 
-        [RelayCommand]
-        private async Task LoadFolder()
+        private void OnUserConfigChanged(UserConfig userConfig)
         {
+            var option = LoadOptions.FirstOrDefault((option) => option.Type == userConfig.DefaultRenameLoadOption);
+            if (option != null)
+            {
+                SelectedLoadOption = option;
+            }
+        }
+
+        [RelayCommand]
+        private async Task LoadFolders()
+        {
+            SelectedLoadOption = LoadOptions.First((item) => item.Type == RenameLoadOption.Folders);
             if (AppManager.MainWindow != null)
             {
-                var folders = await AppManager.MainWindow.OpenFolderPickerAsync(new Avalonia.Platform.Storage.FolderPickerOpenOptions
+                var folders = await AppManager.MainWindow.OpenFolderPickerAsync(new FolderPickerOpenOptions
                 {
                     Title = "Load Folder",
                     AllowMultiple = true,
@@ -57,9 +82,10 @@ namespace BarryFileMan.ViewModels
         [RelayCommand]
         private async Task LoadFiles()
         {
+            SelectedLoadOption = LoadOptions.First((item) => item.Type == RenameLoadOption.Files);
             if (AppManager.MainWindow != null)
             {
-                var files = await AppManager.MainWindow.OpenFilePickerAsync(new Avalonia.Platform.Storage.FilePickerOpenOptions
+                var files = await AppManager.MainWindow.OpenFilePickerAsync(new FilePickerOpenOptions
                 {
                     Title = "Load Files",
                     AllowMultiple = true,
@@ -77,7 +103,7 @@ namespace BarryFileMan.ViewModels
         }
 
         [RelayCommand]
-        private async Task CopyRenameFile(RenameFileViewModel renameFile)
+        private static async Task CopyRenameFile(RenameFileViewModel renameFile)
         {
             if (AppManager.MainWindow != null)
             {

@@ -1,4 +1,4 @@
-﻿using Avalonia.Styling;
+﻿using BarryFileMan.ViewModels;
 
 namespace BarryFileMan.Models.Config
 {
@@ -6,11 +6,14 @@ namespace BarryFileMan.Models.Config
     {
         public Theme Theme { get; set; }
 
-        public UserConfig() : this(Theme.Default) { }
+        public RenameLoadOption DefaultRenameLoadOption { get; set; }
 
-        public UserConfig(Theme theme) 
+        public UserConfig() : this(Theme.Default, RenameLoadOption.Files) { }
+
+        public UserConfig(Theme theme, RenameLoadOption defaultRenameLoadOption) 
         {
             Theme = theme;
+            DefaultRenameLoadOption = defaultRenameLoadOption;
         }
     }
 

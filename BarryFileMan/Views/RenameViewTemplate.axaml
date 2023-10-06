@@ -162,29 +162,38 @@
 			</ScrollViewer>
 
 			<StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,5,0,0">
-				<Button Content="Load Folder" Margin="0,5,5,5"
-						Command="{Binding LoadFolderCommand}">
+				<SplitButton Margin="0,5,5,5" Command="{Binding SelectedLoadOption.Command}">
+					<SplitButton.Styles>
+						<Style Selector="MenuItem" x:DataType="vm:RenameLoadOptionViewModel">
+							<Setter Property="Command" Value="{Binding Command}"/>
+						</Style>
+					</SplitButton.Styles>
+					<SplitButton.Flyout>
+						<MenuFlyout Placement="Bottom" ItemsSource="{Binding LoadOptions}">
+							<MenuFlyout.ItemTemplate>
+								<DataTemplate DataType="vm:RenameLoadOptionViewModel">
+									<Grid>
+										<Grid.ColumnDefinitions>
+											<ColumnDefinition Width="Auto"/>
+											<ColumnDefinition Width="*"/>
+										</Grid.ColumnDefinitions>
+										<materialIcons:MaterialIcon Grid.Column="0" Kind="{Binding Icon}"/>
+										<TextBlock Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Text="{Binding DisplayText}"/>
+									</Grid>
+								</DataTemplate>
+							</MenuFlyout.ItemTemplate>
+						</MenuFlyout>
+					</SplitButton.Flyout>
 					<Grid>
 						<Grid.ColumnDefinitions>
 							<ColumnDefinition Width="Auto"/>
 							<ColumnDefinition Width="*"/>
 						</Grid.ColumnDefinitions>
-						<materialIcons:MaterialIcon Grid.Column="0" Kind="Folder"/>
-						<TextBlock Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Text="Load Folder"/>
+						<materialIcons:MaterialIcon Grid.Column="0" Kind="{Binding SelectedLoadOption.Icon}"/>
+						<TextBlock Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Text="Load"/>
 					</Grid>
-				</Button>
-				<Button Content="Load Files" Margin="5"
-						Command="{Binding LoadFilesCommand}">
-					<Grid>
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="Auto"/>
-							<ColumnDefinition Width="*"/>
-						</Grid.ColumnDefinitions>
-						<materialIcons:MaterialIcon Grid.Column="0" Kind="FileMultiple"/>
-						<TextBlock Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Text="Load Files"/>
-					</Grid>
-				</Button>
-				<Button Content="Load Files" Margin="5"
+				</SplitButton>
+				<Button Content="Clear" Margin="5"
 						Command="{Binding ClearFilesCommand}">
 					<Grid>
 						<Grid.ColumnDefinitions>
@@ -192,7 +201,7 @@
 							<ColumnDefinition Width="*"/>
 						</Grid.ColumnDefinitions>
 						<materialIcons:MaterialIcon Grid.Column="0" Kind="CloseBox"/>
-						<TextBlock Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Text="Clear Files"/>
+						<TextBlock Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Text="Clear"/>
 					</Grid>
 				</Button>
 			</StackPanel>

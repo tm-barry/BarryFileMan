@@ -28,6 +28,24 @@ namespace BarryFileMan.ViewModels
             },
         };
 
+        public IEnumerable<ItemViewModel<RenameLoadOption>> RenameLoadOptions => new List<ItemViewModel<RenameLoadOption>>()
+        {
+            new ItemViewModel<RenameLoadOption>(RenameLoadOption.Files, "Files", 
+                    AppManager.UserConfig.Config.DefaultRenameLoadOption == RenameLoadOption.Files)
+            {
+                Command = ConfigPropertyChangedCommand,
+                CommandParameter = new ConfigPropertyChangedParam(
+                    nameof(AppManager.UserConfig.Config.DefaultRenameLoadOption), RenameLoadOption.Files)
+            },
+            new ItemViewModel<RenameLoadOption>(RenameLoadOption.Folders, "Folders", 
+                    AppManager.UserConfig.Config.DefaultRenameLoadOption == RenameLoadOption.Folders)
+            {
+                Command = ConfigPropertyChangedCommand,
+                CommandParameter = new ConfigPropertyChangedParam(
+                    nameof(AppManager.UserConfig.Config.DefaultRenameLoadOption), RenameLoadOption.Folders)
+            }
+        };
+
         [RelayCommand]
         private static async Task ThemeChanged(Theme theme)
         {
@@ -35,8 +53,32 @@ namespace BarryFileMan.ViewModels
 
             if (AppManager.UserConfig.Config.Theme != theme)
             {
-                await AppManager.UserConfig.UpdateThemeAsync(theme);
+                AppManager.UserConfig.Config.Theme = theme;
+                await AppManager.UserConfig.SetConfigAsync(AppManager.UserConfig.Config);
             }
+        }
+
+        [RelayCommand]
+        private static async Task ConfigPropertyChanged(ConfigPropertyChangedParam param)
+        {
+            var property = AppManager.UserConfig.Config.GetType().GetProperty(param.PropertyName);
+            if(property != null)
+            {
+                property.SetValue(AppManager.UserConfig.Config, param.PropertyValue);
+                await AppManager.UserConfig.SetConfigAsync(AppManager.UserConfig.Config);
+            }
+        }
+    }
+
+    public class ConfigPropertyChangedParam
+    {
+        public string PropertyName { get; set;}
+        public object? PropertyValue { get; set; }
+
+        public ConfigPropertyChangedParam(string propertyName, object? propertyValue)
+        {
+            PropertyName = propertyName;
+            PropertyValue = propertyValue;
         }
     }
 }
