@@ -5,12 +5,16 @@ namespace BarryFileMan.ViewModels
 {
     public partial class RenameFileViewModel : ViewModelBase
     {
-        public IStorageItem File { get; private set; }
+        public IStorageFile File { get; private set; }
+
+        public string? FileNameWithoutExtension => System.IO.Path.GetFileNameWithoutExtension(File.Name);
+
+        public string? Extension => System.IO.Path.GetExtension(File.Name);
 
         [ObservableProperty]
         private string? _renamedFileName;
 
-        public RenameFileViewModel(IStorageItem file)
+        public RenameFileViewModel(IStorageFile file)
         {
             File = file;
             RenamedFileName = file.Name;

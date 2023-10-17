@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BarryFileMan", "BarryFileMan\BarryFileMan.csproj", "{77186D81-3FD4-4DC5-8A40-7882ECF7B524}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BarryFileMan", "BarryFileMan\BarryFileMan.csproj", "{77186D81-3FD4-4DC5-8A40-7882ECF7B524}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BarryFileMan.Rename", "BarryFileMan.Rename\BarryFileMan.Rename.csproj", "{20162683-D76B-4C84-A0C2-1AEAE16730D6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BarryFileMan.Common", "BarryFileMan.Common\BarryFileMan.Common.csproj", "{605F4370-AACA-4287-A912-5F180606AA71}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{77186D81-3FD4-4DC5-8A40-7882ECF7B524}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{77186D81-3FD4-4DC5-8A40-7882ECF7B524}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{77186D81-3FD4-4DC5-8A40-7882ECF7B524}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20162683-D76B-4C84-A0C2-1AEAE16730D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20162683-D76B-4C84-A0C2-1AEAE16730D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20162683-D76B-4C84-A0C2-1AEAE16730D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20162683-D76B-4C84-A0C2-1AEAE16730D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{605F4370-AACA-4287-A912-5F180606AA71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{605F4370-AACA-4287-A912-5F180606AA71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{605F4370-AACA-4287-A912-5F180606AA71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{605F4370-AACA-4287-A912-5F180606AA71}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
