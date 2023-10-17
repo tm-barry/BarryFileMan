@@ -103,12 +103,16 @@ namespace BarryFileMan.ViewModels
         }
 
         [RelayCommand]
-        private static async Task CopyRenameFile(RenameFileViewModel renameFile)
+        private static async Task CopyOriginalFile(RenameFileViewModel renameFile)
         {
-            if (AppManager.MainWindow != null)
-            {
-                await AppManager.MainWindow.ClipboardSetTextAsync(renameFile.File.Name);
-            }
+            await CopyText(renameFile.File.Name);
+        }
+
+        [RelayCommand]
+        private static async Task CopyNewFile(RenameFileViewModel renameFile)
+        {
+            // TODO - copy new file name
+            await CopyText(renameFile.File.Name);
         }
 
         [RelayCommand]
@@ -144,6 +148,14 @@ namespace BarryFileMan.ViewModels
         {
             var storageItems = await folder.GetItemsAsync().ToListAsync();
             await AddStorageItems(storageItems);
+        }
+
+        private static async Task CopyText(string? text)
+        {
+            if (AppManager.MainWindow != null)
+            {
+                await AppManager.MainWindow.ClipboardSetTextAsync(text);
+            }
         }
     }
 }

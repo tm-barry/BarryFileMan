@@ -60,146 +60,110 @@
 			<TextBlock Grid.Row="2" HorizontalAlignment="Right" Margin="5"
 					   Text="New Names"/>
 
-			<ScrollViewer Grid.Row="3">
-				<Grid Grid.Row="2">
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition MinWidth="250"/>
-						<ColumnDefinition Width="10"/>
-						<ColumnDefinition MinWidth="250"/>
-					</Grid.ColumnDefinitions>
-
-					<!-- Original Files Listbox -->
-					<ListBox Grid.Column="0" 
-							 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-							 ItemsSource="{Binding Files}"
-							 SelectedValue="{Binding SelectedFile}"
-							 DragDrop.AllowDrop="True"
-							 Classes="draggable fileDragAndDrop">
-						<ListBox.KeyBindings>
-							<KeyBinding Gesture="Ctrl+C" Command="{Binding CopyRenameFileCommand}" CommandParameter="{Binding SelectedFile}"/>
-							<KeyBinding Gesture="Delete" Command="{Binding RemoveRenameFileCommand}" CommandParameter="{Binding SelectedFile}"/>
-						</ListBox.KeyBindings>
-						<ListBox.Styles>
-							<Style Selector="ListBoxItem">
-								<Setter Property="ContextFlyout">
-									<MenuFlyout>
-										<MenuItem Header="Copy" InputGesture="Ctrl+C" 
-												  Command="{Binding #renameGrid.((vm:RenameViewModel)DataContext).CopyRenameFileCommand}"
-												  CommandParameter="{Binding}"/>
-										<MenuItem Header="Delete" InputGesture="Delete"
-												  Command="{Binding #renameGrid.((vm:RenameViewModel)DataContext).RemoveRenameFileCommand}"
-												  CommandParameter="{Binding}"/>
-									</MenuFlyout>
-								</Setter>
-							</Style>
-							<Style Selector="ListBoxItem > TextBlock">
-								<Setter Property="HorizontalAlignment" Value="Left" />
-							</Style>
-							<Style Selector="ListBoxItem:not(:dragging)">
-								<Setter Property="Transitions">
-									<Setter.Value>
-										<Transitions>
-											<TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.1" />
-										</Transitions>
-									</Setter.Value>
-								</Setter>
-							</Style>
-						</ListBox.Styles>
-						<ListBox.ItemTemplate>
-							<DataTemplate x:DataType="vm:RenameFileViewModel">
-								<Grid>
-									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="*"/>
-										<ColumnDefinition Width="Auto"/>
-									</Grid.ColumnDefinitions>
-									<TextBlock Grid.Column="0" 
+			<ListBox Grid.Row="3"
+					 ItemsSource="{Binding Files}"
+					 SelectedValue="{Binding SelectedFile}"
+					 DragDrop.AllowDrop="True"
+					 Classes="draggable fileDragAndDrop">
+				<ListBox.KeyBindings>
+					<KeyBinding Gesture="Ctrl+C" Command="{Binding CopyOriginalFileCommand}" CommandParameter="{Binding SelectedFile}"/>
+					<KeyBinding Gesture="Ctrl+Shift+C" Command="{Binding CopyNewFileCommand}" CommandParameter="{Binding SelectedFile}"/>
+					<KeyBinding Gesture="Delete" Command="{Binding RemoveRenameFileCommand}" CommandParameter="{Binding SelectedFile}"/>
+				</ListBox.KeyBindings>
+				<ListBox.Styles>
+					<Style Selector="ListBoxItem">
+						<Setter Property="ContextFlyout">
+							<MenuFlyout>
+								<MenuItem Header="Copy Original" InputGesture="Ctrl+C"
+										  Command="{Binding #renameGrid.((vm:RenameViewModel)DataContext).CopyOriginalFileCommand}"
+										  CommandParameter="{Binding}"/>
+								<MenuItem Header="Copy New" InputGesture="Ctrl+Shift+C"
+										  Command="{Binding #renameGrid.((vm:RenameViewModel)DataContext).CopyNewFileCommand}"
+										  CommandParameter="{Binding}"/>
+								<MenuItem Header="Remove" InputGesture="Delete"
+										  Command="{Binding #renameGrid.((vm:RenameViewModel)DataContext).RemoveRenameFileCommand}"
+										  CommandParameter="{Binding}"/>
+							</MenuFlyout>
+						</Setter>
+					</Style>
+					<Style Selector="ListBoxItem:not(:dragging)">
+						<Setter Property="Transitions">
+							<Setter.Value>
+								<Transitions>
+									<TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.1" />
+								</Transitions>
+							</Setter.Value>
+						</Setter>
+					</Style>
+				</ListBox.Styles>
+				<ListBox.ItemTemplate>
+					<DataTemplate x:DataType="vm:RenameFileViewModel">
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="*"/>
+								<ColumnDefinition Width="Auto"/>
+								<ColumnDefinition Width="*"/>
+							</Grid.ColumnDefinitions>
+							
+							<!-- Original File Name -->
+							<Grid Grid.Column="0">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="*"/>
+									<ColumnDefinition Width="Auto"/>
+								</Grid.ColumnDefinitions>
+								<TextBlock Grid.Column="0"
+										   VerticalAlignment="Center"
+										   Text="{Binding FileNameWithoutExtension}"
+										   TextWrapping="Wrap"/>
+								<Border Grid.Column="1" Margin="10,0,0,0"
+										VerticalAlignment="Center"
+										Background="{DynamicResource SystemAccentColor}"
+										CornerRadius="8"
+										Padding="5">
+									<TextBlock Text="{Binding Extension}"
 											   VerticalAlignment="Center"
-											   Text="{Binding FileNameWithoutExtension}"
-											   TextWrapping="Wrap"/>
-									<Border Grid.Column="1" Margin="10,0,0,0"
-											VerticalAlignment="Center"
-											Background="{DynamicResource SystemAccentColor}"
-											CornerRadius="8"
-											Padding="5">
-										<TextBlock Text="{Binding Extension}"
-												   VerticalAlignment="Center"
-												   Foreground="White"/>
-									</Border>
-								</Grid>
-							</DataTemplate>
-						</ListBox.ItemTemplate>
-					</ListBox>
+											   Foreground="White"/>
+								</Border>
+							</Grid>
 
-					<!-- Original Files Listbox Placeholder -->
-					<Grid Grid.Column="0" IsHitTestVisible="false" IsVisible="{Binding !HasFiles}">
-						<TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
-								   Text="Drag and Drop Files or Folders"
-								   Opacity="0.5"/>
-					</Grid>
+							<materialIcons:MaterialIcon Grid.Column="1"
+														Margin="20,0"
+														Height="24"
+														Width="24"
+														Kind="ArrowRightBold"/>
 
-					<!-- New Names Listbox -->
-					<ListBox Grid.Column="2" 
-							 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-							 ItemsSource="{Binding Files}"
-							 SelectedValue="{Binding SelectedFile}"
-							 Classes="draggable">
-						<ListBox.KeyBindings>
-							<KeyBinding Gesture="Ctrl+C" Command="{Binding CopyRenameFileCommand}" CommandParameter="{Binding SelectedFile}"/>
-							<KeyBinding Gesture="Delete" Command="{Binding RemoveRenameFileCommand}" CommandParameter="{Binding SelectedFile}"/>
-						</ListBox.KeyBindings>
-						<ListBox.Styles>
-							<Style Selector="ListBoxItem">
-								<Setter Property="ContextFlyout">
-									<MenuFlyout>
-										<MenuItem Header="Copy" InputGesture="Ctrl+C"
-												  Command="{Binding #renameGrid.((vm:RenameViewModel)DataContext).CopyRenameFileCommand}"
-												  CommandParameter="{Binding}"/>
-										<MenuItem Header="Delete" InputGesture="Delete"
-												  Command="{Binding #renameGrid.((vm:RenameViewModel)DataContext).RemoveRenameFileCommand}"
-												  CommandParameter="{Binding}"/>
-									</MenuFlyout>
-								</Setter>
-							</Style>
-							<Style Selector="ListBoxItem > TextBlock">
-								<Setter Property="HorizontalAlignment" Value="Left" />
-							</Style>
-							<Style Selector="ListBoxItem:not(:dragging)">
-								<Setter Property="Transitions">
-									<Setter.Value>
-										<Transitions>
-											<TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.1" />
-										</Transitions>
-									</Setter.Value>
-								</Setter>
-							</Style>
-						</ListBox.Styles>
-						<ListBox.ItemTemplate>
-							<DataTemplate x:DataType="vm:RenameFileViewModel">
-								<Grid>
-									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="*"/>
-										<ColumnDefinition Width="Auto"/>
-									</Grid.ColumnDefinitions>
-									<TextBlock Grid.Column="0"
+							<!-- New File Name -->
+							<Grid Grid.Column="2">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="*"/>
+									<ColumnDefinition Width="Auto"/>
+								</Grid.ColumnDefinitions>
+								<TextBlock Grid.Column="0"
+										   VerticalAlignment="Center"
+										   Text="{Binding FileNameWithoutExtension}"
+										   TextWrapping="Wrap"/>
+								<Border Grid.Column="1" Margin="10,0,0,0"
+										VerticalAlignment="Center"
+										Background="{DynamicResource SystemAccentColor}"
+										CornerRadius="8"
+										Padding="5">
+									<TextBlock Text="{Binding Extension}"
 											   VerticalAlignment="Center"
-											   Text="{Binding FileNameWithoutExtension}"
-											   TextWrapping="Wrap"/>
-									<Border Grid.Column="1" Margin="10,0,0,0"
-											VerticalAlignment="Center"
-											Background="{DynamicResource SystemAccentColor}"
-											CornerRadius="8"
-											Padding="5">
-										<TextBlock Text="{Binding Extension}"
-												   VerticalAlignment="Center"
-												   Foreground="White"/>
-									</Border>
-								</Grid>
-							</DataTemplate>
-						</ListBox.ItemTemplate>
-					</ListBox>
-				</Grid>
-			</ScrollViewer>
+											   Foreground="White"/>
+								</Border>
+							</Grid>
+						</Grid>
+					</DataTemplate>
+				</ListBox.ItemTemplate>
+			</ListBox>
 
+			<!-- Files Listbox Placeholder -->
+			<Grid Grid.Row="3" IsHitTestVisible="false" IsVisible="{Binding !HasFiles}">
+				<TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+						   Text="Drag and Drop Files or Folders"
+						   Opacity="0.5"/>
+			</Grid>
+			
 			<!-- Bottom Buttons -->
 			<StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,5,0,0">
 				<SplitButton Margin="0,5,5,5" Command="{Binding SelectedLoadOption.Command}" Height="32">
