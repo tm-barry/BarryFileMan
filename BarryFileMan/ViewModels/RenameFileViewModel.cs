@@ -12,12 +12,14 @@ namespace BarryFileMan.ViewModels
         public string? Extension => System.IO.Path.GetExtension(File.Name);
 
         [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(HasRenamedFileName))]
         private string? _renamedFileName;
+
+        public bool HasRenamedFileName => !string.IsNullOrWhiteSpace(RenamedFileName);
 
         public RenameFileViewModel(IStorageFile file)
         {
             File = file;
-            RenamedFileName = file.Name;
         }
     }
 }

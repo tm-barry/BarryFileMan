@@ -139,9 +139,16 @@
 									<ColumnDefinition Width="Auto"/>
 								</Grid.ColumnDefinitions>
 								<TextBlock Grid.Column="0"
+										   IsVisible="{Binding HasRenamedFileName}"
+										   VerticalAlignment="Center"
+										   Text="{Binding RenamedFileName}"
+										   TextWrapping="Wrap"/>
+								<TextBlock Grid.Column="0"
+										   IsVisible="{Binding !HasRenamedFileName}"
 										   VerticalAlignment="Center"
 										   Text="{Binding FileNameWithoutExtension}"
-										   TextWrapping="Wrap"/>
+										   TextWrapping="Wrap"
+										   Opacity="0.5"/>
 								<Border Grid.Column="1" Margin="10,0,0,0"
 										VerticalAlignment="Center"
 										Background="{DynamicResource SystemAccentColor}"
