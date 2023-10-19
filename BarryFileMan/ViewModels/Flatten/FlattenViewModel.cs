@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BarryFileMan.ViewModels
+namespace BarryFileMan.ViewModels.Flatten
 {
-    public partial class ComicsViewModel : ViewModelBase
+    public partial class FlattenViewModel : ViewModelBase
     {
     }
 }

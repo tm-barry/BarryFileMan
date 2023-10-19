@@ -1,6 +1,6 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-					xmlns:vm="using:BarryFileMan.ViewModels"
+					xmlns:vm="using:BarryFileMan.ViewModels.Rename"
 					xmlns:i="using:Avalonia.Xaml.Interactivity"
 					xmlns:id="using:Avalonia.Xaml.Interactions.Draggable"
 					xmlns:idd="using:Avalonia.Xaml.Interactions.DragAndDrop"
@@ -126,6 +126,7 @@
 								</Border>
 							</Grid>
 
+							<!-- Original/New File Name Separator -->
 							<materialIcons:MaterialIcon Grid.Column="1"
 														Margin="20,0"
 														Height="24"

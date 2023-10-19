@@ -1,7 +1,10 @@
 ﻿using Avalonia.Platform.Storage;
+using BarryFileMan.Rename.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
+using System.Collections.Generic;
+using System.Linq;
 
-namespace BarryFileMan.ViewModels
+namespace BarryFileMan.ViewModels.Rename
 {
     public partial class RenameFileViewModel : ViewModelBase
     {
@@ -10,6 +13,12 @@ namespace BarryFileMan.ViewModels
         public string? FileNameWithoutExtension => System.IO.Path.GetFileNameWithoutExtension(File.Name);
 
         public string? Extension => System.IO.Path.GetExtension(File.Name);
+
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(HasMatches))]
+        public IEnumerable<IRenameMatch>? _matches;
+
+        public bool HasMatches => Matches?.Count() < 0;
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(HasRenamedFileName))]

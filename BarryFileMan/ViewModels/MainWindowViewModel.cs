@@ -1,9 +1,10 @@
 ﻿
+using BarryFileMan.ViewModels.Comics;
+using BarryFileMan.ViewModels.Flatten;
+using BarryFileMan.ViewModels.Rename;
+using BarryFileMan.ViewModels.Settings;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
 
 namespace BarryFileMan.ViewModels
 {

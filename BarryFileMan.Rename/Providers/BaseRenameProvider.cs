@@ -45,7 +45,7 @@ namespace BarryFileMan.Rename.Providers
                                 var groupValue = match.Groups[renameTag.TagName].ElementAtOrDefault(renameTag.GroupIndex);
                                 if (groupValue != null)
                                 {
-                                    var renamedTagStr = CalculateRenamedTag(groupValue, renameTag);
+                                    var renamedTagStr = BaseRenameProvider<TMatchOptions>.CalculateRenamedTag(groupValue, renameTag);
                                     renamedString = renamedString.Remove(renameTag.Index, renameTag.Length).Insert(renameTag.Index, renamedTagStr);
                                 }
                                 else
@@ -80,7 +80,7 @@ namespace BarryFileMan.Rename.Providers
             return new RenameResult(renamedString, errors.Count > 0 ? errors : null);
         }
 
-        private string CalculateRenamedTag(IRenameMatchGroupValue groupValue, RenameTag renameTag)
+        private static string CalculateRenamedTag(IRenameMatchGroupValue groupValue, RenameTag renameTag)
         {
             var renamedValue = groupValue.Value;
             foreach(var function in renameTag.Functions)

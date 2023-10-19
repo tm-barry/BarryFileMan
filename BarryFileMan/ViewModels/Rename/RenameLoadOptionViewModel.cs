@@ -1,6 +1,7 @@
-﻿using System.Windows.Input;
+﻿using BarryFileMan.Enums.Rename;
+using System.Windows.Input;
 
-namespace BarryFileMan.ViewModels
+namespace BarryFileMan.ViewModels.Rename
 {
     public class RenameLoadOptionViewModel : ViewModelBase
     {
@@ -16,11 +17,5 @@ namespace BarryFileMan.ViewModels
             Icon = icon;
             Command = command;
         }
-    }
-
-    public enum RenameLoadOption
-    {
-        Files,
-        Folders
     }
 }

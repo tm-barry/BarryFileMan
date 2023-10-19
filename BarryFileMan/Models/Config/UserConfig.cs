@@ -1,4 +1,5 @@
-﻿using BarryFileMan.ViewModels;
+﻿using BarryFileMan.Enums.Rename;
+using BarryFileMan.ViewModels;
 
 namespace BarryFileMan.Models.Config
 {

@@ -1,11 +1,12 @@
-﻿using BarryFileMan.Helpers;
+﻿using BarryFileMan.Enums.Rename;
+using BarryFileMan.Helpers;
 using BarryFileMan.Managers;
 using BarryFileMan.Models.Config;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace BarryFileMan.ViewModels
+namespace BarryFileMan.ViewModels.Settings
 {
     public partial class SettingsViewModel : ViewModelBase
     {
