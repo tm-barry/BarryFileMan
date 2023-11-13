@@ -29,6 +29,18 @@
 
 	<DataTemplate x:Key="renameView" x:DataType="vm:RenameViewModel">
 		<Grid x:Name="renameGrid">
+			<Grid.Resources>
+				<ResourceDictionary>
+					<ResourceDictionary.MergedDictionaries>
+						<ResourceInclude Source="/Views/Rename/Providers/RegexRenameProviderViewTemplate.axaml"/>
+					</ResourceDictionary.MergedDictionaries>
+				</ResourceDictionary>
+			</Grid.Resources>
+
+			<Grid.DataTemplates>
+				<StaticResource ResourceKey="regexRenameProviderView"/>
+			</Grid.DataTemplates>
+			
 			<Grid.Styles>
 				<StyleInclude Source="avares://Avalonia.Xaml.Interactions.Draggable/Styles.axaml" />
 
@@ -53,6 +65,9 @@
 				<RowDefinition Height="*"/>
 				<RowDefinition Height="Auto"/>
 			</Grid.RowDefinitions>
+
+			<ContentControl Grid.Row="1" Margin="0,0,0,10"
+							Content="{Binding RenameProvider}"/>
 			
 			<TextBlock Grid.Row="2" HorizontalAlignment="Left" Margin="5"
 					   Text="Original Files"/>

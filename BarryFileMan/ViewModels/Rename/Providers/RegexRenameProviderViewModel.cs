@@ -4,7 +4,9 @@ using BarryFileMan.Rename.Models;
 using BarryFileMan.Rename.Providers.Regex;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace BarryFileMan.ViewModels.Rename.Providers
 {
@@ -13,13 +15,13 @@ namespace BarryFileMan.ViewModels.Rename.Providers
         private readonly RegexRenameProvider _provider = new();
 
         [ObservableProperty]
-        private string _matchPattern = string.Empty;
+        private string _matchPattern = "(?<filename>.+)";
 
         [ObservableProperty]
         private string? _matchPatternError;
 
         [ObservableProperty]
-        private string _renamePattern = string.Empty;
+        private string _renamePattern = "<filename>";
 
         [ObservableProperty]
         private IEnumerable<string>? _renamePatternErrors;
@@ -28,18 +30,45 @@ namespace BarryFileMan.ViewModels.Rename.Providers
         private string _testString = string.Empty;
 
         [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(TestMatchesDisplay))]
+        [NotifyPropertyChangedFor(nameof(TestMatchNodes))]
+        [NotifyPropertyChangedFor(nameof(HasTestMatches))]
         private IEnumerable<IRenameMatch>? _testMatches;
 
-        public IEnumerable<RenameMatchViewModel> TestMatchesDisplay 
-            => TestMatches?.Select((item, index) => new RenameMatchViewModel(index, item.Groups)) ?? new List<RenameMatchViewModel>();
+        public IEnumerable<RenameMatchNodeViewModel>? TestMatchNodes
+            => TestMatches?.Select((match, matchIndex) => 
+            {
+                Dictionary<string, int> groupKeys = new();
+                int currentGroupKey = 0;
+                ObservableCollection<RenameMatchNodeViewModel> subNodes = new();
+                foreach(var groupName in match.Groups.Keys)
+                {
+                    if(!groupKeys.ContainsKey(groupName))
+                    {
+                        groupKeys.Add(groupName, currentGroupKey);
+                        currentGroupKey++;
+                    }
+
+                    var groupValues = match.Groups[groupName];
+                    for (int i = 0; i < groupValues.Count; i++)
+                    {
+                        subNodes.Add(new(matchIndex, null, i, groupValues[i].Value, groupName, groupKeys[groupName]));
+                    }
+                }
+                return new RenameMatchNodeViewModel(matchIndex, subNodes);
+            });
+
+        public bool HasTestMatches => TestMatches != null && TestMatches.Any();
 
         [ObservableProperty]
         private string _renamedTestString = string.Empty;
 
+        public RegexRenameProviderViewModel() : this(new RenameViewModel()) { }
+
         public RegexRenameProviderViewModel(RenameViewModel viewModel) : base(viewModel)
         {
             ViewModel.PropertyChanged += ViewModel_PropertyChanged;
+
+            TestString = "test-filename";
         }
 
         ~RegexRenameProviderViewModel()
@@ -94,6 +123,12 @@ namespace BarryFileMan.ViewModels.Rename.Providers
 
         private void RenameTestString(IEnumerable<IRenameMatch>? matches, string input)
         {
+            if(string.IsNullOrWhiteSpace(input))
+            {
+                RenamedTestString = TestString;
+                return;
+            }
+
             RenamePatternErrors = null;
             matches ??= Enumerable.Empty<IRenameMatch>();
             RenameResult renameResult = _provider.Rename(matches, input);

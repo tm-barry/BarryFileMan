@@ -2,6 +2,7 @@
 using BarryFileMan.Enums.Rename;
 using BarryFileMan.Managers;
 using BarryFileMan.Models.Config;
+using BarryFileMan.Rename.Enums;
 using BarryFileMan.ViewModels.Rename.Providers;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -15,7 +16,16 @@ namespace BarryFileMan.ViewModels.Rename
 {
     public partial class RenameViewModel : ViewModelBase
     {
-        private readonly RegexRenameProviderViewModel _regexProvider;
+        public static ReadOnlyCollection<RenameProviderTypeItemViewModel> ProviderTypes => new List<RenameProviderTypeItemViewModel>()
+        {
+            new(RenameProviderTypes.Regex, "Regex", "regex")
+        }.AsReadOnly();
+
+        [ObservableProperty]
+        private RenameProviderTypeItemViewModel _selectedProviderType;
+
+        [ObservableProperty]
+        private BaseRenameProviderViewModel? _renameProvider;
 
         [ObservableProperty]
         private ObservableCollection<RenameFileViewModel> _files = new();
@@ -42,12 +52,25 @@ namespace BarryFileMan.ViewModels.Rename
             SelectedLoadOption = LoadOptions.FirstOrDefault((option) => option.Type == AppManager.UserConfig.Config.DefaultRenameLoadOption) ?? LoadOptions.First();
             AppManager.UserConfig.ConfigObservable.Subscribe(OnUserConfigChanged);
 
-            _regexProvider = new RegexRenameProviderViewModel(this);
+            SelectedProviderType = ProviderTypes.First();
         }
 
         ~ RenameViewModel()
         {
             Files.CollectionChanged -= Files_CollectionChanged;
+        }
+
+        partial void OnSelectedProviderTypeChanged(RenameProviderTypeItemViewModel value)
+        {
+            switch(value.Type)
+            {
+                case RenameProviderTypes.Regex:
+                    RenameProvider = new RegexRenameProviderViewModel(this);
+                    break;
+                default:
+                    RenameProvider = null;
+                    break;
+            }
         }
 
         private void Files_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)

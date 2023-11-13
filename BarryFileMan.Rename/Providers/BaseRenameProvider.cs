@@ -36,21 +36,22 @@ namespace BarryFileMan.Rename.Providers
                 {
                     foreach (Match renameMatch in renamePatternMatches.Cast<Match>())
                     {
-                        var renameTag = new RenameTag(renameMatch.Value, renameMatch.Index, renameMatch.Length);
+                        var renameTag = new RenameTag(renameMatch.Value, renameMatch.Groups["tag"].Value, renameMatch.Index, renameMatch.Length);
                         if (string.IsNullOrEmpty(renameTag.Error) && renameTag.Functions.All((function) => string.IsNullOrEmpty(function.Error)))
                         {
                             var match = matches.ElementAtOrDefault(renameTag.MatchIndex);
                             if (match != null)
                             {
-                                var groupValue = match.Groups[renameTag.TagName].ElementAtOrDefault(renameTag.GroupIndex);
+                                IRenameMatchGroupValue? groupValue = null;
+                                if (match.Groups.ContainsKey(renameTag.TagName))
+                                {
+                                    groupValue = match.Groups[renameTag.TagName].ElementAtOrDefault(renameTag.GroupIndex);
+                                }
+
                                 if (groupValue != null)
                                 {
                                     var renamedTagStr = BaseRenameProvider<TMatchOptions>.CalculateRenamedTag(groupValue, renameTag);
-                                    renamedString = renamedString.Remove(renameTag.Index, renameTag.Length).Insert(renameTag.Index, renamedTagStr);
-                                }
-                                else
-                                {
-                                    errors.Add($"No match found for <{renameTag.TagName}[{renameTag.GroupIndex}]...>");
+                                    renamedString = renamedString.Replace(renameTag.Tag, renamedTagStr);
                                 }
                             }
                             else
@@ -95,6 +96,7 @@ namespace BarryFileMan.Rename.Providers
     {
         private static readonly string _renameInnerTagPattern = "\\G\\s*(?<tagName>(?:[a-zA-Z]|\\d)+)(?:{\\s*(?<matchIndex>\\d+)\\s*})?(?:\\[\\s*(?<groupIndex>\\d+)\\s*\\])?(?<function>.(?<functionName>(?:[a-zA-Z]|\\d)+)(?:\\((?<functionParams>.*?)\\)))*?\\s*$";
 
+        public string Tag { get; }
         public string Value { get; }
         public int Index { get; }
         public int Length { get; }
@@ -104,8 +106,9 @@ namespace BarryFileMan.Rename.Providers
         public IList<RenameTagFunction> Functions { get; } = new List<RenameTagFunction>();
         public string? Error { get; private set; }
 
-        public RenameTag(string value, int index, int length)
+        public RenameTag(string tag, string value, int index, int length)
         {
+            Tag = tag;
             Value = value;
             Index = index;
             Length = length;
