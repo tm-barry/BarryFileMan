@@ -76,6 +76,7 @@
 					   Text="New Names"/>
 
 			<ListBox Grid.Row="3"
+					 CornerRadius="3"
 					 ItemsSource="{Binding Files}"
 					 SelectedValue="{Binding SelectedFile}"
 					 DragDrop.AllowDrop="True"

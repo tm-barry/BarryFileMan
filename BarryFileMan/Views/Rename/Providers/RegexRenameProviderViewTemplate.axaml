@@ -57,6 +57,7 @@
 				<TreeView Grid.Row="1" MaxHeight="200"
 						  BorderThickness="1"
 						  BorderBrush="{Binding #matchGroupsLabel.Foreground}"
+						  CornerRadius="3"
 						  ItemsSource="{Binding TestMatchNodes}">
 					<TreeView.Styles>
 						<Style Selector="TreeViewItem">
