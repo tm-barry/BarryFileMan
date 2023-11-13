@@ -2,6 +2,7 @@
 using BarryFileMan.Enums.Rename;
 using BarryFileMan.Managers;
 using BarryFileMan.Models.Config;
+using BarryFileMan.ViewModels.Rename.Providers;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
@@ -14,6 +15,8 @@ namespace BarryFileMan.ViewModels.Rename
 {
     public partial class RenameViewModel : ViewModelBase
     {
+        private readonly RegexRenameProviderViewModel _regexProvider;
+
         [ObservableProperty]
         private ObservableCollection<RenameFileViewModel> _files = new();
 
@@ -38,6 +41,8 @@ namespace BarryFileMan.ViewModels.Rename
             // Load default option from config
             SelectedLoadOption = LoadOptions.FirstOrDefault((option) => option.Type == AppManager.UserConfig.Config.DefaultRenameLoadOption) ?? LoadOptions.First();
             AppManager.UserConfig.ConfigObservable.Subscribe(OnUserConfigChanged);
+
+            _regexProvider = new RegexRenameProviderViewModel(this);
         }
 
         ~ RenameViewModel()

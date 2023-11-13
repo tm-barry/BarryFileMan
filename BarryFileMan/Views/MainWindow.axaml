@@ -21,10 +21,10 @@
 	<Window.Resources>
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
-				<ResourceInclude Source="/Views/ComicsViewTemplate.axaml"/>
-				<ResourceInclude Source="/Views/FlattenViewTemplate.axaml"/>
-				<ResourceInclude Source="/Views/RenameViewTemplate.axaml"/>
-				<ResourceInclude Source="/Views/SettingsViewTemplate.axaml"/>
+				<ResourceInclude Source="/Views/Comics/ComicsViewTemplate.axaml"/>
+				<ResourceInclude Source="/Views/Flatten/FlattenViewTemplate.axaml"/>
+				<ResourceInclude Source="/Views/Rename/RenameViewTemplate.axaml"/>
+				<ResourceInclude Source="/Views/Settings/SettingsViewTemplate.axaml"/>
 			</ResourceDictionary.MergedDictionaries>
 		</ResourceDictionary>
 		

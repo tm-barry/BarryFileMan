@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Avalonia.Media;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Drawing;
 
 namespace BarryFileMan.Helpers
 {
@@ -35,24 +35,6 @@ namespace BarryFileMan.Helpers
             UIntToColor(0xFF593315), //Deep Yellowish Brown
             UIntToColor(0xFFF13A13), //Vivid Reddish Orange
             UIntToColor(0xFF232C16), //Dark Olive Green
-        };
-
-        public static ReadOnlyCollection<Color> BoyntonOptimized
-        {
-            get { return _boyntonOptimized.AsReadOnly(); }
-        }
-
-        private static readonly List<Color> _boyntonOptimized = new()
-        {
-            Color.FromArgb(0, 0, 255),      //Blue
-            Color.FromArgb(255, 0, 0),      //Red
-            Color.FromArgb(0, 255, 0),      //Green
-            Color.FromArgb(255, 255, 0),    //Yellow
-            Color.FromArgb(255, 0, 255),    //Magenta
-            Color.FromArgb(255, 128, 128),  //Pink
-            Color.FromArgb(128, 128, 128),  //Gray
-            Color.FromArgb(128, 0, 0),      //Brown
-            Color.FromArgb(255, 128, 0),    //Orange
         };
 
         public static Color UIntToColor(uint color)

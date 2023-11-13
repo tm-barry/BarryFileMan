@@ -13,7 +13,7 @@
 			<Grid.Resources>
 				<ResourceDictionary>
 					<ResourceDictionary.MergedDictionaries>
-						<ResourceInclude Source="/Views/RenameViewTemplate.axaml"/>
+						<ResourceInclude Source="/Views/Rename/RenameViewTemplate.axaml"/>
 					</ResourceDictionary.MergedDictionaries>
 				</ResourceDictionary>
 			</Grid.Resources>

@@ -1,5 +1,4 @@
-﻿using Avalonia.Controls;
-using BarryFileMan.Managers.Config;
+﻿using BarryFileMan.Managers.Config;
 using BarryFileMan.Models.Config;
 using BarryFileMan.Views;
 

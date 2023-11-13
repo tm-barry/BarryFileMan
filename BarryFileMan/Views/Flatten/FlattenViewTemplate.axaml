@@ -7,7 +7,7 @@
 			<Grid.Resources>
 				<ResourceDictionary>
 					<ResourceDictionary.MergedDictionaries>
-						<ResourceInclude Source="/Views/FlattenViewTemplate.axaml"/>
+						<ResourceInclude Source="/Views/Flatten/FlattenViewTemplate.axaml"/>
 					</ResourceDictionary.MergedDictionaries>
 				</ResourceDictionary>
 			</Grid.Resources>

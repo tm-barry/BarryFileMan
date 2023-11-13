@@ -13,7 +13,7 @@ namespace BarryFileMan.Managers.Config
         private readonly string _filePath = "user.json";
         private readonly UserConfig _defaultUserConfig = new();
 
-        private Subject<UserConfig> _configSubject = new Subject<UserConfig>();
+        private readonly Subject<UserConfig> _configSubject = new();
         public IObservable<UserConfig> ConfigObservable => _configSubject.AsObservable();
         public UserConfig Config { get; private set; }
 
