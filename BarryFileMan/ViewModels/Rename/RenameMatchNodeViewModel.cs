@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 
-namespace BarryFileMan.ViewModels.Rename
+namespace BarryFileMan.ViewModels.Rename.Providers
 {
     public class RenameMatchNodeViewModel
     {
@@ -11,6 +11,7 @@ namespace BarryFileMan.ViewModels.Rename
         public string? Value { get; private set; }
         public ObservableCollection<RenameMatchNodeViewModel>? SubNodes { get; }
         public int? GroupKey { get; private set; }
+        public bool HasValue => Value != null;
 
         public string DisplayName
         {

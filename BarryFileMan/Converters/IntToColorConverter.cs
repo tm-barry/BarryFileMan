@@ -10,13 +10,13 @@ namespace BarryFileMan.Converters
     {
         public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
-            if (targetType != typeof(Brush))
+            if (targetType != typeof(IBrush))
                 throw new ArgumentException("Convert - TargetType must be of type Brush");
 
-            if (value == null || value.GetType() != typeof(int))
+            if (value != null && value.GetType() != typeof(int))
                 throw new ArgumentException("Convert - Value must be of type int");
 
-            return new SolidColorBrush(ColorHelper.KellysMaxContrastSet[(int)value % ColorHelper.KellysMaxContrastSet.Count]);
+            return value != null ? new SolidColorBrush(ColorHelper.KellysMaxContrastSet[(int)value % ColorHelper.KellysMaxContrastSet.Count]) : null;
         }
 
         public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)

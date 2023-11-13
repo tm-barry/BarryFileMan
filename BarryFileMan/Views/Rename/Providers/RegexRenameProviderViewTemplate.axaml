@@ -1,6 +1,7 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-					xmlns:vm="using:BarryFileMan.ViewModels.Rename.Providers">
+					xmlns:vm="using:BarryFileMan.ViewModels.Rename.Providers"
+					xmlns:cc="using:BarryFileMan.Converters">
 	<!-- Preview DataTemplate -->
 	<Design.PreviewWith>
 		<Grid Width="600" Height="450">
@@ -23,6 +24,10 @@
 
 	<DataTemplate x:Key="regexRenameProviderView" x:DataType="vm:RegexRenameProviderViewModel">
 		<Grid>
+			<Grid.Resources>
+				<cc:IntToColorConverter x:Key="intToColorConverter"/>
+			</Grid.Resources>
+			
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition/>
 				<ColumnDefinition/>
@@ -67,7 +72,26 @@
 					
 					<TreeView.ItemTemplate>
 						<TreeDataTemplate ItemsSource="{Binding SubNodes}">
-							<TextBlock Text="{Binding DisplayName}"/>
+							<Grid Background="{Binding GroupKey, Converter={StaticResource intToColorConverter}}">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition/>
+									<ColumnDefinition/>
+								</Grid.ColumnDefinitions>
+
+								<TextBlock Grid.Column="0" Padding="10,5"
+										   Text="{Binding DisplayName}"
+										   IsVisible="{Binding !HasValue}"
+										   VerticalAlignment="Center"/>
+								<TextBlock Grid.Column="0" Padding="10,5"
+										   Text="{Binding DisplayName}"
+										   Foreground="#FFFDFA"
+										   IsVisible="{Binding HasValue}"
+										   VerticalAlignment="Center"/>
+								<TextBox Grid.Column="1" Margin="2"
+										 Text="{Binding Value}"
+										 IsReadOnly="True" 
+										 IsVisible="{Binding HasValue}"/>
+							</Grid>
 						</TreeDataTemplate>
 					</TreeView.ItemTemplate>
 				</TreeView>
