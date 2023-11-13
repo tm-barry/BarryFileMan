@@ -32,34 +32,53 @@
 				<ColumnDefinition/>
 				<ColumnDefinition/>
 			</Grid.ColumnDefinitions>
-			<Grid.RowDefinitions>
-				<RowDefinition/>
-				<RowDefinition Height="Auto"/>
-			</Grid.RowDefinitions>
 
-			<StackPanel Grid.Column="0" Grid.Row="0" Margin="0,0,5,0">
-				<StackPanel>
-					<TextBlock Text="Match Pattern"/>
-					<TextBox Text="{Binding MatchPattern}"
-							 TextWrapping="Wrap"
-							 MaxHeight="100"/>
-				</StackPanel>
-				<StackPanel Margin="0,10,0,0">
-					<TextBlock Text="Rename Pattern"/>
-					<TextBox Text="{Binding RenamePattern}"
-							 TextWrapping="Wrap"
-							 MaxHeight="100"/>
-				</StackPanel>
-			</StackPanel>
+			<Grid Grid.Column="0" Margin="0,0,5,0">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition/>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition/>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition/>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition/>
+				</Grid.RowDefinitions>
 
-			<Grid Grid.Column="1" Grid.Row="0" Margin="5,0,0,0">
+				<TextBlock Grid.Row="0" Text="Match Pattern"/>
+				<TextBox Grid.Row="1" Text="{Binding MatchPattern}"
+						 TextWrapping="Wrap"
+						 MaxHeight="100"/>
+
+				<TextBlock Grid.Row="2" Margin="0,10,0,0"
+						   Text="Test String"/>
+				<TextBox Grid.Row="3" Text="{Binding TestString}"
+						 TextWrapping="Wrap"
+						 MaxHeight="100"/>
+
+				<TextBlock Grid.Row="4" Margin="0,10,0,0"
+						   Text="Rename Pattern"/>
+				<TextBox Grid.Row="5" Text="{Binding RenamePattern}"
+						 TextWrapping="Wrap"
+						 MaxHeight="100"/>
+
+				<TextBlock Grid.Row="6" Margin="0,10,0,0" 
+						   Text="Renamed String"/>
+				<TextBox Grid.Row="7" Text="{Binding RenamedTestString}"
+						 IsReadOnly="True"
+						 TextWrapping="Wrap"
+						 MaxHeight="100"/>
+			</Grid>
+
+			<Grid Grid.Column="1" Margin="5,0,0,0">
 				<Grid.RowDefinitions>
 					<RowDefinition Height="Auto"/>
 					<RowDefinition/>
 				</Grid.RowDefinitions>
 				
-				<TextBlock x:Name="matchGroupsLabel" Grid.Row="0" Text="Match Groups"/>
-				<TreeView Grid.Row="1" MaxHeight="200"
+				<TextBlock x:Name="matchGroupsLabel" Grid.Row="0" 
+						   Text="Match Groups"/>
+				<TreeView Grid.Row="1"
 						  BorderThickness="1"
 						  BorderBrush="{Binding #matchGroupsLabel.Foreground}"
 						  CornerRadius="3"
@@ -103,20 +122,6 @@
 							   Opacity="0.5"/>
 				</Grid>
 			</Grid>
-
-			<StackPanel Grid.Column="0" Grid.Row="1" Margin="0,10,5,0">
-				<TextBlock Text="Test String"/>
-				<TextBox Text="{Binding TestString}"
-						 TextWrapping="Wrap"
-						 MaxHeight="100"/>
-			</StackPanel>
-			<StackPanel Grid.Column="1" Grid.Row="1" Margin="5,10,0,0">
-				<TextBlock Text="Renamed String"/>
-				<TextBox Text="{Binding RenamedTestString}"
-						 IsReadOnly="True"
-						 TextWrapping="Wrap"
-						 MaxHeight="100"/>
-			</StackPanel>
 		</Grid>
 	</DataTemplate>
 </ResourceDictionary>

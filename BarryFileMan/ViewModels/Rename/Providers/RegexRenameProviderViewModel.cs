@@ -109,6 +109,12 @@ namespace BarryFileMan.ViewModels.Rename.Providers
 
         private void FindMatches(string input, string regexPattern)
         {
+            if(string.IsNullOrWhiteSpace(input) || string.IsNullOrWhiteSpace(regexPattern))
+            {
+                TestMatches = null;
+                return;
+            }
+
             MatchPatternError = null;
             try
             {
