@@ -85,12 +85,23 @@
 					</DataTemplate>
 				</ComboBox.ItemTemplate>
 			</ComboBox>
-			
-			<Border Grid.Row="1" Margin="0,0,0,20"
-					BorderThickness="1" CornerRadius="3" Padding="10"
-					BorderBrush="{DynamicResource SystemBaseMediumColor}">
+
+			<Expander Grid.Row="1" Margin="0,0,0,10"
+					  HorizontalAlignment="Stretch"
+					  IsExpanded="{Binding ProviderSettingsExpanded}"
+					  ExpandDirection="Down">
+				<Expander.Header>
+					<StackPanel Orientation="Horizontal">
+						<materialIcons:MaterialIcon Height="24" Width="24"
+													Kind="{Binding SelectedProviderType.Icon}"
+													IsVisible="{Binding !SelectedProviderType.IsImage}"/>
+						<!-- TODO - implement image icon -->
+						<TextBlock Text="{Binding SelectedProviderType.SettingsDisplay}" Margin="10,0,0,0"
+								   VerticalAlignment="Center"/>
+					</StackPanel>
+				</Expander.Header>
 				<ContentControl Content="{Binding RenameProvider}"/>
-			</Border>
+			</Expander>
 			
 			
 			<TextBlock Grid.Row="2" HorizontalAlignment="Left" Margin="5"

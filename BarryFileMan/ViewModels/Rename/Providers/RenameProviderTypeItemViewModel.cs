@@ -9,7 +9,10 @@ namespace BarryFileMan.ViewModels.Rename.Providers
         private RenameProviderTypes _type;
 
         [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(SettingsDisplay))]
         private string _display;
+
+        public string SettingsDisplay => $"{Display} Settings";
 
         [ObservableProperty]
         private string _icon;
