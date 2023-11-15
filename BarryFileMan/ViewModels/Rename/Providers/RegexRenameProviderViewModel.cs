@@ -1,4 +1,5 @@
-﻿using BarryFileMan.Rename.Exceptions;
+﻿using BarryFileMan.Attributes.Validation;
+using BarryFileMan.Rename.Exceptions;
 using BarryFileMan.Rename.Interfaces;
 using BarryFileMan.Rename.Models;
 using BarryFileMan.Rename.Providers.Regex;
@@ -6,7 +7,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace BarryFileMan.ViewModels.Rename.Providers
 {
@@ -15,16 +15,18 @@ namespace BarryFileMan.ViewModels.Rename.Providers
         private readonly RegexRenameProvider _provider = new();
 
         [ObservableProperty]
+        [HasErrorProperty(nameof(MatchPatternError))]
         private string _matchPattern = "(?<filename>.+)";
 
         [ObservableProperty]
         private string? _matchPatternError;
 
         [ObservableProperty]
+        [HasErrorProperty(nameof(RenamePatternError))]
         private string _renamePattern = "<filename>";
 
         [ObservableProperty]
-        private IEnumerable<string>? _renamePatternErrors;
+        private string? _renamePatternError;
 
         [ObservableProperty]
         private string _testString = string.Empty;
@@ -107,6 +109,16 @@ namespace BarryFileMan.ViewModels.Rename.Providers
             RenameTestString(value, RenamePattern);
         }
 
+        partial void OnMatchPatternErrorChanged(string? value)
+        {
+            ValidateProperty(MatchPattern, nameof(MatchPattern));
+        }
+
+        partial void OnRenamePatternErrorChanged(string? value)
+        {
+            ValidateProperty(RenamePattern, nameof(RenamePattern));
+        }
+
         private void FindMatches(string input, string regexPattern)
         {
             if(string.IsNullOrWhiteSpace(input) || string.IsNullOrWhiteSpace(regexPattern))
@@ -135,13 +147,13 @@ namespace BarryFileMan.ViewModels.Rename.Providers
                 return;
             }
 
-            RenamePatternErrors = null;
+            RenamePatternError = null;
             matches ??= Enumerable.Empty<IRenameMatch>();
             RenameResult renameResult = _provider.Rename(matches, input);
             if(renameResult.Errors?.Any() == true)
             {
                 RenamedTestString = TestString;
-                RenamePatternErrors = renameResult.Errors;
+                RenamePatternError = string.Join('\n', renameResult.Errors);
             }
             else
             {

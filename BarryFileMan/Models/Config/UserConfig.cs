@@ -9,7 +9,7 @@ namespace BarryFileMan.Models.Config
 
         public RenameLoadOption DefaultRenameLoadOption { get; set; }
 
-        public UserConfig() : this(Theme.Default, RenameLoadOption.Files) { }
+        public UserConfig() : this(Theme.Dark, RenameLoadOption.Files) { }
 
         public UserConfig(Theme theme, RenameLoadOption defaultRenameLoadOption) 
         {

@@ -1,6 +1,7 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 					xmlns:vm="using:BarryFileMan.ViewModels.Rename"
+					xmlns:vmp="using:BarryFileMan.ViewModels.Rename.Providers"
 					xmlns:i="using:Avalonia.Xaml.Interactivity"
 					xmlns:id="using:Avalonia.Xaml.Interactions.Draggable"
 					xmlns:idd="using:Avalonia.Xaml.Interactions.DragAndDrop"
@@ -66,8 +67,31 @@
 				<RowDefinition Height="Auto"/>
 			</Grid.RowDefinitions>
 
-			<ContentControl Grid.Row="1" Margin="0,0,0,20"
-							Content="{Binding RenameProvider}"/>
+			<ComboBox Grid.Row="0" Margin="5"
+					  MinWidth="100"
+					  HorizontalAlignment="Center"
+					  SelectedIndex="{Binding SelectedProviderTypeIndex}"
+					  ItemsSource="{Binding ProviderTypes}">
+				<ComboBox.ItemTemplate>
+					<DataTemplate DataType="vmp:RenameProviderTypeItemViewModel">
+						<StackPanel Orientation="Horizontal">
+							<materialIcons:MaterialIcon Height="24" Width="24"
+														Kind="{Binding Icon}"
+														IsVisible="{Binding !IsImage}"/>
+							<!-- TODO - implement image icon -->
+							<TextBlock Text="{Binding Display}" Margin="10,0,0,0"
+									   VerticalAlignment="Center"/>
+						</StackPanel>
+					</DataTemplate>
+				</ComboBox.ItemTemplate>
+			</ComboBox>
+			
+			<Border Grid.Row="1" Margin="0,0,0,20"
+					BorderThickness="1" CornerRadius="3" Padding="10"
+					BorderBrush="{DynamicResource SystemBaseMediumColor}">
+				<ContentControl Content="{Binding RenameProvider}"/>
+			</Border>
+			
 			
 			<TextBlock Grid.Row="2" HorizontalAlignment="Left" Margin="5"
 					   Text="Original Files"/>

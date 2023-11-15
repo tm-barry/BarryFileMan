@@ -22,7 +22,7 @@ namespace BarryFileMan.ViewModels.Rename
         }.AsReadOnly();
 
         [ObservableProperty]
-        private RenameProviderTypeItemViewModel _selectedProviderType;
+        private int? _selectedProviderTypeIndex;
 
         [ObservableProperty]
         private BaseRenameProviderViewModel? _renameProvider;
@@ -37,8 +37,8 @@ namespace BarryFileMan.ViewModels.Rename
 
         public ReadOnlyCollection<RenameLoadOptionViewModel> LoadOptions => new List<RenameLoadOptionViewModel>()
         {
-            new RenameLoadOptionViewModel(RenameLoadOption.Files, "Files", "FileMultiple", LoadFilesCommand),
-            new RenameLoadOptionViewModel(RenameLoadOption.Folders, "Folders", "FolderMultiple", LoadFoldersCommand),
+            new(RenameLoadOption.Files, "Files", "FileMultiple", LoadFilesCommand),
+            new(RenameLoadOption.Folders, "Folders", "FolderMultiple", LoadFoldersCommand),
         }.AsReadOnly();
 
         [ObservableProperty]
@@ -52,7 +52,8 @@ namespace BarryFileMan.ViewModels.Rename
             SelectedLoadOption = LoadOptions.FirstOrDefault((option) => option.Type == AppManager.UserConfig.Config.DefaultRenameLoadOption) ?? LoadOptions.First();
             AppManager.UserConfig.ConfigObservable.Subscribe(OnUserConfigChanged);
 
-            SelectedProviderType = ProviderTypes.First();
+            // TODO - make this default configurable through settings when we add more provider types
+            SelectedProviderTypeIndex = 0;
         }
 
         ~ RenameViewModel()
@@ -60,16 +61,24 @@ namespace BarryFileMan.ViewModels.Rename
             Files.CollectionChanged -= Files_CollectionChanged;
         }
 
-        partial void OnSelectedProviderTypeChanged(RenameProviderTypeItemViewModel value)
+        partial void OnSelectedProviderTypeIndexChanged(int? value)
         {
-            switch(value.Type)
+            if (value != null)
             {
-                case RenameProviderTypes.Regex:
-                    RenameProvider = new RegexRenameProviderViewModel(this);
-                    break;
-                default:
-                    RenameProvider = null;
-                    break;
+                var item = ProviderTypes.ElementAtOrDefault(value.Value);
+                switch (item?.Type)
+                {
+                    case RenameProviderTypes.Regex:
+                        RenameProvider = new RegexRenameProviderViewModel(this);
+                        break;
+                    default:
+                        RenameProvider = null;
+                        break;
+                }
+            }
+            else
+            {
+                RenameProvider = null;
             }
         }
 
