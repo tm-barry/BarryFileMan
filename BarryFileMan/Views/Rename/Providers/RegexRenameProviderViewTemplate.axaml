@@ -1,7 +1,8 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 					xmlns:vm="using:BarryFileMan.ViewModels.Rename.Providers"
-					xmlns:cc="using:BarryFileMan.Converters">
+					xmlns:cc="using:BarryFileMan.Converters"
+					xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia">
 	<!-- Preview DataTemplate -->
 	<Design.PreviewWith>
 		<Grid Width="600" Height="450">
@@ -74,6 +75,17 @@
 							  CornerRadius="3"
 							  MaxHeight="330"
 							  Source="{Binding TestMatchNodeColumns}">
+					<TreeDataGrid.Resources>
+						<!-- Template for Name column cells -->
+						<DataTemplate x:Key="MatchNameCell" DataType="vm:RenameMatchNodeViewModel">
+							<StackPanel Orientation="Horizontal">
+								<materialIcons:MaterialIcon Height="16" Width="16"
+														Kind="{Binding Icon}"/>
+								<TextBlock Text="{Binding DisplayName}" VerticalAlignment="Center" Margin="5,0,0,0"/>
+							</StackPanel>
+						</DataTemplate>
+					</TreeDataGrid.Resources>
+					
 					<TreeDataGrid.Styles>
 						<Style Selector="TreeDataGridRow" x:DataType="vm:RenameMatchNodeViewModel">
 							<Setter Property="Background" Value="{Binding GroupKey, Converter={StaticResource intToColorConverter}}"/>

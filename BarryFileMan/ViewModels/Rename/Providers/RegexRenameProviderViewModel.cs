@@ -47,7 +47,7 @@ namespace BarryFileMan.ViewModels.Rename.Providers
             Columns =
             {
                 new HierarchicalExpanderColumn<RenameMatchNodeViewModel>(
-                    new TextColumn<RenameMatchNodeViewModel, string>("Name", x => x.DisplayName),
+                    new TemplateColumn<RenameMatchNodeViewModel>("Name", "MatchNameCell"),
                     x => x.SubNodes, x => x.HasSubNodes, x=> x.IsExpanded),
                 new TextColumn<RenameMatchNodeViewModel, string>("Value", x => x.Value),
             }

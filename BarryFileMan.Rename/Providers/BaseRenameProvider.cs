@@ -50,8 +50,15 @@ namespace BarryFileMan.Rename.Providers
 
                                 if (groupValue != null)
                                 {
-                                    var renamedTagStr = BaseRenameProvider<TMatchOptions>.CalculateRenamedTag(groupValue, renameTag);
-                                    renamedString = renamedString.Replace(renameTag.Tag, renamedTagStr);
+                                    try
+                                    {
+                                        var renamedTagStr = BaseRenameProvider<TMatchOptions>.CalculateRenamedTag(groupValue, renameTag);
+                                        renamedString = renamedString.Replace(renameTag.Tag, renamedTagStr);
+                                    }
+                                    catch(Exception ex)
+                                    {
+                                        errors.Add(ex.Message);
+                                    }
                                 }
                             }
                             else
