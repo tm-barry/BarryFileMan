@@ -68,43 +68,18 @@
 				
 				<TextBlock Grid.Row="0" 
 						   Text="Match Groups"/>
-				<TreeView Grid.Row="1"
-						  BorderThickness="1"
-						  BorderBrush="{DynamicResource SystemBaseMediumColor}"
-						  CornerRadius="3"
-						  MaxHeight="330"
-						  ItemsSource="{Binding TestMatchNodes}">
-					<TreeView.Styles>
-						<Style Selector="TreeViewItem">
-							<Setter Property="IsExpanded" Value="True"/>
+				<TreeDataGrid Grid.Row="1"
+							  BorderThickness="1"
+							  BorderBrush="{DynamicResource SystemBaseMediumColor}"
+							  CornerRadius="3"
+							  MaxHeight="330"
+							  Source="{Binding TestMatchNodeColumns}">
+					<TreeDataGrid.Styles>
+						<Style Selector="TreeDataGridRow" x:DataType="vm:RenameMatchNodeViewModel">
+							<Setter Property="Background" Value="{Binding GroupKey, Converter={StaticResource intToColorConverter}}"/>
 						</Style>
-					</TreeView.Styles>
-					
-					<TreeView.ItemTemplate>
-						<TreeDataTemplate ItemsSource="{Binding SubNodes}">
-							<Grid Background="{Binding GroupKey, Converter={StaticResource intToColorConverter}}">
-								<Grid.ColumnDefinitions>
-									<ColumnDefinition/>
-									<ColumnDefinition/>
-								</Grid.ColumnDefinitions>
-
-								<TextBlock Grid.Column="0" Padding="10,5"
-										   Text="{Binding DisplayName}"
-										   IsVisible="{Binding !HasValue}"
-										   VerticalAlignment="Center"/>
-								<TextBlock Grid.Column="0" Padding="10,5"
-										   Text="{Binding DisplayName}"
-										   Foreground="#FFFDFA"
-										   IsVisible="{Binding HasValue}"
-										   VerticalAlignment="Center"/>
-								<TextBox Grid.Column="1" Margin="2"
-										 Text="{Binding Value}"
-										 IsReadOnly="True" 
-										 IsVisible="{Binding HasValue}"/>
-							</Grid>
-						</TreeDataTemplate>
-					</TreeView.ItemTemplate>
-				</TreeView>
+					</TreeDataGrid.Styles>
+				</TreeDataGrid>
 				
 				<!-- Matches Placeholder -->
 				<Grid Grid.Row="1" IsHitTestVisible="false" IsVisible="{Binding !HasTestMatches}">

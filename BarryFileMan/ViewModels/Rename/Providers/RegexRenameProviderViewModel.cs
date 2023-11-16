@@ -1,12 +1,16 @@
-﻿using BarryFileMan.Attributes.Validation;
+﻿using Avalonia.Controls;
+using Avalonia.Controls.Models.TreeDataGrid;
+using BarryFileMan.Attributes.Validation;
 using BarryFileMan.Rename.Exceptions;
 using BarryFileMan.Rename.Interfaces;
 using BarryFileMan.Rename.Models;
 using BarryFileMan.Rename.Providers.Regex;
 using CommunityToolkit.Mvvm.ComponentModel;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace BarryFileMan.ViewModels.Rename.Providers
 {
@@ -32,32 +36,22 @@ namespace BarryFileMan.ViewModels.Rename.Providers
         private string _testString = string.Empty;
 
         [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(TestMatchNodes))]
         [NotifyPropertyChangedFor(nameof(HasTestMatches))]
         private IEnumerable<IRenameMatch>? _testMatches;
 
-        public IEnumerable<RenameMatchNodeViewModel>? TestMatchNodes
-            => TestMatches?.Select((match, matchIndex) => 
-            {
-                Dictionary<string, int> groupKeys = new();
-                int currentGroupKey = 0;
-                ObservableCollection<RenameMatchNodeViewModel> subNodes = new();
-                foreach(var groupName in match.Groups.Keys)
-                {
-                    if(!groupKeys.ContainsKey(groupName))
-                    {
-                        groupKeys.Add(groupName, currentGroupKey);
-                        currentGroupKey++;
-                    }
+        [ObservableProperty]
+        private ObservableCollection<RenameMatchNodeViewModel> _testMatchNodes = new();
 
-                    var groupValues = match.Groups[groupName];
-                    for (int i = 0; i < groupValues.Count; i++)
-                    {
-                        subNodes.Add(new(matchIndex, null, i, groupValues[i].Value, groupName, groupKeys[groupName]));
-                    }
-                }
-                return new RenameMatchNodeViewModel(matchIndex, subNodes);
-            });
+        public HierarchicalTreeDataGridSource<RenameMatchNodeViewModel> TestMatchNodeColumns => new(TestMatchNodes)
+        {
+            Columns =
+            {
+                new HierarchicalExpanderColumn<RenameMatchNodeViewModel>(
+                    new TextColumn<RenameMatchNodeViewModel, string>("Name", x => x.DisplayName),
+                    x => x.SubNodes, x => x.HasSubNodes, x=> x.IsExpanded),
+                new TextColumn<RenameMatchNodeViewModel, string>("Value", x => x.Value),
+            }
+        };
 
         public bool HasTestMatches => TestMatches != null && TestMatches.Any();
 
@@ -69,7 +63,6 @@ namespace BarryFileMan.ViewModels.Rename.Providers
         public RegexRenameProviderViewModel(RenameViewModel viewModel) : base(viewModel)
         {
             ViewModel.PropertyChanged += ViewModel_PropertyChanged;
-
             TestString = "test-filename";
         }
 
@@ -117,6 +110,40 @@ namespace BarryFileMan.ViewModels.Rename.Providers
         partial void OnRenamePatternErrorChanged(string? value)
         {
             ValidateProperty(RenamePattern, nameof(RenamePattern));
+        }
+
+        partial void OnTestMatchesChanged(IEnumerable<IRenameMatch>? oldValue, IEnumerable<IRenameMatch>? newValue)
+        {
+            TestMatchNodes.Clear();
+            if(newValue != null && newValue.Any())
+            {
+                Dictionary<string, int> groupKeys = new();
+                int currentGroupKey = 0;
+                for (int i = 0; i < newValue.Count(); i++)
+                {
+                    var renameMatch = newValue.ElementAtOrDefault(i);
+                    if (renameMatch != null)
+                    {
+                        ObservableCollection<RenameMatchNodeViewModel> subNodes = new();
+                        foreach (var groupName in renameMatch.Groups.Keys)
+                        {
+                            if (!groupKeys.ContainsKey(groupName))
+                            {
+                                groupKeys.Add(groupName, currentGroupKey);
+                                currentGroupKey++;
+                            }
+
+                            var groupValues = renameMatch.Groups[groupName];
+                            for (int j = 0; j < groupValues.Count; j++)
+                            {
+                                subNodes.Add(new(RenameMatchNodeType.Tag, i, null, j, groupValues[j].Value, groupName, groupKeys[groupName]));
+                            }
+                        }
+
+                        TestMatchNodes.Add(new RenameMatchNodeViewModel(RenameMatchNodeType.Match, i, subNodes, isExpanded: i == 0));
+                    }
+                }
+            }
         }
 
         private void FindMatches(string input, string regexPattern)

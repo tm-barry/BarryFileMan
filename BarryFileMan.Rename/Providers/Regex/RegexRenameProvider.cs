@@ -30,17 +30,23 @@ namespace BarryFileMan.Rename.Providers.Regex
                     var groups = match.Groups;
                     foreach (Group group in groups.Cast<Group>())
                     {
-                        // Add tag if not already there
-                        if (!renameMatch.Groups.ContainsKey(group.Name))
+                        var groupName = group.Name;
+                        if (groupName == "0")
                         {
-                            renameMatch.Groups.Add(group.Name, new List<IRenameMatchGroupValue>());
+                            groupName = "Match";
+                        }
+
+                        // Add tag if not already there
+                        if (!renameMatch.Groups.ContainsKey(groupName))
+                        {
+                            renameMatch.Groups.Add(groupName, new List<IRenameMatchGroupValue>());
                         }
 
                         // Add capture values to tag
                         var captures = group.Captures;
                         foreach (Capture capture in captures.Cast<Capture>())
                         {
-                            renameMatch.Groups[group.Name].Add(new RegexRenameMatchGroupValue(capture.Value, capture.Index, capture.Length));
+                            renameMatch.Groups[groupName].Add(new RegexRenameMatchGroupValue(capture.Value, capture.Index, capture.Length));
                         }
                     }
 
