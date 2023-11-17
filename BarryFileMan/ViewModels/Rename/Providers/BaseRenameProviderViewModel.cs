@@ -1,15 +1,18 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using System.Collections.Generic;
 
 namespace BarryFileMan.ViewModels.Rename.Providers
 {
-    public partial class BaseRenameProviderViewModel : ViewModelBase
+    public abstract partial class BaseRenameProviderViewModel : ObservableValidator
     {
         public RenameViewModel ViewModel { get; private set; }
+
+        public abstract bool CanRenameFiles{ get; }
 
         public BaseRenameProviderViewModel(RenameViewModel viewModel)
         {
             ViewModel = viewModel;
         }
+
+        public abstract void ApplyFileRenames();
     }
 }

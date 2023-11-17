@@ -8,7 +8,7 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace BarryFileMan.ViewModels
 {
-    public partial class MainWindowViewModel : ViewModelBase
+    public partial class MainWindowViewModel : ObservableObject
     {
         private readonly ComicsViewModel _comicsViewModel = new();
         private readonly FlattenViewModel _flattenViewModel = new();

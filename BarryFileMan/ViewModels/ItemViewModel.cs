@@ -3,7 +3,7 @@ using System.Windows.Input;
 
 namespace BarryFileMan.ViewModels
 {
-    public partial class ItemViewModel<T> : ViewModelBase
+    public partial class ItemViewModel<T> : ObservableObject
     {
         [ObservableProperty]
         private T _item;

@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace BarryFileMan.ViewModels.Rename
 {
-    public partial class RenameFileViewModel : ViewModelBase
+    public partial class RenameFileViewModel : ObservableObject
     {
         public IStorageFile File { get; private set; }
 
@@ -15,16 +15,19 @@ namespace BarryFileMan.ViewModels.Rename
         public string? Extension => System.IO.Path.GetExtension(File.Name);
 
         [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(HasMatches))]
         public IEnumerable<IRenameMatch>? _matches;
-
-        public bool HasMatches => Matches?.Count() < 0;
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(HasRenamedFileName))]
         private string? _renamedFileName;
 
         public bool HasRenamedFileName => !string.IsNullOrWhiteSpace(RenamedFileName);
+
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(HasError))]
+        private string? _renameError;
+
+        public bool HasError => RenameError != null;
 
         public RenameFileViewModel(IStorageFile file)
         {

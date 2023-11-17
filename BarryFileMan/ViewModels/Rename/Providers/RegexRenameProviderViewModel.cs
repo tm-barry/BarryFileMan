@@ -4,13 +4,12 @@ using BarryFileMan.Attributes.Validation;
 using BarryFileMan.Rename.Exceptions;
 using BarryFileMan.Rename.Interfaces;
 using BarryFileMan.Rename.Models;
+using BarryFileMan.Rename.Models.Regex;
 using BarryFileMan.Rename.Providers.Regex;
 using CommunityToolkit.Mvvm.ComponentModel;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace BarryFileMan.ViewModels.Rename.Providers
 {
@@ -20,16 +19,18 @@ namespace BarryFileMan.ViewModels.Rename.Providers
 
         [ObservableProperty]
         [HasErrorProperty(nameof(MatchPatternError))]
-        private string _matchPattern = "(?<filename>.+)";
+        private string _matchPattern = "(?<title>.+)(?:s|S)(?<season>\\d+)(?:e|E)(?<episode>\\d+)";
 
         [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(CanRenameFiles))]
         private string? _matchPatternError;
 
         [ObservableProperty]
         [HasErrorProperty(nameof(RenamePatternError))]
-        private string _renamePattern = "<filename>";
+        private string _renamePattern = "<title.replace(\'.\',\' \')>- S<season.pad(left,\'0\',2)>E<episode.pad(left,\'0\',2)>";
 
         [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(CanRenameFiles))]
         private string? _renamePatternError;
 
         [ObservableProperty]
@@ -58,17 +59,34 @@ namespace BarryFileMan.ViewModels.Rename.Providers
         [ObservableProperty]
         private string _renamedTestString = string.Empty;
 
+        public override bool CanRenameFiles => MatchPatternError == null && RenamePatternError == null;
+
         public RegexRenameProviderViewModel() : this(new RenameViewModel()) { }
 
         public RegexRenameProviderViewModel(RenameViewModel viewModel) : base(viewModel)
         {
             ViewModel.PropertyChanged += ViewModel_PropertyChanged;
-            TestString = "test-filename";
+            TestString = "Show.Name.S01E01.1080p.x265-TEST";
         }
 
         ~RegexRenameProviderViewModel()
         {
             ViewModel.PropertyChanged -= ViewModel_PropertyChanged;
+        }
+
+        public override void ApplyFileRenames()
+        {
+            foreach(var file in ViewModel.Files)
+            {
+                file.Matches = FindMatches(file.FileNameWithoutExtension, MatchPattern, out _);
+                var renamedFileName = RenameMatches(file.Matches, RenamePattern, file.FileNameWithoutExtension, out var renameError);
+                file.RenameError = renameError;
+
+                if(string.IsNullOrEmpty(renameError))
+                {
+                    file.RenamedFileName = renamedFileName;
+                }
+            }
         }
 
         private void ViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -84,22 +102,26 @@ namespace BarryFileMan.ViewModels.Rename.Providers
 
         partial void OnMatchPatternChanged(string value)
         {
-            FindMatches(TestString, value);
+            TestMatches = FindMatches(TestString, value, out var error);
+            MatchPatternError = error;
         }
 
         partial void OnRenamePatternChanged(string value)
         {
-            RenameTestString(TestMatches, value);
+            RenamedTestString = RenameMatches(TestMatches, value, TestString, out var error);
+            RenamePatternError = error;
         }
 
         partial void OnTestStringChanged(string value)
         {
-            FindMatches(value, MatchPattern);
+            TestMatches = FindMatches(value, MatchPattern, out var error);
+            MatchPatternError = error;
         }
 
         partial void OnTestMatchesChanged(IEnumerable<IRenameMatch>? value)
         {
-            RenameTestString(value, RenamePattern);
+            RenamedTestString = RenameMatches(value, RenamePattern, TestString, out var error);
+            RenamePatternError = error;
         }
 
         partial void OnMatchPatternErrorChanged(string? value)
@@ -146,46 +168,45 @@ namespace BarryFileMan.ViewModels.Rename.Providers
             }
         }
 
-        private void FindMatches(string input, string regexPattern)
+        private IEnumerable<IRenameMatch>? FindMatches(string? input, string? regexPattern, out string? error)
         {
-            if(string.IsNullOrWhiteSpace(input) || string.IsNullOrWhiteSpace(regexPattern))
+            IEnumerable<IRenameMatch>? matches = null;
+            error = null;
+            if (!string.IsNullOrWhiteSpace(regexPattern))
             {
-                TestMatches = null;
-                return;
+                try
+                {
+                    matches = _provider.Match(input ?? string.Empty, new RegexRenameProviderMatchOptions { RegexPattern = regexPattern });
+                }
+                catch (InvalidRegexException ex)
+                {
+                    error = ex.Message;
+                    matches = null;
+                }
             }
 
-            MatchPatternError = null;
-            try
-            {
-                TestMatches = _provider.Match(input, new BarryFileMan.Rename.Models.Regex.RegexRenameProviderMatchOptions { RegexPattern = regexPattern });
-            }
-            catch (InvalidRegexException ex)
-            {
-                MatchPatternError = ex.Message;
-                TestMatches = null;
-            }
+            return matches;
         }
 
-        private void RenameTestString(IEnumerable<IRenameMatch>? matches, string input)
+        private string RenameMatches(IEnumerable<IRenameMatch>? matches, string? renamePattern, string? fallbackValue, out string? error)
         {
-            if(string.IsNullOrWhiteSpace(input))
+            string renamedString = fallbackValue ?? string.Empty;
+            error = null;
+            if (!string.IsNullOrWhiteSpace(renamePattern))
             {
-                RenamedTestString = TestString;
-                return;
+                matches ??= Enumerable.Empty<IRenameMatch>();
+                RenameResult renameResult = _provider.Rename(matches, renamePattern);
+                if (renameResult.Errors?.Any() == true)
+                {
+                    error = string.Join('\n', renameResult.Errors);
+                }
+                else
+                {
+                    renamedString = renameResult.Value;
+                }
             }
 
-            RenamePatternError = null;
-            matches ??= Enumerable.Empty<IRenameMatch>();
-            RenameResult renameResult = _provider.Rename(matches, input);
-            if(renameResult.Errors?.Any() == true)
-            {
-                RenamedTestString = TestString;
-                RenamePatternError = string.Join('\n', renameResult.Errors);
-            }
-            else
-            {
-                RenamedTestString = renameResult.Value;
-            }
+            return renamedString;
         }
     }
 }

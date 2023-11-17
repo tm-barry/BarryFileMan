@@ -3,7 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace BarryFileMan.ViewModels.Rename.Providers
 {
-    public partial class RenameProviderTypeItemViewModel : ViewModelBase
+    public partial class RenameProviderTypeItemViewModel : ObservableObject
     {
         [ObservableProperty]
         private RenameProviderTypes _type;

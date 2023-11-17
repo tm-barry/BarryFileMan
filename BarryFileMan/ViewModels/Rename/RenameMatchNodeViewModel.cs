@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace BarryFileMan.ViewModels.Rename.Providers
 {
-    public partial class RenameMatchNodeViewModel : ViewModelBase
+    public partial class RenameMatchNodeViewModel : ObservableObject
     {
         public RenameMatchNodeType Type { get; private set; }
         public int MatchIndex { get; private set; }

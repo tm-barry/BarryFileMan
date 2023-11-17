@@ -1,9 +1,10 @@
 ﻿using BarryFileMan.Enums.Rename;
+using CommunityToolkit.Mvvm.ComponentModel;
 using System.Windows.Input;
 
 namespace BarryFileMan.ViewModels.Rename
 {
-    public class RenameLoadOptionViewModel : ViewModelBase
+    public class RenameLoadOptionViewModel : ObservableObject
     {
         public RenameLoadOption Type { get; private set; }
         public string DisplayText { get; private set; }

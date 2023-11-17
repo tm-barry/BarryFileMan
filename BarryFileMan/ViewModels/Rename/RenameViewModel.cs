@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace BarryFileMan.ViewModels.Rename
 {
-    public partial class RenameViewModel : ViewModelBase
+    public partial class RenameViewModel : ObservableObject
     {
         public static ReadOnlyCollection<RenameProviderTypeItemViewModel> ProviderTypes => new List<RenameProviderTypeItemViewModel>()
         {
@@ -69,6 +69,11 @@ namespace BarryFileMan.ViewModels.Rename
 
         partial void OnSelectedProviderTypeIndexChanged(int? value)
         {
+            if(RenameProvider != null)
+            {
+                RenameProvider.PropertyChanged -= RenameProvider_PropertyChanged;
+            }
+
             switch (SelectedProviderType?.Type)
             {
                 case RenameProviderTypes.Regex:
@@ -79,11 +84,25 @@ namespace BarryFileMan.ViewModels.Rename
                     break;
             }
 
+            if (RenameProvider != null) 
+            {
+                RenameProvider.PropertyChanged += RenameProvider_PropertyChanged;
+            }
+
             ProviderSettingsExpanded = true;
+        }
+
+        private void RenameProvider_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if(e.PropertyName == nameof(RenameProvider.CanRenameFiles))
+            {
+                ApplyFileRenamesCommand.NotifyCanExecuteChanged();
+            }
         }
 
         private void Files_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
+            ApplyFileRenamesCommand.NotifyCanExecuteChanged();
             OnPropertyChanged(nameof(HasFiles));
         }
 
@@ -152,6 +171,17 @@ namespace BarryFileMan.ViewModels.Rename
         private void RemoveRenameFile(RenameFileViewModel renameFile)
         {
             Files.Remove(renameFile);
+        }
+
+        [RelayCommand(CanExecute = nameof(CanApplyFileRenames))]
+        private void ApplyFileRenames()
+        {
+            RenameProvider?.ApplyFileRenames();
+        }
+
+        private bool CanApplyFileRenames()
+        {
+            return (Files?.Any() ?? false) && (RenameProvider?.CanRenameFiles ?? false);
         }
 
         private async Task AddStorageItems(IEnumerable<IStorageItem>? items)

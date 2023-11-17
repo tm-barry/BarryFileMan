@@ -185,32 +185,35 @@
 														Kind="ArrowRightBold"/>
 
 							<!-- New File Name -->
-							<Grid Grid.Column="2">
-								<Grid.ColumnDefinitions>
-									<ColumnDefinition Width="*"/>
-									<ColumnDefinition Width="Auto"/>
-								</Grid.ColumnDefinitions>
-								<TextBlock Grid.Column="0"
-										   IsVisible="{Binding HasRenamedFileName}"
-										   VerticalAlignment="Center"
-										   Text="{Binding RenamedFileName}"
-										   TextWrapping="Wrap"/>
-								<TextBlock Grid.Column="0"
-										   IsVisible="{Binding !HasRenamedFileName}"
-										   VerticalAlignment="Center"
-										   Text="{Binding FileNameWithoutExtension}"
-										   TextWrapping="Wrap"
-										   Opacity="0.5"/>
-								<Border Grid.Column="1" Margin="10,0,0,0"
-										VerticalAlignment="Center"
-										Background="{DynamicResource SystemAccentColor}"
-										CornerRadius="8"
-										Padding="5">
-									<TextBlock Text="{Binding Extension}"
+							<StackPanel Grid.Column="2">
+								<Grid>
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="*"/>
+										<ColumnDefinition Width="Auto"/>
+									</Grid.ColumnDefinitions>
+									<TextBlock Grid.Column="0"
+											   IsVisible="{Binding HasRenamedFileName}"
 											   VerticalAlignment="Center"
-											   Foreground="White"/>
-								</Border>
-							</Grid>
+											   Text="{Binding RenamedFileName}"
+											   TextWrapping="Wrap"/>
+									<TextBlock Grid.Column="0"
+											   IsVisible="{Binding !HasRenamedFileName}"
+											   VerticalAlignment="Center"
+											   Text="{Binding FileNameWithoutExtension}"
+											   TextWrapping="Wrap"
+											   Opacity="0.5"/>
+									<Border Grid.Column="1" Margin="10,0,0,0"
+											VerticalAlignment="Center"
+											Background="{DynamicResource SystemAccentColor}"
+											CornerRadius="8"
+											Padding="5">
+										<TextBlock Text="{Binding Extension}"
+												   VerticalAlignment="Center"
+												   Foreground="White"/>
+									</Border>
+								</Grid>
+								<TextBlock IsVisible="{Binding HasError}" Text="{Binding RenameError}" Foreground="{DynamicResource SystemErrorTextColor}"/>
+							</StackPanel>
 						</Grid>
 					</DataTemplate>
 				</ListBox.ItemTemplate>
@@ -270,14 +273,25 @@
 			</StackPanel>
 
 			<StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,5,0,0">
-				<Button Content="Clear" Margin="5,5,0,5" Height="32">
+				<Button Content="Apply" Margin="5,5,0,5" Height="32"
+						Command="{Binding ApplyFileRenamesCommand}">
 					<Grid>
 						<Grid.ColumnDefinitions>
 							<ColumnDefinition Width="Auto"/>
 							<ColumnDefinition Width="*"/>
 						</Grid.ColumnDefinitions>
 						<materialIcons:MaterialIcon Grid.Column="0" Kind="Rename"/>
-						<TextBlock Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Text="Rename"/>
+						<TextBlock Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Text="Apply"/>
+					</Grid>
+				</Button>
+				<Button Content="Save" Margin="5,5,0,5" Height="32">
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="Auto"/>
+							<ColumnDefinition Width="*"/>
+						</Grid.ColumnDefinitions>
+						<materialIcons:MaterialIcon Grid.Column="0" Kind="ContentSaveAll"/>
+						<TextBlock Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Text="Save"/>
 					</Grid>
 				</Button>
 			</StackPanel>

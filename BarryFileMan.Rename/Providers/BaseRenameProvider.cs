@@ -60,10 +60,14 @@ namespace BarryFileMan.Rename.Providers
                                         errors.Add(ex.Message);
                                     }
                                 }
+                                else
+                                {
+                                    renamedString = renamedString.Replace(renameTag.Tag, string.Empty);
+                                }
                             }
                             else
                             {
-                                errors.Add($"No match found for <{renameTag.TagName}{{{renameTag.MatchIndex}}}...>");
+                                renamedString = renamedString.Replace(renameTag.Tag, string.Empty);
                             }
                         }
                         else

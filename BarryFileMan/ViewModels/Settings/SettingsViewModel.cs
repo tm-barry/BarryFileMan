@@ -2,13 +2,14 @@
 using BarryFileMan.Helpers;
 using BarryFileMan.Managers;
 using BarryFileMan.Models.Config;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BarryFileMan.ViewModels.Settings
 {
-    public partial class SettingsViewModel : ViewModelBase
+    public partial class SettingsViewModel : ObservableObject
     {
         public IEnumerable<ItemViewModel<Theme>> Themes => new List<ItemViewModel<Theme>>()
         {

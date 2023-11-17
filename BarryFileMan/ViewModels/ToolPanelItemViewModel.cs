@@ -3,7 +3,7 @@ using System.Windows.Input;
 
 namespace BarryFileMan.ViewModels
 {
-    public partial class ToolPanelItemViewModel : ViewModelBase
+    public partial class ToolPanelItemViewModel : ObservableObject
     {
         [ObservableProperty]
         private string? _text;
