@@ -42,6 +42,13 @@
 						 MaxHeight="75"/>
 
 				<TextBlock Margin="0,10,0,0"
+						   Text="Match Type"/>
+				<ComboBox HorizontalAlignment="Stretch"
+						  ItemsSource="{Binding MatchTypes}"
+						  DisplayMemberBinding="{Binding Display}"
+						  SelectedIndex="{Binding SelectedMatchTypeIndex}"/>
+
+				<TextBlock Margin="0,10,0,0"
 						   Text="Test String"/>
 				<TextBox Text="{Binding TestString}"
 						 TextWrapping="Wrap"

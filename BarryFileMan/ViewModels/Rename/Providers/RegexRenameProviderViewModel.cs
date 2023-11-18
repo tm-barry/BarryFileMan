@@ -1,6 +1,7 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Controls.Models.TreeDataGrid;
 using BarryFileMan.Attributes.Validation;
+using BarryFileMan.Enums.Rename;
 using BarryFileMan.Rename.Exceptions;
 using BarryFileMan.Rename.Interfaces;
 using BarryFileMan.Rename.Models;
@@ -19,11 +20,24 @@ namespace BarryFileMan.ViewModels.Rename.Providers
 
         [ObservableProperty]
         [HasErrorProperty(nameof(MatchPatternError))]
-        private string _matchPattern = "(?<title>.+)(?:s|S)(?<season>\\d+)(?:e|E)(?<episode>\\d+)";
+        private string _matchPattern = "\\\\(?<title>[^\\\\]+)(?:s|S)(?<season>\\d+)(?:e|E)(?<episode>\\d+)";
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(CanRenameFiles))]
         private string? _matchPatternError;
+
+        public static ReadOnlyCollection<ItemViewModel<RegexRenameMatchTypes>> MatchTypes => new List<ItemViewModel<RegexRenameMatchTypes>>()
+        {
+            new(RegexRenameMatchTypes.FilenameOnly, "Filename Only", false),
+            new(RegexRenameMatchTypes.IncludeParentDirectory, "Include Parent Directory", false),
+            new(RegexRenameMatchTypes.FullPath, "Full Path", false)
+        }.AsReadOnly();
+
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(SelectedMatchType))]
+        private int? _selectedMatchTypeIndex;
+
+        public RegexRenameMatchTypes SelectedMatchType => MatchTypes.ElementAtOrDefault(SelectedMatchTypeIndex ?? -1)?.Item ?? RegexRenameMatchTypes.FilenameOnly;
 
         [ObservableProperty]
         [HasErrorProperty(nameof(RenamePatternError))]
@@ -66,7 +80,8 @@ namespace BarryFileMan.ViewModels.Rename.Providers
         public RegexRenameProviderViewModel(RenameViewModel viewModel) : base(viewModel)
         {
             ViewModel.PropertyChanged += ViewModel_PropertyChanged;
-            TestString = "Show.Name.S01E01.1080p.x265-TEST";
+            TestString = "\\ParentFolder\\Show.Name.S01E01.1080p.x265-TEST";
+            SelectedMatchTypeIndex = 1;
         }
 
         ~RegexRenameProviderViewModel()
@@ -78,7 +93,7 @@ namespace BarryFileMan.ViewModels.Rename.Providers
         {
             foreach(var file in ViewModel.Files)
             {
-                file.Matches = FindMatches(file.FileNameWithoutExtension, MatchPattern, out _);
+                file.Matches = FindMatches(GetFileMatchInput(file), MatchPattern, out _);
                 var renamedFileName = RenameMatches(file.Matches, RenamePattern, file.FileNameWithoutExtension, out var renameError);
                 file.RenameError = renameError;
 
@@ -95,9 +110,28 @@ namespace BarryFileMan.ViewModels.Rename.Providers
             {
                 if (ViewModel.SelectedFile != null)
                 {
-                    TestString = ViewModel.SelectedFile.FileNameWithoutExtension ?? string.Empty;
+                    TestString = GetFileMatchInput(ViewModel.SelectedFile);
                 }
             }
+        }
+
+        private string GetFileMatchInput(RenameFileViewModel? file)
+        {
+            string? input = null;
+            switch(SelectedMatchType)
+            {
+                case RegexRenameMatchTypes.FilenameOnly:
+                    input = file?.FileNameWithoutExtension;
+                    break;
+                case RegexRenameMatchTypes.IncludeParentDirectory:
+                    input = file?.RelativePath;
+                    break;
+                case RegexRenameMatchTypes.FullPath:
+                    input = file?.File.Path.AbsolutePath;
+                    break;
+            }
+
+            return input ?? string.Empty;
         }
 
         partial void OnMatchPatternChanged(string value)

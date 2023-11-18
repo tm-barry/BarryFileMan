@@ -12,6 +12,15 @@ namespace BarryFileMan.ViewModels.Rename
 
         public string? FileNameWithoutExtension => System.IO.Path.GetFileNameWithoutExtension(File.Name);
 
+        public string RelativePath => System.IO.Path.Combine(
+            System.IO.Path.DirectorySeparatorChar.ToString(),
+            System.IO.Directory.GetParent(File.Path.AbsolutePath)?.Name ?? string.Empty,
+            FileNameWithoutExtension ?? string.Empty);
+
+        public string? FullPath => System.IO.Path.Combine(
+            System.IO.Path.GetDirectoryName(File.Path.AbsolutePath) ?? string.Empty,
+            FileNameWithoutExtension ?? string.Empty);
+
         public string? Extension => System.IO.Path.GetExtension(File.Name);
 
         [ObservableProperty]
