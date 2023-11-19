@@ -6,7 +6,6 @@ using BarryFileMan.Rename.Enums;
 using BarryFileMan.ViewModels.Rename.Providers;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
 using System;
 using System.Collections.Generic;
@@ -202,13 +201,13 @@ namespace BarryFileMan.ViewModels.Rename
         [RelayCommand(CanExecute = nameof(CanSaveFileRenames))]
         private async Task SaveFileRenames()
         {
-            ButtonResult result = ButtonResult.Yes;
+            ButtonResult? result = null;
             if(Files.Any((file) => file.RenameError != null))
-            {
-                var msgBox = MessageBoxManager.GetMessageBoxStandard(
+                result = await AppManager.MsgBoxShowWindowDialogAsync(
                     "Error", "Some files have errors and can't be renamed. Do you still want to continue?", ButtonEnum.YesNo, Icon.Error);
-                result = await msgBox.ShowWindowDialogAsync(AppManager.MainWindow);
-            }
+
+            result ??= await AppManager.MsgBoxShowWindowDialogAsync(
+                    "Rename", "Files will be renamed. Do you want to continue?", ButtonEnum.YesNo, Icon.Question);
 
             if(result == ButtonResult.Yes)
             {
@@ -235,17 +234,11 @@ namespace BarryFileMan.ViewModels.Rename
                 }
 
                 if(failedFiles.Count > 0)
-                {
-                    var msgBox = MessageBoxManager.GetMessageBoxStandard(
+                    await AppManager.MsgBoxShowWindowDialogAsync(
                         "Error", $"The following files failed to be renamed:\n\n{string.Join('\n', failedFiles)}", ButtonEnum.Ok, Icon.Error);
-                    result = await msgBox.ShowWindowDialogAsync(AppManager.MainWindow);
-                }
                 else
-                {
-                    var msgBox = MessageBoxManager.GetMessageBoxStandard(
+                    await AppManager.MsgBoxShowWindowDialogAsync(
                         "Success", $"Files successfully renamed!", ButtonEnum.Ok, Icon.Success);
-                    result = await msgBox.ShowWindowDialogAsync(AppManager.MainWindow);
-                }
             }
         }
 
