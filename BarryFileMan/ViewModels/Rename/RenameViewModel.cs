@@ -6,6 +6,8 @@ using BarryFileMan.Rename.Enums;
 using BarryFileMan.ViewModels.Rename.Providers;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using MsBox.Avalonia;
+using MsBox.Avalonia.Enums;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -104,6 +106,19 @@ namespace BarryFileMan.ViewModels.Rename
         {
             ApplyFileRenamesCommand.NotifyCanExecuteChanged();
             OnPropertyChanged(nameof(HasFiles));
+
+            if (e?.NewItems != null)
+                foreach (RenameFileViewModel item in e.NewItems)
+                    item.PropertyChanged += File_PropertyChanged;
+
+            if (e?.OldItems != null)
+                foreach (RenameFileViewModel item in e.OldItems)
+                    item.PropertyChanged -= File_PropertyChanged;
+        }
+
+        private void File_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            SaveFileRenamesCommand.NotifyCanExecuteChanged();
         }
 
         private void OnUserConfigChanged(UserConfig userConfig)
@@ -182,6 +197,61 @@ namespace BarryFileMan.ViewModels.Rename
         private bool CanApplyFileRenames()
         {
             return (Files?.Any() ?? false) && (RenameProvider?.CanRenameFiles ?? false);
+        }
+
+        [RelayCommand(CanExecute = nameof(CanSaveFileRenames))]
+        private async Task SaveFileRenames()
+        {
+            ButtonResult result = ButtonResult.Yes;
+            if(Files.Any((file) => file.RenameError != null))
+            {
+                var msgBox = MessageBoxManager.GetMessageBoxStandard(
+                    "Error", "Some files have errors and can't be renamed. Do you still want to continue?", ButtonEnum.YesNo, Icon.Error);
+                result = await msgBox.ShowWindowDialogAsync(AppManager.MainWindow);
+            }
+
+            if(result == ButtonResult.Yes)
+            {
+                var filesToSave = Files.Where((file) => file.RenameError == null).ToList();
+                var failedFiles = new List<string>();
+                foreach(var file in filesToSave)
+                {
+                    try
+                    {
+                        if (file.RenamedFullPath != null)
+                        {
+                            System.IO.File.Move(file.FullPath, file.RenamedFullPath);
+                            Files.Remove(file);
+                        }
+                        else
+                        {
+                            failedFiles.Add(file.RelativePathWithoutExtension + file.Extension);
+                        }
+                    }
+                    catch
+                    {
+                        failedFiles.Add(file.RelativePathWithoutExtension + file.Extension);
+                    }
+                }
+
+                if(failedFiles.Count > 0)
+                {
+                    var msgBox = MessageBoxManager.GetMessageBoxStandard(
+                        "Error", $"The following files failed to be renamed:\n\n{string.Join('\n', failedFiles)}", ButtonEnum.Ok, Icon.Error);
+                    result = await msgBox.ShowWindowDialogAsync(AppManager.MainWindow);
+                }
+                else
+                {
+                    var msgBox = MessageBoxManager.GetMessageBoxStandard(
+                        "Success", $"Files successfully renamed!", ButtonEnum.Ok, Icon.Success);
+                    result = await msgBox.ShowWindowDialogAsync(AppManager.MainWindow);
+                }
+            }
+        }
+
+        private bool CanSaveFileRenames()
+        {
+            return Files.Any((file) => file.HasRenamedFileName);
         }
 
         private async Task AddStorageItems(IEnumerable<IStorageItem>? items)

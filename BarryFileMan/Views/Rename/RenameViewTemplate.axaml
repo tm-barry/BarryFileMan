@@ -284,7 +284,8 @@
 						<TextBlock Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Text="Apply"/>
 					</Grid>
 				</Button>
-				<Button Content="Save" Margin="5,5,0,5" Height="32">
+				<Button Content="Save" Margin="5,5,0,5" Height="32"
+						Command="{Binding SaveFileRenamesCommand}">
 					<Grid>
 						<Grid.ColumnDefinitions>
 							<ColumnDefinition Width="Auto"/>

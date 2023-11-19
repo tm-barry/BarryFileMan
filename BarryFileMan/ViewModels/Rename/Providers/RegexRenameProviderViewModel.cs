@@ -96,11 +96,7 @@ namespace BarryFileMan.ViewModels.Rename.Providers
                 file.Matches = FindMatches(GetFileMatchInput(file), MatchPattern, out _);
                 var renamedFileName = RenameMatches(file.Matches, RenamePattern, file.FileNameWithoutExtension, out var renameError);
                 file.RenameError = renameError;
-
-                if(string.IsNullOrEmpty(renameError))
-                {
-                    file.RenamedFileName = renamedFileName;
-                }
+                file.RenamedFileName = string.IsNullOrEmpty(renameError) ? renamedFileName : null;
             }
         }
 
@@ -124,10 +120,10 @@ namespace BarryFileMan.ViewModels.Rename.Providers
                     input = file?.FileNameWithoutExtension;
                     break;
                 case RegexRenameMatchTypes.IncludeParentDirectory:
-                    input = file?.RelativePath;
+                    input = file?.RelativePathWithoutExtension;
                     break;
                 case RegexRenameMatchTypes.FullPath:
-                    input = file?.File.Path.AbsolutePath;
+                    input = file?.FullPathWithoutExtension;
                     break;
             }
 
