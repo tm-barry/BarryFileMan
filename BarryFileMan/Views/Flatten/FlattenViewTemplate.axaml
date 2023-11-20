@@ -25,7 +25,7 @@
 	<DataTemplate x:Key="flattenView" x:DataType="vm:FlattenViewModel">
 		<Grid x:Name="flattenGrid" RowDefinitions="Auto,Auto,Auto,*,Auto">
 			<!-- Folder Dialog -->
-			<Grid Grid.Row="0" Margin="5"
+			<Grid Grid.Row="0" Margin="0,0,0,10"
 				  ColumnDefinitions="*,Auto"
 				  RowDefinitions="Auto,Auto">
 				<TextBox Grid.Column="0"
@@ -37,6 +37,7 @@
 						 IsReadOnly="True"/>
 				<Button Grid.Column="1"
 						Height="50"
+						Width="75"
 						CornerRadius="0,3,3,0"
 						Command="{Binding OpenFolderDialogCommand}">
 					<Panel>
@@ -46,7 +47,7 @@
 			</Grid>
 
 			<!-- Advanced Options -->
-			<Expander Grid.Row="1" Margin="5"
+			<Expander Grid.Row="1" Margin="0,0,0,10"
 					  ExpandDirection="Down"
 					  HorizontalAlignment="Stretch"
 					  IsExpanded="{Binding FlattenOptionsExpanded}"
@@ -74,14 +75,14 @@
 				</Grid>
 			</Expander>
 			
-			<TextBlock Grid.Row="2" HorizontalAlignment="Left" Margin="10,5,5,5"
+			<TextBlock Grid.Row="2" HorizontalAlignment="Left" Margin="5"
 					   Text="Original Paths"/>
 
-			<TextBlock Grid.Row="2" HorizontalAlignment="Right" Margin="5,5,10,5"
+			<TextBlock Grid.Row="2" HorizontalAlignment="Right" Margin="5"
 					   Text="New Paths"/>
 			
 			<!-- Files -->
-			<ListBox Grid.Row="3" Margin="5"
+			<ListBox Grid.Row="3"
 					 CornerRadius="3"
 					 ItemsSource="{Binding FilteredFiles}"
 					 SelectedValue="{Binding SelectedFile}"
@@ -173,12 +174,23 @@
 				</ListBox.ItemTemplate>
 			</ListBox>
 
+			<!-- Files Listbox Placeholder -->
+			<Grid Grid.Row="3" IsHitTestVisible="false" IsVisible="{Binding !HasFiles}">
+				<TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+						   Text="No File Found"
+						   Opacity="0.5"/>
+			</Grid>
+			
 			<!-- Flatten Button -->
-			<Button Grid.Row="4" Margin="5"
-					HorizontalContentAlignment="Center"
-					HorizontalAlignment="Stretch"
-					Content="Flatten"
-					Command="{Binding FlattenFolderCommand}"/>
+			<Button Grid.Row="4" Margin="0,10,0,5" Height="32"
+					Content="Save"
+					HorizontalAlignment="Right"
+					Command="{Binding FlattenFolderCommand}">
+				<Grid ColumnDefinitions="Auto,*">
+					<materialIcons:MaterialIcon Grid.Column="0" Kind="ContentSaveAll"/>
+					<TextBlock Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Text="Save"/>
+				</Grid>
+			</Button>
 			
 			<!-- Busy Indicator -->
 			<Grid Grid.RowSpan="4"

@@ -1,4 +1,5 @@
-﻿using Avalonia.Platform.Storage;
+﻿using Avalonia.Controls;
+using Avalonia.Platform.Storage;
 using BarryFileMan.Attributes.Validation;
 using BarryFileMan.Extensions;
 using BarryFileMan.Managers;
@@ -14,6 +15,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Tmds.DBus.Protocol;
 
 namespace BarryFileMan.ViewModels.Flatten
 {
@@ -21,27 +23,35 @@ namespace BarryFileMan.ViewModels.Flatten
     {
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(IsBusy))]
+        [NotifyCanExecuteChangedFor(nameof(FlattenFolderCommand))]
         private bool _openingFolder;
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(IsBusy))]
+        [NotifyCanExecuteChangedFor(nameof(FlattenFolderCommand))]
         private bool _applyingFilters;
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(IsBusy))]
+        [NotifyCanExecuteChangedFor(nameof(FlattenFolderCommand))]
         private bool _flatteningFolder;
 
         public bool IsBusy => OpeningFolder || ApplyingFilters || FlatteningFolder;
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(FolderPath))]
+        [NotifyCanExecuteChangedFor(nameof(FlattenFolderCommand))]
         private IStorageFolder? _storageFolder;
 
         public string? FolderPath => StorageFolder != null ? Uri.UnescapeDataString(StorageFolder.Path.LocalPath) : null;
 
         [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(HasFiles))]
         [NotifyPropertyChangedFor(nameof(FilteredFiles))]
-        private ObservableCollection<FlattenFileViewModel> files = new();
+        [NotifyCanExecuteChangedFor(nameof(FlattenFolderCommand))]
+        private ObservableCollection<FlattenFileViewModel> _files = new();
+
+        public bool HasFiles => Files.Any();
 
         public IEnumerable<FlattenFileViewModel> FilteredFiles 
             => !string.IsNullOrWhiteSpace(FileFilterRegexError) 
@@ -69,6 +79,7 @@ namespace BarryFileMan.ViewModels.Flatten
                 FileFilterRegexError = regexError;
             }
             OnPropertyChanged(nameof(FilteredFiles));
+            FlattenFolderCommand.NotifyCanExecuteChanged();
         }
 
         [ObservableProperty]
@@ -99,6 +110,7 @@ namespace BarryFileMan.ViewModels.Flatten
 
         private void Files_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
+            OnPropertyChanged(nameof(HasFiles));
             OnPropertyChanged(nameof(FilteredFiles));
         }
 
@@ -151,13 +163,94 @@ namespace BarryFileMan.ViewModels.Flatten
         [RelayCommand(CanExecute = nameof(CanFlattenFolder))]
         private async Task FlattenFolder()
         {
-            // TODO - implement
+            FlatteningFolder = true;
+            List<string> failedFiles = new();
+            bool hadError = false;
+
+            var mbResult = await AppManager.MsgBoxShowWindowDialogAsync(
+                "Flatten Folder", $"Are you sure you want to flatten the following folder?\n\n{FolderPath}", ButtonEnum.YesNo, Icon.Question);
+
+            if (mbResult == ButtonResult.Yes)
+            {
+                // Move files
+                foreach (var file in FilteredFiles.Where((ff) => !ff.Exclude))
+                {
+                    try
+                    {
+                        if (file.NewFileName != null)
+                            File.Move(file.FullPath, Path.Combine(file.BasePath, file.NewFileName));
+                    }
+                    catch
+                    {
+                        failedFiles.Add(file.FullPath);
+                    }
+                }
+
+                // Show failed moved files
+                if (failedFiles.Any())
+                {
+                    var failedListString = string.Join("\n", failedFiles);
+                    await AppManager.MsgBoxShowWindowDialogAsync(
+                        "Error", $"Failed to move the following files:\n{failedListString}", ButtonEnum.Ok, Icon.Error);
+                    failedFiles = new();
+                    hadError = true;
+                }
+
+                // Delete Excluded Files
+                if (ShouldDeleteExcludedFiles)
+                {
+                    foreach (var file in FilteredFiles.Where((ff) => ff.Exclude))
+                    {
+                        try
+                        {
+                            File.Delete(file.FullPath);
+                        }
+                        catch
+                        {
+                            failedFiles.Add(file.FullPath);
+                        }
+                    }
+                }
+
+                // Show failed delete excluded files
+                if (failedFiles.Any())
+                {
+                    var failedListString = string.Join("\n", failedFiles);
+                    await AppManager.MsgBoxShowWindowDialogAsync(
+                        "Error", $"Failed to delete the following excluded files:\n{failedListString}", ButtonEnum.Ok, Icon.Error);
+                    failedFiles = new();
+                    hadError = true;
+                }
+
+                if (ShouldDeleteEmptyFolders && FolderPath != null)
+                {
+                    try
+                    {
+                        DeleteEmptyFolders(FolderPath);
+                    }
+                    catch (Exception ex)
+                    {
+                        await AppManager.MsgBoxShowWindowDialogAsync(
+                            "Error", $"Failed to delete empty folders!\n{ex.Message}\n{ex.InnerException?.Message}", ButtonEnum.Ok, Icon.Error);
+                        hadError = true;
+                    }
+                }
+
+                StorageFolder = null;
+                Files.Clear();
+
+                if (!hadError)
+                {
+                    await AppManager.MsgBoxShowWindowDialogAsync("Success", "Folder successfully flattened!", ButtonEnum.Ok, Icon.Success);
+                }
+            }
+
+            FlatteningFolder = false;
         }
 
         private bool CanFlattenFolder()
         {
-            // TODO - implement
-            return true;
+            return !IsBusy && !string.IsNullOrWhiteSpace(FolderPath) && FilteredFiles.Any();
         }
 
         private async Task ApplyFilters()
