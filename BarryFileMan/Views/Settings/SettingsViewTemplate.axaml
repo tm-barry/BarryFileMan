@@ -30,11 +30,7 @@
 						   Text="General"/>
 				<Border BorderThickness="1" CornerRadius="3" Padding="10"
 						BorderBrush="{DynamicResource SystemBaseMediumColor}">
-					<Grid>
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition/>
-							<ColumnDefinition/>
-						</Grid.ColumnDefinitions>
+					<Grid ColumnDefinitions="*,*">
 						<TextBlock Grid.Column="0" Text="Theme:" VerticalAlignment="Center"/>
 						<ItemsControl Grid.Column="1" ItemsSource="{Binding Themes}" HorizontalAlignment="Left">
 							<ItemsControl.ItemTemplate>
@@ -55,11 +51,7 @@
 						   Text="Rename"/>
 				<Border BorderThickness="1" CornerRadius="3" Padding="10"
 						BorderBrush="{DynamicResource SystemBaseMediumColor}">
-					<Grid>
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition/>
-							<ColumnDefinition/>
-						</Grid.ColumnDefinitions>
+					<Grid ColumnDefinitions="*,*">
 						<TextBlock Grid.Column="0" Text="Default Load Option:" VerticalAlignment="Center"/>
 						<ItemsControl Grid.Column="1" ItemsSource="{Binding RenameLoadOptions}" HorizontalAlignment="Left">
 							<ItemsControl.ItemTemplate>

@@ -29,7 +29,7 @@
 	</Design.PreviewWith>
 
 	<DataTemplate x:Key="renameView" x:DataType="vm:RenameViewModel">
-		<Grid x:Name="renameGrid">
+		<Grid x:Name="renameGrid" RowDefinitions="Auto,Auto,Auto,*,Auto">			
 			<Grid.Resources>
 				<ResourceDictionary>
 					<ResourceDictionary.MergedDictionaries>
@@ -58,14 +58,6 @@
 					</Setter>
 				</Style>
 			</Grid.Styles>
-			
-			<Grid.RowDefinitions>
-				<RowDefinition Height="Auto"/>
-				<RowDefinition Height="Auto"/>
-				<RowDefinition Height="Auto"/>
-				<RowDefinition Height="*"/>
-				<RowDefinition Height="Auto"/>
-			</Grid.RowDefinitions>
 
 			<ComboBox Grid.Row="0" Margin="5"
 					  MinWidth="100"
@@ -149,19 +141,9 @@
 				</ListBox.Styles>
 				<ListBox.ItemTemplate>
 					<DataTemplate x:DataType="vm:RenameFileViewModel">
-						<Grid>
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="*"/>
-								<ColumnDefinition Width="Auto"/>
-								<ColumnDefinition Width="*"/>
-							</Grid.ColumnDefinitions>
-							
+						<Grid ColumnDefinitions="*,Auto,*">							
 							<!-- Original File Name -->
-							<Grid Grid.Column="0">
-								<Grid.ColumnDefinitions>
-									<ColumnDefinition Width="*"/>
-									<ColumnDefinition Width="Auto"/>
-								</Grid.ColumnDefinitions>
+							<Grid Grid.Column="0" ColumnDefinitions="*,Auto">
 								<TextBlock Grid.Column="0"
 										   VerticalAlignment="Center"
 										   Text="{Binding FileNameWithoutExtension}"
@@ -186,11 +168,7 @@
 
 							<!-- New File Name -->
 							<StackPanel Grid.Column="2">
-								<Grid>
-									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="*"/>
-										<ColumnDefinition Width="Auto"/>
-									</Grid.ColumnDefinitions>
+								<Grid ColumnDefinitions="*,Auto">
 									<TextBlock Grid.Column="0"
 											   IsVisible="{Binding HasRenamedFileName}"
 											   VerticalAlignment="Center"
@@ -238,11 +216,7 @@
 						<MenuFlyout Placement="Bottom" ItemsSource="{Binding LoadOptions}">
 							<MenuFlyout.ItemTemplate>
 								<DataTemplate DataType="vm:RenameLoadOptionViewModel">
-									<Grid>
-										<Grid.ColumnDefinitions>
-											<ColumnDefinition Width="Auto"/>
-											<ColumnDefinition Width="*"/>
-										</Grid.ColumnDefinitions>
+									<Grid ColumnDefinitions="Auto,*">
 										<materialIcons:MaterialIcon Grid.Column="0" Kind="{Binding Icon}"/>
 										<TextBlock Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Text="{Binding DisplayText}"/>
 									</Grid>
@@ -250,22 +224,14 @@
 							</MenuFlyout.ItemTemplate>
 						</MenuFlyout>
 					</SplitButton.Flyout>
-					<Grid>
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="Auto"/>
-							<ColumnDefinition Width="*"/>
-						</Grid.ColumnDefinitions>
+					<Grid ColumnDefinitions="Auto,*">
 						<materialIcons:MaterialIcon Grid.Column="0" Kind="{Binding SelectedLoadOption.Icon}"/>
 						<TextBlock Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Text="Load"/>
 					</Grid>
 				</SplitButton>
 				<Button Content="Clear" Margin="5" Height="32"
 						Command="{Binding ClearFilesCommand}">
-					<Grid>
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="Auto"/>
-							<ColumnDefinition Width="*"/>
-						</Grid.ColumnDefinitions>
+					<Grid ColumnDefinitions="Auto,*">
 						<materialIcons:MaterialIcon Grid.Column="0" Kind="CloseBox"/>
 						<TextBlock Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Text="Clear"/>
 					</Grid>
@@ -275,22 +241,14 @@
 			<StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,5,0,0">
 				<Button Content="Apply" Margin="5,5,0,5" Height="32"
 						Command="{Binding ApplyFileRenamesCommand}">
-					<Grid>
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="Auto"/>
-							<ColumnDefinition Width="*"/>
-						</Grid.ColumnDefinitions>
+					<Grid ColumnDefinitions="Auto,*">
 						<materialIcons:MaterialIcon Grid.Column="0" Kind="Rename"/>
 						<TextBlock Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Text="Apply"/>
 					</Grid>
 				</Button>
 				<Button Content="Save" Margin="5,5,0,5" Height="32"
 						Command="{Binding SaveFileRenamesCommand}">
-					<Grid>
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="Auto"/>
-							<ColumnDefinition Width="*"/>
-						</Grid.ColumnDefinitions>
+					<Grid ColumnDefinitions="Auto,*">
 						<materialIcons:MaterialIcon Grid.Column="0" Kind="ContentSaveAll"/>
 						<TextBlock Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Text="Save"/>
 					</Grid>

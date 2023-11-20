@@ -21,10 +21,19 @@ namespace BarryFileMan.ViewModels.Rename.Providers
         [ObservableProperty]
         [HasErrorProperty(nameof(MatchPatternError))]
         private string _matchPattern = "\\\\(?<title>[^\\\\]+)(?:s|S)(?<season>\\d+)(?:e|E)(?<episode>\\d+)";
+        partial void OnMatchPatternChanged(string value)
+        {
+            TestMatches = FindMatches(TestString, value, out var error);
+            MatchPatternError = error;
+        }
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(CanRenameFiles))]
         private string? _matchPatternError;
+        partial void OnMatchPatternErrorChanged(string? value)
+        {
+            ValidateProperty(MatchPattern, nameof(MatchPattern));
+        }
 
         public static ReadOnlyCollection<ItemViewModel<RegexRenameMatchTypes>> MatchTypes => new List<ItemViewModel<RegexRenameMatchTypes>>()
         {
@@ -42,17 +51,67 @@ namespace BarryFileMan.ViewModels.Rename.Providers
         [ObservableProperty]
         [HasErrorProperty(nameof(RenamePatternError))]
         private string _renamePattern = "<title.replace(\'.\',\' \')>- S<season.pad(left,\'0\',2)>E<episode.pad(left,\'0\',2)>";
+        partial void OnRenamePatternChanged(string value)
+        {
+            RenamedTestString = RenameMatches(TestMatches, value, TestString, out var error);
+            RenamePatternError = error;
+        }
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(CanRenameFiles))]
         private string? _renamePatternError;
+        partial void OnRenamePatternErrorChanged(string? value)
+        {
+            ValidateProperty(RenamePattern, nameof(RenamePattern));
+        }
 
         [ObservableProperty]
         private string _testString = string.Empty;
+        partial void OnTestStringChanged(string value)
+        {
+            TestMatches = FindMatches(value, MatchPattern, out var error);
+            MatchPatternError = error;
+        }
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(HasTestMatches))]
         private IEnumerable<IRenameMatch>? _testMatches;
+        partial void OnTestMatchesChanged(IEnumerable<IRenameMatch>? value)
+        {
+            RenamedTestString = RenameMatches(value, RenamePattern, TestString, out var error);
+            RenamePatternError = error;
+
+            TestMatchNodes.Clear();
+            if (value != null && value.Any())
+            {
+                Dictionary<string, int> groupKeys = new();
+                int currentGroupKey = 0;
+                for (int i = 0; i < value.Count(); i++)
+                {
+                    var renameMatch = value.ElementAtOrDefault(i);
+                    if (renameMatch != null)
+                    {
+                        ObservableCollection<RenameMatchNodeViewModel> subNodes = new();
+                        foreach (var groupName in renameMatch.Groups.Keys)
+                        {
+                            if (!groupKeys.ContainsKey(groupName))
+                            {
+                                groupKeys.Add(groupName, currentGroupKey);
+                                currentGroupKey++;
+                            }
+
+                            var groupValues = renameMatch.Groups[groupName];
+                            for (int j = 0; j < groupValues.Count; j++)
+                            {
+                                subNodes.Add(new(RenameMatchNodeType.Tag, i, null, j, groupValues[j].Value, groupName, groupKeys[groupName]));
+                            }
+                        }
+
+                        TestMatchNodes.Add(new RenameMatchNodeViewModel(RenameMatchNodeType.Match, i, subNodes, isExpanded: i == 0));
+                    }
+                }
+            }
+        }
 
         [ObservableProperty]
         private ObservableCollection<RenameMatchNodeViewModel> _testMatchNodes = new();
@@ -128,74 +187,6 @@ namespace BarryFileMan.ViewModels.Rename.Providers
             }
 
             return input ?? string.Empty;
-        }
-
-        partial void OnMatchPatternChanged(string value)
-        {
-            TestMatches = FindMatches(TestString, value, out var error);
-            MatchPatternError = error;
-        }
-
-        partial void OnRenamePatternChanged(string value)
-        {
-            RenamedTestString = RenameMatches(TestMatches, value, TestString, out var error);
-            RenamePatternError = error;
-        }
-
-        partial void OnTestStringChanged(string value)
-        {
-            TestMatches = FindMatches(value, MatchPattern, out var error);
-            MatchPatternError = error;
-        }
-
-        partial void OnTestMatchesChanged(IEnumerable<IRenameMatch>? value)
-        {
-            RenamedTestString = RenameMatches(value, RenamePattern, TestString, out var error);
-            RenamePatternError = error;
-        }
-
-        partial void OnMatchPatternErrorChanged(string? value)
-        {
-            ValidateProperty(MatchPattern, nameof(MatchPattern));
-        }
-
-        partial void OnRenamePatternErrorChanged(string? value)
-        {
-            ValidateProperty(RenamePattern, nameof(RenamePattern));
-        }
-
-        partial void OnTestMatchesChanged(IEnumerable<IRenameMatch>? oldValue, IEnumerable<IRenameMatch>? newValue)
-        {
-            TestMatchNodes.Clear();
-            if(newValue != null && newValue.Any())
-            {
-                Dictionary<string, int> groupKeys = new();
-                int currentGroupKey = 0;
-                for (int i = 0; i < newValue.Count(); i++)
-                {
-                    var renameMatch = newValue.ElementAtOrDefault(i);
-                    if (renameMatch != null)
-                    {
-                        ObservableCollection<RenameMatchNodeViewModel> subNodes = new();
-                        foreach (var groupName in renameMatch.Groups.Keys)
-                        {
-                            if (!groupKeys.ContainsKey(groupName))
-                            {
-                                groupKeys.Add(groupName, currentGroupKey);
-                                currentGroupKey++;
-                            }
-
-                            var groupValues = renameMatch.Groups[groupName];
-                            for (int j = 0; j < groupValues.Count; j++)
-                            {
-                                subNodes.Add(new(RenameMatchNodeType.Tag, i, null, j, groupValues[j].Value, groupName, groupKeys[groupName]));
-                            }
-                        }
-
-                        TestMatchNodes.Add(new RenameMatchNodeViewModel(RenameMatchNodeType.Match, i, subNodes, isExpanded: i == 0));
-                    }
-                }
-            }
         }
 
         private IEnumerable<IRenameMatch>? FindMatches(string? input, string? regexPattern, out string? error)

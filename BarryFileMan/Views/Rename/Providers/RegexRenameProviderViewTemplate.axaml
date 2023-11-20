@@ -24,15 +24,10 @@
 	</Design.PreviewWith>
 
 	<DataTemplate x:Key="regexRenameProviderView" x:DataType="vm:RegexRenameProviderViewModel">
-		<Grid>
+		<Grid ColumnDefinitions="*,*">
 			<Grid.Resources>
 				<cc:IntToColorConverter x:Key="intToColorConverter"/>
 			</Grid.Resources>
-			
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition/>
-				<ColumnDefinition/>
-			</Grid.ColumnDefinitions>
 
 			<StackPanel Grid.Column="0" Margin="0,0,5,0">
 
@@ -68,11 +63,7 @@
 						 MaxHeight="50"/>
 			</StackPanel>
 
-			<Grid Grid.Column="1" Margin="5,0,0,0">
-				<Grid.RowDefinitions>
-					<RowDefinition Height="Auto"/>
-					<RowDefinition/>
-				</Grid.RowDefinitions>
+			<Grid Grid.Column="1" Margin="5,0,0,0" RowDefinitions="Auto,*">
 				
 				<TextBlock Grid.Row="0" 
 						   Text="Match Groups"/>

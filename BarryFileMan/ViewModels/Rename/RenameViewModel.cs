@@ -1,5 +1,6 @@
 ﻿using Avalonia.Platform.Storage;
 using BarryFileMan.Enums.Rename;
+using BarryFileMan.Helpers;
 using BarryFileMan.Managers;
 using BarryFileMan.Models.Config;
 using BarryFileMan.Rename.Enums;
@@ -25,6 +26,30 @@ namespace BarryFileMan.ViewModels.Rename
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(SelectedProviderType))]
         private int? _selectedProviderTypeIndex;
+        partial void OnSelectedProviderTypeIndexChanged(int? value)
+        {
+            if (RenameProvider != null)
+            {
+                RenameProvider.PropertyChanged -= RenameProvider_PropertyChanged;
+            }
+
+            switch (SelectedProviderType?.Type)
+            {
+                case RenameProviderTypes.Regex:
+                    RenameProvider = new RegexRenameProviderViewModel(this);
+                    break;
+                default:
+                    RenameProvider = null;
+                    break;
+            }
+
+            if (RenameProvider != null)
+            {
+                RenameProvider.PropertyChanged += RenameProvider_PropertyChanged;
+            }
+
+            ProviderSettingsExpanded = true;
+        }
 
         public RenameProviderTypeItemViewModel? SelectedProviderType => ProviderTypes.ElementAtOrDefault(SelectedProviderTypeIndex ?? -1);
 
@@ -68,31 +93,6 @@ namespace BarryFileMan.ViewModels.Rename
             Files.CollectionChanged -= Files_CollectionChanged;
         }
 
-        partial void OnSelectedProviderTypeIndexChanged(int? value)
-        {
-            if(RenameProvider != null)
-            {
-                RenameProvider.PropertyChanged -= RenameProvider_PropertyChanged;
-            }
-
-            switch (SelectedProviderType?.Type)
-            {
-                case RenameProviderTypes.Regex:
-                    RenameProvider = new RegexRenameProviderViewModel(this);
-                    break;
-                default:
-                    RenameProvider = null;
-                    break;
-            }
-
-            if (RenameProvider != null) 
-            {
-                RenameProvider.PropertyChanged += RenameProvider_PropertyChanged;
-            }
-
-            ProviderSettingsExpanded = true;
-        }
-
         private void RenameProvider_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if(e.PropertyName == nameof(RenameProvider.CanRenameFiles))
@@ -133,33 +133,24 @@ namespace BarryFileMan.ViewModels.Rename
         private async Task LoadFolders()
         {
             SelectedLoadOption = LoadOptions.First((item) => item.Type == RenameLoadOption.Folders);
-            if (AppManager.MainWindow != null)
+            var folders = await AppManager.OpenFolderPickerAsync(new FolderPickerOpenOptions
             {
-                var folders = await AppManager.MainWindow.OpenFolderPickerAsync(new FolderPickerOpenOptions
-                {
-                    Title = "Load Folder",
-                    AllowMultiple = true,
-                });
-
-                await AddStorageItems(folders);
-            }
+                Title = "Load Folder",
+                AllowMultiple = true,
+            });
+            await AddStorageItems(folders);
         }
 
         [RelayCommand]
         private async Task LoadFiles()
         {
             SelectedLoadOption = LoadOptions.First((item) => item.Type == RenameLoadOption.Files);
-            if (AppManager.MainWindow != null)
+            var files = await AppManager.OpenFilePickerAsync(new FilePickerOpenOptions
             {
-                var files = await AppManager.MainWindow.OpenFilePickerAsync(new FilePickerOpenOptions
-                {
-                    Title = "Load Files",
-                    AllowMultiple = true,
-                });
-
-
-                await AddStorageItems(files);
-            }
+                Title = "Load Files",
+                AllowMultiple = true,
+            });
+            await AddStorageItems(files);
         }
 
         [RelayCommand]
@@ -171,14 +162,13 @@ namespace BarryFileMan.ViewModels.Rename
         [RelayCommand]
         private static async Task CopyOriginalFile(RenameFileViewModel renameFile)
         {
-            await CopyText(renameFile.File.Name);
+            await AppManager.CopyText(Uri.UnescapeDataString(renameFile.File.Path.LocalPath));
         }
 
         [RelayCommand]
         private static async Task CopyNewFile(RenameFileViewModel renameFile)
         {
-            // TODO - copy new file name
-            await CopyText(renameFile.File.Name);
+            await AppManager.CopyText(renameFile.RenamedFullPath);
         }
 
         [RelayCommand]
@@ -251,36 +241,11 @@ namespace BarryFileMan.ViewModels.Rename
         {
             if(items != null && items.Any())
             {
-                foreach(var item in items)
+                var files = await StorageItemHelper.GetStorageFiles(items);
+                foreach(var file in files)
                 {
-                    if (item is IStorageFile file)
-                    {
-                        AddStorageFile(file);
-                    }
-                    else if (item is IStorageFolder folder)
-                    {
-                        await AddStorageFolder(folder);
-                    }
+                    Files.Add(new RenameFileViewModel(file));
                 }
-            }
-        }
-
-        private void AddStorageFile(IStorageFile file)
-        {
-            Files.Add(new RenameFileViewModel(file));
-        }
-
-        private async Task AddStorageFolder(IStorageFolder folder)
-        {
-            var storageItems = await folder.GetItemsAsync().ToListAsync();
-            await AddStorageItems(storageItems);
-        }
-
-        private static async Task CopyText(string? text)
-        {
-            if (AppManager.MainWindow != null)
-            {
-                await AppManager.MainWindow.ClipboardSetTextAsync(text);
             }
         }
     }

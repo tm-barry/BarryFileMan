@@ -10,7 +10,7 @@ namespace BarryFileMan.ViewModels.Rename
     {
         public IStorageFile File { get; private set; }
 
-        public string FullPath => Uri.UnescapeDataString(File.Path.AbsolutePath);
+        public string FullPath => Uri.UnescapeDataString(File.Path.LocalPath);
 
         public string DirectoryPath => System.IO.Path.GetDirectoryName(FullPath) ?? string.Empty;
 

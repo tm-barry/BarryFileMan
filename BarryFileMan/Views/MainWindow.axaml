@@ -36,12 +36,7 @@
 			   CompactPaneLength="69" 
 			   OpenPaneLength="150">
 		<SplitView.Pane>
-			<Grid x:Name="toolPaneGrid">
-				<Grid.RowDefinitions>
-					<RowDefinition Height="*"/>
-					<RowDefinition Height="Auto"/>
-					<RowDefinition Height="Auto"/>
-				</Grid.RowDefinitions>
+			<Grid x:Name="toolPaneGrid" RowDefinitions="*,Auto,Auto">
 
 				<ItemsControl Grid.Row="0" Margin="5">
 					<ToggleButton HorizontalAlignment="Stretch" Margin="5"
@@ -50,11 +45,7 @@
 								  IsChecked="{Binding SelectedToolPaneItem, Mode=OneWay,
 									Converter={StaticResource toolPaneItemConverter},
 									ConverterParameter=rename}">
-						<Grid>
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="Auto"/>
-								<ColumnDefinition Width="*"/>
-							</Grid.ColumnDefinitions>
+						<Grid ColumnDefinitions="Auto,*">
 							<materialIcons:MaterialIcon Grid.Column="0" Kind="Rename" Height="32" Width="32"/>
 							<TextBlock Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Text="Rename"/>
 						</Grid>
@@ -65,11 +56,7 @@
 								  IsChecked="{Binding SelectedToolPaneItem, Mode=OneWay,
 									Converter={StaticResource toolPaneItemConverter},
 									ConverterParameter=flatten}">
-						<Grid>
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="Auto"/>
-								<ColumnDefinition Width="*"/>
-							</Grid.ColumnDefinitions>
+						<Grid ColumnDefinitions="Auto,*">
 							<materialIcons:MaterialIcon Grid.Column="0" Kind="Bulldozer" Height="32" Width="32"/>
 							<TextBlock Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Text="Flatten"/>
 						</Grid>
@@ -80,11 +67,7 @@
 								  IsChecked="{Binding SelectedToolPaneItem, Mode=OneWay,
 									Converter={StaticResource toolPaneItemConverter},
 									ConverterParameter=comics}">
-						<Grid>
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="Auto"/>
-								<ColumnDefinition Width="*"/>
-							</Grid.ColumnDefinitions>
+						<Grid ColumnDefinitions="Auto,*">
 							<materialIcons:MaterialIcon Grid.Column="0" Kind="NewspaperVariant" Height="32" Width="32"/>
 							<TextBlock Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Text="Comics"/>
 						</Grid>
@@ -97,11 +80,7 @@
 							  IsChecked="{Binding SelectedToolPaneItem, Mode=OneWay,
 									Converter={StaticResource toolPaneItemConverter},
 									ConverterParameter=settings}">
-					<Grid>
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="Auto"/>
-							<ColumnDefinition Width="*"/>
-						</Grid.ColumnDefinitions>
+					<Grid ColumnDefinitions="Auto,*">
 						<materialIcons:MaterialIcon Grid.Column="0" Kind="Cog" Height="32" Width="32"/>
 						<TextBlock Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Text="Settings" IsVisible="{Binding ToolPaneOpen}"/>
 					</Grid>
@@ -113,11 +92,7 @@
 			</Grid>
 		</SplitView.Pane>
 
-		<Grid>
-			<Grid.RowDefinitions>
-				<RowDefinition Height="Auto"/>
-				<RowDefinition Height="*"/>
-			</Grid.RowDefinitions>
+		<Grid RowDefinitions="Auto,*">
 			
 			<!-- View Header -->
 			<Grid Grid.Row="0">
