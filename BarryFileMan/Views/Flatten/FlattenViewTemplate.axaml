@@ -180,17 +180,35 @@
 						   Text="No File Found"
 						   Opacity="0.5"/>
 			</Grid>
-			
-			<!-- Flatten Button -->
-			<Button Grid.Row="4" Margin="0,10,0,5" Height="32"
-					Content="Save"
-					HorizontalAlignment="Right"
-					Command="{Binding FlattenFolderCommand}">
-				<Grid ColumnDefinitions="Auto,*">
-					<materialIcons:MaterialIcon Grid.Column="0" Kind="ContentSaveAll"/>
-					<TextBlock Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Text="Save"/>
-				</Grid>
-			</Button>
+
+			<Grid Grid.Row="4" ColumnDefinitions="*,Auto">
+				<!-- Legend -->
+				<StackPanel Grid.Column="0" Margin="0,5,0,0"
+							Orientation="Horizontal"
+							VerticalAlignment="Top">
+					<Border Height="16" Width="16"
+							Background="Goldenrod"
+							CornerRadius="3"/>
+					<TextBlock Text="Duplicate" Margin="10,0,20,0"
+							   VerticalAlignment="Center"/>
+					<Border Height="16" Width="16"
+							Background="Firebrick"
+							CornerRadius="3"/>
+					<TextBlock Text="Excluded" Margin="10,0,0,0"
+							   VerticalAlignment="Center"/>
+				</StackPanel>
+				
+				<!-- Flatten Button -->
+				<Button Grid.Column="1" Margin="0,10,0,5" Height="32"
+						Content="Save"
+						HorizontalAlignment="Right"
+						Command="{Binding FlattenFolderCommand}">
+					<Grid ColumnDefinitions="Auto,*">
+						<materialIcons:MaterialIcon Grid.Column="0" Kind="ContentSaveAll"/>
+						<TextBlock Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Text="Save"/>
+					</Grid>
+				</Button>
+			</Grid>
 			
 			<!-- Busy Indicator -->
 			<Grid Grid.RowSpan="4"
