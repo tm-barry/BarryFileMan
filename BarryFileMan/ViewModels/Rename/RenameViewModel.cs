@@ -104,6 +104,7 @@ namespace BarryFileMan.ViewModels.Rename
         private void Files_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             ApplyFileRenamesCommand.NotifyCanExecuteChanged();
+            SaveFileRenamesCommand.NotifyCanExecuteChanged();
             OnPropertyChanged(nameof(HasFiles));
 
             if (e?.NewItems != null)
@@ -185,7 +186,7 @@ namespace BarryFileMan.ViewModels.Rename
 
         private bool CanApplyFileRenames()
         {
-            return (Files?.Any() ?? false) && (RenameProvider?.CanRenameFiles ?? false);
+            return (Files?.Any() ?? false);
         }
 
         [RelayCommand(CanExecute = nameof(CanSaveFileRenames))]
