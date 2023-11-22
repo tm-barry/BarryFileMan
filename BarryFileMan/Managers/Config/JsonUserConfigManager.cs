@@ -105,18 +105,6 @@ namespace BarryFileMan.Managers.Config
             return config;
         }
 
-        public UserConfig UpdateTheme(Theme theme)
-        {
-            Config.Theme = theme;
-            return SetConfig(Config);
-        }
-
-        public async Task<UserConfig> UpdateThemeAsync(Theme theme)
-        {
-            Config.Theme = theme;
-            return await SetConfigAsync(Config);
-        }
-
         private void UpdateConfigSubject(UserConfig config)
         {
             Config = config;

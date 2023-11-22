@@ -18,7 +18,7 @@ namespace BarryFileMan
 
         public override void OnFrameworkInitializationCompleted()
         {
-            ThemeHelper.ChangeTheme(AppManager.UserConfig.Config.Theme);
+            ThemeHelper.ChangeTheme(AppManager.UserConfig.Config.General.Theme);
 
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {

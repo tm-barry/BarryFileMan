@@ -1,9 +1,6 @@
-﻿using Avalonia.Controls;
-using Avalonia.Platform.Storage;
+﻿using Avalonia.Platform.Storage;
 using BarryFileMan.Attributes.Validation;
-using BarryFileMan.Extensions;
 using BarryFileMan.Managers;
-using BarryFileMan.ViewModels.Rename;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MsBox.Avalonia.Enums;
@@ -12,10 +9,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Tmds.DBus.Protocol;
 
 namespace BarryFileMan.ViewModels.Flatten
 {
@@ -300,7 +295,11 @@ namespace BarryFileMan.ViewModels.Flatten
                         "Error", $"{ex.Message}\n{ex.InnerException?.Message}", ButtonEnum.Ok, Icon.Error);
             }
 
-            Files.ReplaceCollection(files);
+            Files.Clear();
+            if (files != null)
+                foreach (var file in files)
+                    Files.Add(file);
+
             ApplyingFilters = false;
         }
 

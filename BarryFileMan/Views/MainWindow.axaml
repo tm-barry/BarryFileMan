@@ -61,7 +61,7 @@
 							<TextBlock Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Text="Flatten"/>
 						</Grid>
 					</ToggleButton>
-					<ToggleButton HorizontalAlignment="Stretch" Margin="5"
+					<!--<ToggleButton HorizontalAlignment="Stretch" Margin="5"
 								  Command="{Binding ToolPaneItemSelectedCommand}"
 								  CommandParameter="comics"
 								  IsChecked="{Binding SelectedToolPaneItem, Mode=OneWay,
@@ -71,7 +71,7 @@
 							<materialIcons:MaterialIcon Grid.Column="0" Kind="NewspaperVariant" Height="32" Width="32"/>
 							<TextBlock Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Text="Comics"/>
 						</Grid>
-					</ToggleButton>
+					</ToggleButton>-->
 				</ItemsControl>
 
 				<ToggleButton HorizontalAlignment="Stretch" Margin="10" Grid.Row="1"

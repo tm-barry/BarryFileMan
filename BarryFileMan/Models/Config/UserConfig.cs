@@ -1,27 +1,18 @@
 ﻿using BarryFileMan.Enums.Rename;
-using BarryFileMan.ViewModels;
 
 namespace BarryFileMan.Models.Config
 {
     public class UserConfig
     {
-        public Theme Theme { get; set; }
+        public UserGeneralConfig General { get; set; }
 
-        public RenameLoadOption DefaultRenameLoadOption { get; set; }
+        public UserRenameConfig Rename { get; set; }
 
-        public UserConfig() : this(Theme.Dark, RenameLoadOption.Files) { }
-
-        public UserConfig(Theme theme, RenameLoadOption defaultRenameLoadOption) 
+        public UserConfig() : this(new(), new()) { }
+        public UserConfig(UserGeneralConfig general, UserRenameConfig rename) 
         {
-            Theme = theme;
-            DefaultRenameLoadOption = defaultRenameLoadOption;
+            General = general;
+            Rename = rename;
         }
-    }
-
-    public enum Theme
-    {
-        Default,
-        Dark,
-        Light
     }
 }

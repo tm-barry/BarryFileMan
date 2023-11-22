@@ -1,6 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Styling;
-using BarryFileMan.Models.Config;
+using BarryFileMan.Enums.Config;
 
 namespace BarryFileMan.Helpers
 {
