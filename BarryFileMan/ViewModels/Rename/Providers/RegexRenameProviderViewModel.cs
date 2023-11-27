@@ -28,7 +28,6 @@ namespace BarryFileMan.ViewModels.Rename.Providers
         }
 
         [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(CanRenameFiles))]
         private string? _matchPatternError;
         partial void OnMatchPatternErrorChanged(string? value)
         {
@@ -58,7 +57,6 @@ namespace BarryFileMan.ViewModels.Rename.Providers
         }
 
         [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(CanRenameFiles))]
         private string? _renamePatternError;
         partial void OnRenamePatternErrorChanged(string? value)
         {
@@ -131,8 +129,6 @@ namespace BarryFileMan.ViewModels.Rename.Providers
 
         [ObservableProperty]
         private string _renamedTestString = string.Empty;
-
-        public override bool CanRenameFiles => MatchPatternError == null && RenamePatternError == null;
 
         public RegexRenameProviderViewModel() : this(new RenameViewModel()) { }
 

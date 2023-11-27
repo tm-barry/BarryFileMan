@@ -32,9 +32,14 @@
 							   Text="General"/>
 					<Border BorderThickness="1" CornerRadius="3" Padding="10"
 							BorderBrush="{DynamicResource SystemBaseMediumColor}">
-						<Grid ColumnDefinitions="*,*">
-							<TextBlock Grid.Column="0" Text="Theme:" VerticalAlignment="Center"/>
-							<ItemsControl Grid.Column="1" ItemsSource="{Binding Config.General.Themes}" HorizontalAlignment="Left">
+						<Grid ColumnDefinitions="*,*" 
+							  RowDefinitions="Auto,Auto">
+							<TextBlock Grid.Column="0" Grid.Row="0"
+									   VerticalAlignment="Center"
+									   Text="Theme:"/>
+							<ItemsControl Grid.Column="1" Grid.Row="0"
+										  HorizontalAlignment="Left"
+										  ItemsSource="{Binding Config.General.Themes}">
 								<ItemsControl.ItemTemplate>
 									<DataTemplate>
 										<RadioButton GroupName="theme"
@@ -43,6 +48,13 @@
 									</DataTemplate>
 								</ItemsControl.ItemTemplate>
 							</ItemsControl>
+
+							<TextBlock Grid.Column="0" Grid.Row="1" Margin="0,20,0,0"
+									   VerticalAlignment="Center"
+									   Text="Sidebar Expanded Default:"/>
+							<CheckBox Grid.Column="1" Grid.Row="1" Margin="0,20,0,0"
+									  HorizontalAlignment="Left"
+									  IsChecked="{Binding Config.General.SidebarExpandedDefault}"/>
 						</Grid>
 					</Border>
 

@@ -15,7 +15,11 @@ namespace BarryFileMan.ViewModels.Settings
 
         public Theme SelectedTheme => Themes.FirstOrDefault((theme) => theme.Selected)?.Item ?? Theme.Default;
 
-        public bool IsDirty => SelectedTheme != _config.Theme;
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(IsDirty))]
+        private bool _sidebarExpandedDefault;
+
+        public bool IsDirty => SelectedTheme != _config.Theme || SidebarExpandedDefault != _config.SidebarExpandedDefault;
 
         public UserGeneralConfigViewModel(UserGeneralConfig config)
         {
@@ -55,6 +59,8 @@ namespace BarryFileMan.ViewModels.Settings
             Themes.Add(new ItemViewModel<Theme>(Theme.Default, "System Default", _config.Theme == Theme.Default));
             Themes.Add(new ItemViewModel<Theme>(Theme.Dark, "Dark", _config.Theme == Theme.Dark));
             Themes.Add(new ItemViewModel<Theme>(Theme.Light, "Light", _config.Theme == Theme.Light));
+
+            SidebarExpandedDefault = _config.SidebarExpandedDefault;
         }
 
         public override UserGeneralConfig UndoChanges()
@@ -65,7 +71,7 @@ namespace BarryFileMan.ViewModels.Settings
 
         public override UserGeneralConfig ApplyChanges()
         {
-            _config = new(SelectedTheme);
+            _config = new(SelectedTheme, SidebarExpandedDefault);
             OnPropertyChanged(nameof(SelectedTheme));
             OnPropertyChanged(nameof(IsDirty));
             return _config;

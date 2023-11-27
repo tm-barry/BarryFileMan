@@ -28,11 +28,6 @@ namespace BarryFileMan.ViewModels.Rename
         private int? _selectedProviderTypeIndex;
         partial void OnSelectedProviderTypeIndexChanged(int? value)
         {
-            if (RenameProvider != null)
-            {
-                RenameProvider.PropertyChanged -= RenameProvider_PropertyChanged;
-            }
-
             switch (SelectedProviderType?.Type)
             {
                 case RenameProviderTypes.Regex:
@@ -41,11 +36,6 @@ namespace BarryFileMan.ViewModels.Rename
                 default:
                     RenameProvider = null;
                     break;
-            }
-
-            if (RenameProvider != null)
-            {
-                RenameProvider.PropertyChanged += RenameProvider_PropertyChanged;
             }
 
             ProviderSettingsExpanded = true;
@@ -91,14 +81,6 @@ namespace BarryFileMan.ViewModels.Rename
         ~ RenameViewModel()
         {
             Files.CollectionChanged -= Files_CollectionChanged;
-        }
-
-        private void RenameProvider_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if(e.PropertyName == nameof(RenameProvider.CanRenameFiles))
-            {
-                ApplyFileRenamesCommand.NotifyCanExecuteChanged();
-            }
         }
 
         private void Files_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)

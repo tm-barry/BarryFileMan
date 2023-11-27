@@ -1,10 +1,13 @@
 ﻿
+using BarryFileMan.Managers;
+using BarryFileMan.Models.Config;
 using BarryFileMan.ViewModels.Comics;
 using BarryFileMan.ViewModels.Flatten;
 using BarryFileMan.ViewModels.Rename;
 using BarryFileMan.ViewModels.Settings;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System;
 
 namespace BarryFileMan.ViewModels
 {
@@ -67,6 +70,13 @@ namespace BarryFileMan.ViewModels
         public MainWindowViewModel()
         {
             ChangeViewContent(SelectedToolPaneItem);
+            ToolPaneOpen = AppManager.UserConfig.Config.General.SidebarExpandedDefault;
+            AppManager.UserConfig.ConfigObservable.Subscribe(OnUserConfigChanged);
+        }
+
+        private void OnUserConfigChanged(UserConfig userConfig)
+        {
+            ToolPaneOpen = AppManager.UserConfig.Config.General.SidebarExpandedDefault;
         }
 
         private void ChangeViewContent(string tool)

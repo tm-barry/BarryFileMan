@@ -6,10 +6,13 @@ namespace BarryFileMan.Models.Config
     {
         public Theme Theme { get; set; }
 
-        public UserGeneralConfig() : this(Theme.Dark) { }
-        public UserGeneralConfig(Theme theme)
+        public bool SidebarExpandedDefault { get; set; }
+
+        public UserGeneralConfig() : this(Theme.Dark, true) { }
+        public UserGeneralConfig(Theme theme, bool sideBarExpandedDefault)
         {
             Theme = theme;
+            SidebarExpandedDefault = sideBarExpandedDefault;
         }
     }
 }

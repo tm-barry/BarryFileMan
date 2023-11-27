@@ -6,8 +6,6 @@ namespace BarryFileMan.ViewModels.Rename.Providers
     {
         public RenameViewModel ViewModel { get; private set; }
 
-        public abstract bool CanRenameFiles{ get; }
-
         public BaseRenameProviderViewModel(RenameViewModel viewModel)
         {
             ViewModel = viewModel;
