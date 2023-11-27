@@ -1,16 +1,13 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Platform.Storage;
-using BarryFileMan.Enums.Config;
 using BarryFileMan.Helpers;
 using BarryFileMan.Managers.Config;
 using BarryFileMan.Models.Config;
 using BarryFileMan.Views;
-using MsBox.Avalonia;
-using MsBox.Avalonia.Enums;
+using BarryFileMan.Views.Common;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace BarryFileMan.Managers
 {
@@ -52,11 +49,10 @@ namespace BarryFileMan.Managers
             return MainWindow != null ? await MainWindow.OpenFolderPickerAsync(options) : null;
         }
 
-        public static Task<ButtonResult> MsgBoxShowWindowDialogAsync(string title, string message, 
-            ButtonEnum button = ButtonEnum.Ok, Icon icon = Icon.None, WindowStartupLocation windowStartupLocation = WindowStartupLocation.CenterScreen)
+        public static Task<MsgBoxResult> MsgBoxShowWindowDialogAsync(string title, string message, 
+            MsgBoxButtons buttons, MsgBoxIcons? icon = null, WindowStartupLocation windowStartupLocation = WindowStartupLocation.CenterScreen)
         {
-            var msgBox = MessageBoxManager.GetMessageBoxStandard(title, message, button, icon, windowStartupLocation);
-            return msgBox.ShowWindowDialogAsync(MainWindow);
+            return MessageBox.ShowAsync(MainWindow, title, message, buttons, icon, windowStartupLocation);
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using BarryFileMan.Managers;
+using BarryFileMan.Views.Common;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using MsBox.Avalonia.Enums;
 using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
@@ -48,16 +48,17 @@ namespace BarryFileMan.ViewModels.Settings
             try
             {
                 var result = await AppManager.MsgBoxShowWindowDialogAsync(
-                    "Revert to Default", "This will revert all settings to the application's defaults. Are you sure you want to continue?", ButtonEnum.YesNo, Icon.Question);
+                    "Revert to Default", "This will revert all settings to the application's defaults. Are you sure you want to continue?", 
+                    MsgBoxButtons.YesNo, MsgBoxIcons.Question);
 
-                if(result == ButtonResult.Yes)
+                if(result == MsgBoxResult.Yes)
                 {
                     var config = await AppManager.UserConfig.SetConfigAsync(new());
 
                     if(config == null)
                     {
                         await AppManager.MsgBoxShowWindowDialogAsync(
-                            "Error", "Something went wrong reverting to default settings.", ButtonEnum.Ok, Icon.Error);
+                            "Error", "Something went wrong reverting to default settings.", MsgBoxButtons.Ok, MsgBoxIcons.Error);
                     }
                     else
                     {
@@ -68,7 +69,7 @@ namespace BarryFileMan.ViewModels.Settings
             catch(Exception ex)
             {
                 await AppManager.MsgBoxShowWindowDialogAsync(
-                        "Error", $"{ex.Message}\n{ex.InnerException?.Message}", ButtonEnum.Ok, Icon.Error);
+                        "Error", $"{ex.Message}\n{ex.InnerException?.Message}", MsgBoxButtons.Ok, MsgBoxIcons.Error);
             }
 
             IsBusy = false;
@@ -96,7 +97,7 @@ namespace BarryFileMan.ViewModels.Settings
             catch (Exception ex)
             {
                 await AppManager.MsgBoxShowWindowDialogAsync(
-                        "Error", $"{ex.Message}\n{ex.InnerException?.Message}", ButtonEnum.Ok, Icon.Error);
+                        "Error", $"{ex.Message}\n{ex.InnerException?.Message}", MsgBoxButtons.Ok, MsgBoxIcons.Error);
             }
         }
 

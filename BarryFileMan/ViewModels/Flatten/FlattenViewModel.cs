@@ -1,9 +1,9 @@
 ﻿using Avalonia.Platform.Storage;
 using BarryFileMan.Attributes.Validation;
 using BarryFileMan.Managers;
+using BarryFileMan.Views.Common;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using MsBox.Avalonia.Enums;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -129,7 +129,7 @@ namespace BarryFileMan.ViewModels.Flatten
             {
                 Files.Clear();
                 await AppManager.MsgBoxShowWindowDialogAsync(
-                        "Error", $"{ ex.Message }\n{ ex.InnerException?.Message }", ButtonEnum.Ok, Icon.Error);
+                        "Error", $"{ ex.Message }\n{ ex.InnerException?.Message }", MsgBoxButtons.Ok, MsgBoxIcons.Error);
             }
 
             await ApplyFilters();
@@ -163,9 +163,9 @@ namespace BarryFileMan.ViewModels.Flatten
             bool hadError = false;
 
             var mbResult = await AppManager.MsgBoxShowWindowDialogAsync(
-                "Flatten Folder", $"Are you sure you want to flatten the following folder?\n\n{FolderPath}", ButtonEnum.YesNo, Icon.Question);
+                "Flatten Folder", $"Are you sure you want to flatten the following folder?\n\n{FolderPath}", MsgBoxButtons.YesNo, MsgBoxIcons.Question);
 
-            if (mbResult == ButtonResult.Yes)
+            if (mbResult == MsgBoxResult.Yes)
             {
                 // Move files
                 foreach (var file in FilteredFiles.Where((ff) => !ff.Exclude))
@@ -186,7 +186,7 @@ namespace BarryFileMan.ViewModels.Flatten
                 {
                     var failedListString = string.Join("\n", failedFiles);
                     await AppManager.MsgBoxShowWindowDialogAsync(
-                        "Error", $"Failed to move the following files:\n{failedListString}", ButtonEnum.Ok, Icon.Error);
+                        "Error", $"Failed to move the following files:\n{failedListString}", MsgBoxButtons.Ok, MsgBoxIcons.Error);
                     failedFiles = new();
                     hadError = true;
                 }
@@ -212,7 +212,7 @@ namespace BarryFileMan.ViewModels.Flatten
                 {
                     var failedListString = string.Join("\n", failedFiles);
                     await AppManager.MsgBoxShowWindowDialogAsync(
-                        "Error", $"Failed to delete the following excluded files:\n{failedListString}", ButtonEnum.Ok, Icon.Error);
+                        "Error", $"Failed to delete the following excluded files:\n{failedListString}", MsgBoxButtons.Ok, MsgBoxIcons.Error);
                     failedFiles = new();
                     hadError = true;
                 }
@@ -226,7 +226,7 @@ namespace BarryFileMan.ViewModels.Flatten
                     catch (Exception ex)
                     {
                         await AppManager.MsgBoxShowWindowDialogAsync(
-                            "Error", $"Failed to delete empty folders!\n{ex.Message}\n{ex.InnerException?.Message}", ButtonEnum.Ok, Icon.Error);
+                            "Error", $"Failed to delete empty folders!\n{ex.Message}\n{ex.InnerException?.Message}", MsgBoxButtons.Ok, MsgBoxIcons.Error);
                         hadError = true;
                     }
                 }
@@ -236,7 +236,7 @@ namespace BarryFileMan.ViewModels.Flatten
 
                 if (!hadError)
                 {
-                    await AppManager.MsgBoxShowWindowDialogAsync("Success", "Folder successfully flattened!", ButtonEnum.Ok, Icon.Success);
+                    await AppManager.MsgBoxShowWindowDialogAsync("Success", "Folder successfully flattened!", MsgBoxButtons.Ok, MsgBoxIcons.Success);
                 }
             }
 
@@ -292,7 +292,7 @@ namespace BarryFileMan.ViewModels.Flatten
             {
                 files.Clear();
                 await AppManager.MsgBoxShowWindowDialogAsync(
-                        "Error", $"{ex.Message}\n{ex.InnerException?.Message}", ButtonEnum.Ok, Icon.Error);
+                        "Error", $"{ex.Message}\n{ex.InnerException?.Message}", MsgBoxButtons.Ok, MsgBoxIcons.Error);
             }
 
             Files.Clear();

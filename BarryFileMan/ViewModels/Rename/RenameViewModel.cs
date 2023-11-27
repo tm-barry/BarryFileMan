@@ -5,9 +5,9 @@ using BarryFileMan.Managers;
 using BarryFileMan.Models.Config;
 using BarryFileMan.Rename.Enums;
 using BarryFileMan.ViewModels.Rename.Providers;
+using BarryFileMan.Views.Common;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using MsBox.Avalonia.Enums;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -192,15 +192,15 @@ namespace BarryFileMan.ViewModels.Rename
         [RelayCommand(CanExecute = nameof(CanSaveFileRenames))]
         private async Task SaveFileRenames()
         {
-            ButtonResult? result = null;
+            MsgBoxResult? result = null;
             if(Files.Any((file) => file.RenameError != null))
                 result = await AppManager.MsgBoxShowWindowDialogAsync(
-                    "Error", "Some files have errors and can't be renamed. Do you still want to continue?", ButtonEnum.YesNo, Icon.Error);
+                    "Error", "Some files have errors and can't be renamed. Do you still want to continue?", MsgBoxButtons.YesNo, MsgBoxIcons.Error);
 
             result ??= await AppManager.MsgBoxShowWindowDialogAsync(
-                    "Rename", "Files will be renamed. Do you want to continue?", ButtonEnum.YesNo, Icon.Question);
+                    "Rename", "Files will be renamed. Do you want to continue?", MsgBoxButtons.YesNo, MsgBoxIcons.Question);
 
-            if(result == ButtonResult.Yes)
+            if(result == MsgBoxResult.Yes)
             {
                 var filesToSave = Files.Where((file) => file.RenameError == null).ToList();
                 var failedFiles = new List<string>();
@@ -226,10 +226,10 @@ namespace BarryFileMan.ViewModels.Rename
 
                 if(failedFiles.Count > 0)
                     await AppManager.MsgBoxShowWindowDialogAsync(
-                        "Error", $"The following files failed to be renamed:\n\n{string.Join('\n', failedFiles)}", ButtonEnum.Ok, Icon.Error);
+                        "Error", $"The following files failed to be renamed:\n\n{string.Join('\n', failedFiles)}", MsgBoxButtons.Ok, MsgBoxIcons.Error);
                 else
                     await AppManager.MsgBoxShowWindowDialogAsync(
-                        "Success", $"Files successfully renamed!", ButtonEnum.Ok, Icon.Success);
+                        "Success", $"Files successfully renamed!", MsgBoxButtons.Ok, MsgBoxIcons.Success);
             }
         }
 
