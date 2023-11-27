@@ -20,7 +20,7 @@ namespace BarryFileMan.ViewModels.Rename.Providers
 
         [ObservableProperty]
         [HasErrorProperty(nameof(MatchPatternError))]
-        private string _matchPattern = "\\\\(?<title>[^\\\\]+)(?:s|S)(?<season>\\d+)(?:e|E)(?<episode>\\d+)";
+        private string _matchPattern = "(?:\\\\|/)(?<title>[^(?:\\\\|/)]+)(?:s|S)(?<season>\\d+)(?:e|E)(?<episode>\\d+)";
         partial void OnMatchPatternChanged(string value)
         {
             TestMatches = FindMatches(TestString, value, out var error);

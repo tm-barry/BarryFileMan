@@ -29,19 +29,19 @@
 				  ColumnDefinitions="*,Auto"
 				  RowDefinitions="Auto,Auto">
 				<TextBox Grid.Column="0"
+						 Height="34"
 						 Text="{Binding FolderPath}"
-						 Height="48"
 						 VerticalContentAlignment="Center"
 						 CornerRadius="3,0,0,3"
 						 Watermark="Select a folder to flatten..."
 						 IsReadOnly="True"/>
 				<Button Grid.Column="1"
-						Height="50"
 						Width="75"
+						Height="36"
 						CornerRadius="0,3,3,0"
 						Command="{Binding OpenFolderDialogCommand}">
 					<Panel>
-						<materialIcons:MaterialIcon Height="24" Width="24" Kind="FolderOpen"/>
+						<materialIcons:MaterialIcon Kind="FolderOpen"/>
 					</Panel>
 				</Button>
 			</Grid>
