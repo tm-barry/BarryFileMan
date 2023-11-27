@@ -208,7 +208,7 @@
 						Command="{Binding FlattenFolderCommand}">
 					<Grid ColumnDefinitions="Auto,*">
 						<materialIcons:MaterialIcon Grid.Column="0" Kind="ContentSaveAll"/>
-						<TextBlock Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Text="Save"/>
+						<TextBlock Grid.Column="1" Margin="5,0,0,0" VerticalAlignment="Center" Text="Save"/>
 					</Grid>
 				</Button>
 			</Grid>

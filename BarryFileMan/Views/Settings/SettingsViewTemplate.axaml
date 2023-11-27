@@ -73,7 +73,7 @@
 					Command="{Binding RevertToDefaultCommand}">
 				<Grid ColumnDefinitions="Auto,*">
 					<materialIcons:MaterialIcon Grid.Column="0" Kind="CogRefresh"/>
-					<TextBlock Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Text="Default"/>
+					<TextBlock Grid.Column="1" Margin="5,0,0,0" VerticalAlignment="Center" Text="Default"/>
 				</Grid>
 			</Button>
 
@@ -81,19 +81,19 @@
 						Orientation="Horizontal"
 						HorizontalAlignment="Right">
 				<Button Height="32"
-						Content="Undo Changes"
+						Content="Undo"
 						Command="{Binding UndoChangesCommand}">
 					<Grid ColumnDefinitions="Auto,*">
 						<materialIcons:MaterialIcon Grid.Column="0" Kind="Undo"/>
-						<TextBlock Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Text="Undo Changes"/>
+						<TextBlock Grid.Column="1" Margin="5,0,0,0" VerticalAlignment="Center" Text="Undo"/>
 					</Grid>
 				</Button>
 				<Button Height="32" Margin="10,0,0,0"
-						Content="Save Changes"
+						Content="Save"
 						Command="{Binding SaveChangesCommand}">
 					<Grid ColumnDefinitions="Auto,*">
 						<materialIcons:MaterialIcon Grid.Column="0" Kind="ContentSave"/>
-						<TextBlock Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Text="Save Changes"/>
+						<TextBlock Grid.Column="1" Margin="5,0,0,0" VerticalAlignment="Center" Text="Save"/>
 					</Grid>
 				</Button>
 			</StackPanel>
