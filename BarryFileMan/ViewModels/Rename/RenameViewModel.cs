@@ -245,7 +245,8 @@ namespace BarryFileMan.ViewModels.Rename
                 var files = await StorageItemHelper.GetStorageFiles(items);
                 foreach(var file in files)
                 {
-                    Files.Add(new RenameFileViewModel(file));
+                    if(!Files.Any((f) => f.File.Path == file.Path))
+                        Files.Add(new RenameFileViewModel(file));
                 }
             }
         }

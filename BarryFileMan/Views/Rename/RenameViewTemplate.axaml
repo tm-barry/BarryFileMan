@@ -172,7 +172,7 @@
 									<TextBlock Grid.Column="0"
 											   IsVisible="{Binding HasRenamedFileName}"
 											   VerticalAlignment="Center"
-											   Text="{Binding RenamedFileName}"
+											   Text="{Binding CleanRenamedFileName}"
 											   TextWrapping="Wrap"/>
 									<TextBlock Grid.Column="0"
 											   IsVisible="{Binding !HasRenamedFileName}"
@@ -190,7 +190,12 @@
 												   Foreground="White"/>
 									</Border>
 								</Grid>
-								<TextBlock IsVisible="{Binding HasError}" Text="{Binding RenameError}" Foreground="{DynamicResource SystemErrorTextColor}"/>
+								<TextBlock IsVisible="{Binding HasError}"
+										   Foreground="{DynamicResource SystemErrorTextColor}"
+										   Text="{Binding RenameError}"/>
+								<TextBlock IsVisible="{Binding HasInvalidRenamedCharacters}"
+										   Foreground="{DynamicResource SystemAccentColor}"
+										   Text="{Binding InvalidRenamedCharactersStr, StringFormat='Removed invalid filename characters: {0}'}"/>
 							</StackPanel>
 						</Grid>
 					</DataTemplate>
