@@ -36,9 +36,16 @@
 			   CompactPaneLength="69" 
 			   OpenPaneLength="150">
 		<SplitView.Pane>
-			<Grid x:Name="toolPaneGrid" RowDefinitions="*,Auto,Auto">
+			<Grid x:Name="toolPaneGrid" RowDefinitions="Auto,Auto,*,Auto,Auto">
 
-				<ItemsControl Grid.Row="0" Margin="5">
+				<Image Grid.Row="0" Margin="10,0,10,0"
+					   MaxWidth="96"
+					   HorizontalAlignment="Center"
+					   Source="{SvgImage /Assets/barry-file-man-logo.svg}"/>
+
+				<Separator Grid.Row="1"/>
+
+				<ItemsControl Grid.Row="2" Margin="5">
 					<ToggleButton HorizontalAlignment="Stretch" Margin="5"
 								  Command="{Binding ToolPaneItemSelectedCommand}"
 							      CommandParameter="rename"
@@ -74,7 +81,8 @@
 					</ToggleButton>-->
 				</ItemsControl>
 
-				<ToggleButton HorizontalAlignment="Stretch" Margin="10" Grid.Row="1"
+				<ToggleButton Grid.Row="3" Margin="10"
+							  HorizontalAlignment="Stretch"
 							  Command="{Binding ToolPaneItemSelectedCommand}"
 							  CommandParameter="settings"
 							  IsChecked="{Binding SelectedToolPaneItem, Mode=OneWay,
@@ -86,7 +94,9 @@
 					</Grid>
 				</ToggleButton>
 
-				<Button Grid.Row="2" Height="42" HorizontalAlignment="Stretch" Command="{Binding ToggleToolPaneCommand}">
+				<Button Grid.Row="4" Height="42" 
+						HorizontalAlignment="Stretch" 
+						Command="{Binding ToggleToolPaneCommand}">
 					<materialIcons:MaterialIcon Kind="{Binding ToolPaneExpandIcon}"/>
 				</Button>
 			</Grid>
