@@ -53,21 +53,15 @@ public partial class MessageBox : Window
 
     private static Material.Icons.MaterialIconKind? GetMaterialIconKind(MsgBoxIcons? icon)
     {
-        switch(icon)
+        return icon switch
         {
-            case MsgBoxIcons.Alert:
-                return Material.Icons.MaterialIconKind.AlertCircle;
-            case MsgBoxIcons.Error:
-                return Material.Icons.MaterialIconKind.CloseCircle;
-            case MsgBoxIcons.Info:
-                return Material.Icons.MaterialIconKind.InfoCircle;
-            case MsgBoxIcons.Question:
-                return Material.Icons.MaterialIconKind.QuestionMarkCircle;
-            case MsgBoxIcons.Success:
-                return Material.Icons.MaterialIconKind.SuccessCircle;
-            default:
-                return null;
-        }
+            MsgBoxIcons.Alert => (Material.Icons.MaterialIconKind?)Material.Icons.MaterialIconKind.AlertCircle,
+            MsgBoxIcons.Error => (Material.Icons.MaterialIconKind?)Material.Icons.MaterialIconKind.CloseCircle,
+            MsgBoxIcons.Info => (Material.Icons.MaterialIconKind?)Material.Icons.MaterialIconKind.InfoCircle,
+            MsgBoxIcons.Question => (Material.Icons.MaterialIconKind?)Material.Icons.MaterialIconKind.QuestionMarkCircle,
+            MsgBoxIcons.Success => (Material.Icons.MaterialIconKind?)Material.Icons.MaterialIconKind.SuccessCircle,
+            _ => null,
+        };
     }
 
     private void AddButton(string content, MsgBoxResult result, bool defaultValue = false)

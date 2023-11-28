@@ -148,11 +148,14 @@ namespace BarryFileMan.ViewModels.Rename.Providers
         {
             foreach(var file in ViewModel.Files)
             {
+                file.IsDuplicate = false;
                 file.Matches = FindMatches(GetFileMatchInput(file), MatchPattern, out _);
                 var renamedFileName = RenameMatches(file.Matches, RenamePattern, file.FileNameWithoutExtension, out var renameError);
                 file.RenameError = renameError;
                 file.RenamedFileName = string.IsNullOrEmpty(renameError) ? renamedFileName : null;
             }
+
+            HandleDuplicateFilenames();
         }
 
         private void ViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)

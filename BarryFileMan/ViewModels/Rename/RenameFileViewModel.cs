@@ -72,9 +72,13 @@ namespace BarryFileMan.ViewModels.Rename
 
         public bool HasError => RenameError != null;
 
-        public RenameFileViewModel(IStorageFile file)
+        [ObservableProperty]
+        private bool _isDuplicate;
+
+        public RenameFileViewModel(IStorageFile file, bool isDuplicate = false)
         {
             File = file;
+            IsDuplicate = isDuplicate;
         }
     }
 }
