@@ -49,7 +49,7 @@ namespace BarryFileMan.ViewModels.Rename.Providers
 
         [ObservableProperty]
         [HasErrorProperty(nameof(RenamePatternError))]
-        private string _renamePattern = "<title.replace(\'.\',\' \')>- S<season.pad(left,\'0\',2)>E<episode.pad(left,\'0\',2)>";
+        private string _renamePattern = "<title{-1}.replace(\'.\',\' \')>- S<season{-1}.pad(left,\'0\',2)>E<episode{-1}.pad(left,\'0\',2)>";
         partial void OnRenamePatternChanged(string value)
         {
             RenamedTestString = RenameMatches(TestMatches, value, TestString, out var error);

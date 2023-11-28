@@ -39,13 +39,21 @@ namespace BarryFileMan.Rename.Providers
                         var renameTag = new RenameTag(renameMatch.Value, renameMatch.Groups["tag"].Value, renameMatch.Index, renameMatch.Length);
                         if (string.IsNullOrEmpty(renameTag.Error) && renameTag.Functions.All((function) => string.IsNullOrEmpty(function.Error)))
                         {
-                            var match = matches.ElementAtOrDefault(renameTag.MatchIndex);
+                            IRenameMatch? match = null;
+                            if (renameTag.MatchIndex == -1)
+                                match = matches.LastOrDefault();
+                            else
+                                match = matches.ElementAtOrDefault(renameTag.MatchIndex);
+
                             if (match != null)
                             {
                                 IRenameMatchGroupValue? groupValue = null;
                                 if (match.Groups.ContainsKey(renameTag.TagName))
                                 {
-                                    groupValue = match.Groups[renameTag.TagName].ElementAtOrDefault(renameTag.GroupIndex);
+                                    if (renameTag.GroupIndex == -1)
+                                        groupValue = match.Groups[renameTag.TagName].LastOrDefault();
+                                    else
+                                        groupValue = match.Groups[renameTag.TagName].ElementAtOrDefault(renameTag.GroupIndex);
                                 }
 
                                 if (groupValue != null)
@@ -105,7 +113,7 @@ namespace BarryFileMan.Rename.Providers
 
     internal class RenameTag
     {
-        private static readonly string _renameInnerTagPattern = "\\G\\s*(?<tagName>(?:[a-zA-Z]|\\d)+)(?:{\\s*(?<matchIndex>\\d+)\\s*})?(?:\\[\\s*(?<groupIndex>\\d+)\\s*\\])?(?<function>.(?<functionName>(?:[a-zA-Z]|\\d)+)(?:\\((?<functionParams>.*?)\\)))*?\\s*$";
+        private static readonly string _renameInnerTagPattern = "\\G\\s*(?<tagName>(?:[a-zA-Z]|\\d)+)(?:{\\s*(?<matchIndex>-?\\d+)\\s*})?(?:\\[\\s*(?<groupIndex>-?\\d+)\\s*\\])?(?<function>.(?<functionName>(?:[a-zA-Z]|\\d)+)(?:\\((?<functionParams>.*?)\\)))*?\\s*$";
 
         public string Tag { get; }
         public string Value { get; }
