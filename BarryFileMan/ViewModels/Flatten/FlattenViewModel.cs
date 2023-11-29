@@ -110,6 +110,13 @@ namespace BarryFileMan.ViewModels.Flatten
         }
 
         [RelayCommand]
+        private void ClearFolder()
+        {
+            StorageFolder = null;
+            Files.Clear();
+        }
+
+        [RelayCommand]
         private async Task OpenFolderDialog()
         {
             OpeningFolder = true;

@@ -27,8 +27,7 @@
 		<Grid x:Name="flattenGrid" RowDefinitions="Auto,Auto,Auto,*,Auto">
 			<!-- Folder Dialog -->
 			<Grid Grid.Row="0" Margin="0,0,0,10"
-				  ColumnDefinitions="*,Auto"
-				  RowDefinitions="Auto,Auto">
+				  ColumnDefinitions="*,Auto,Auto">
 				<TextBox Grid.Column="0"
 						 Height="34"
 						 Text="{Binding FolderPath}"
@@ -43,6 +42,15 @@
 					</i:Interaction.Behaviors>
 				</TextBox>
 				<Button Grid.Column="1"
+						Width="48"
+						Height="36"
+						CornerRadius="0,0,0,0"
+						Command="{Binding ClearFolderCommand}">
+					<Panel>
+						<materialIcons:MaterialIcon Kind="CloseThick"/>
+					</Panel>
+				</Button>
+				<Button Grid.Column="2"
 						Width="75"
 						Height="36"
 						CornerRadius="0,3,3,0"
