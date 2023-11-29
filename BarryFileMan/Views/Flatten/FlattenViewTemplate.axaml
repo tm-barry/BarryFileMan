@@ -1,6 +1,7 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 					xmlns:vm="using:BarryFileMan.ViewModels.Flatten"
+					xmlns:i="using:Avalonia.Xaml.Interactivity"
 					xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia">
 	<!-- Preview DataTemplate -->
 	<Design.PreviewWith>
@@ -34,7 +35,13 @@
 						 VerticalContentAlignment="Center"
 						 CornerRadius="3,0,0,3"
 						 Watermark="Select a folder to flatten..."
-						 IsReadOnly="True"/>
+						 IsReadOnly="True">
+					<i:Interaction.Behaviors>
+						<EventTriggerBehavior EventName="DoubleTapped">
+							<InvokeCommandAction Command="{Binding OpenFolderDialogCommand}"/>
+						</EventTriggerBehavior>
+					</i:Interaction.Behaviors>
+				</TextBox>
 				<Button Grid.Column="1"
 						Width="75"
 						Height="36"
