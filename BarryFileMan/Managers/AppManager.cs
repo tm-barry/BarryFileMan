@@ -7,12 +7,19 @@ using BarryFileMan.Views;
 using BarryFileMan.Views.Common;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace BarryFileMan.Managers
 {
     public static class AppManager
     {
+        private static readonly Assembly? _assembly = Assembly.GetEntryAssembly();
+        private static readonly FileVersionInfo? _fileVersionInfo = FileVersionInfo.GetVersionInfo(_assembly?.Location ?? string.Empty);
+        public static string? AppName => _fileVersionInfo?.ProductName;
+        public static string? AppVersion => _fileVersionInfo?.ProductVersion;
+
         public static MainWindow? MainWindow { get; private set; }
         public static IConfigManager<UserConfig> UserConfig { get; private set; } = new JsonUserConfigManager();
 

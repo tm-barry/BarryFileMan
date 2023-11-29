@@ -1,6 +1,6 @@
-﻿
-using BarryFileMan.Managers;
+﻿using BarryFileMan.Managers;
 using BarryFileMan.Models.Config;
+using BarryFileMan.ViewModels.About;
 using BarryFileMan.ViewModels.Comics;
 using BarryFileMan.ViewModels.Flatten;
 using BarryFileMan.ViewModels.Rename;
@@ -13,6 +13,7 @@ namespace BarryFileMan.ViewModels
 {
     public partial class MainWindowViewModel : ObservableObject
     {
+        private readonly AboutViewModel _aboutViewModel = new();
         private readonly ComicsViewModel _comicsViewModel = new();
         private readonly FlattenViewModel _flattenViewModel = new();
         private readonly RenameViewModel _renameViewModel = new();
@@ -37,6 +38,7 @@ namespace BarryFileMan.ViewModels
             {
                 return SelectedToolPaneItem switch
                 {
+                    "about" => "About",
                     "comics" => "Comics",
                     "flatten" => "Flatten",
                     "rename" => "Rename",
@@ -83,6 +85,7 @@ namespace BarryFileMan.ViewModels
         {
             ViewContent = tool switch
             {
+                "about" => _aboutViewModel,
                 "comics" => _comicsViewModel,
                 "flatten" => _flattenViewModel,
                 "rename" => _renameViewModel,
