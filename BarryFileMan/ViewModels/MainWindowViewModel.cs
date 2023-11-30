@@ -19,6 +19,8 @@ namespace BarryFileMan.ViewModels
         private readonly RenameViewModel _renameViewModel = new();
         private readonly SettingsViewModel _settingsViewModel = new();
 
+        public static string? AppName => AppManager.AppName;
+
         [ObservableProperty]
         private object? _viewContent;
 

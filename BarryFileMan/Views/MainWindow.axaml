@@ -10,7 +10,7 @@
         x:Class="BarryFileMan.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/barry-file-man-logo.ico"
-        Title="BarryFileMan"
+        Title="{Binding AppName}"
 		MinWidth="750" MinHeight="750"
 		Name="mainWindow">
 
