@@ -2,8 +2,8 @@
 {
     public enum RegexRenameMatchTypes
     {
-        FilenameOnly,
-        IncludeParentDirectory,
+        Filename,
+        FilenameDirectory,
         FullPath
     }
 }

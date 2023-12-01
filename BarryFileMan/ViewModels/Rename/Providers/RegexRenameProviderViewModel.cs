@@ -36,16 +36,23 @@ namespace BarryFileMan.ViewModels.Rename.Providers
 
         public static ReadOnlyCollection<ItemViewModel<RegexRenameMatchTypes>> MatchTypes => new List<ItemViewModel<RegexRenameMatchTypes>>()
         {
-            new(RegexRenameMatchTypes.FilenameOnly, "Filename Only", false),
-            new(RegexRenameMatchTypes.IncludeParentDirectory, "Include Parent Directory", false),
+            new(RegexRenameMatchTypes.Filename, "Filename", false),
+            new(RegexRenameMatchTypes.FilenameDirectory, "Filename & Directory", false),
             new(RegexRenameMatchTypes.FullPath, "Full Path", false)
         }.AsReadOnly();
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(SelectedMatchType))]
         private int? _selectedMatchTypeIndex;
+        partial void OnSelectedMatchTypeIndexChanged(int? value)
+        {
+            if (ViewModel.SelectedFile != null)
+            {
+                TestString = GetFileMatchInput(ViewModel.SelectedFile);
+            }
+        }
 
-        public RegexRenameMatchTypes SelectedMatchType => MatchTypes.ElementAtOrDefault(SelectedMatchTypeIndex ?? -1)?.Item ?? RegexRenameMatchTypes.FilenameOnly;
+        public RegexRenameMatchTypes SelectedMatchType => MatchTypes.ElementAtOrDefault(SelectedMatchTypeIndex ?? -1)?.Item ?? RegexRenameMatchTypes.Filename;
 
         [ObservableProperty]
         [HasErrorProperty(nameof(RenamePatternError))]
@@ -174,10 +181,10 @@ namespace BarryFileMan.ViewModels.Rename.Providers
             string? input = null;
             switch(SelectedMatchType)
             {
-                case RegexRenameMatchTypes.FilenameOnly:
+                case RegexRenameMatchTypes.Filename:
                     input = file?.FileNameWithoutExtension;
                     break;
-                case RegexRenameMatchTypes.IncludeParentDirectory:
+                case RegexRenameMatchTypes.FilenameDirectory:
                     input = file?.RelativePathWithoutExtension;
                     break;
                 case RegexRenameMatchTypes.FullPath:

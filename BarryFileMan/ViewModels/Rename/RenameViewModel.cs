@@ -231,6 +231,8 @@ namespace BarryFileMan.ViewModels.Rename
                         Files.Add(new RenameFileViewModel(file));
                 }
             }
+
+            SelectedFile = Files.FirstOrDefault();
         }
     }
 }
