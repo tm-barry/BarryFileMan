@@ -1,5 +1,6 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Platform.Storage;
+using BarryFileMan.Enums.Help;
 using BarryFileMan.Helpers;
 using BarryFileMan.Managers.Config;
 using BarryFileMan.Models.Config;
@@ -60,6 +61,12 @@ namespace BarryFileMan.Managers
             MsgBoxButtons buttons, MsgBoxIcons? icon = null, WindowStartupLocation windowStartupLocation = WindowStartupLocation.CenterScreen)
         {
             return MessageBox.ShowAsync(MainWindow, title, message, buttons, icon, windowStartupLocation);
+        }
+
+        public static Task HelpWindowShowAsync(HelpSections section = HelpSections.Help, bool isDialog = false, 
+            WindowStartupLocation windowStartupLocation = WindowStartupLocation.CenterScreen)
+        {
+            return HelpWindow.ShowAsync(section, isDialog ? MainWindow : null, windowStartupLocation);
         }
     }
 }

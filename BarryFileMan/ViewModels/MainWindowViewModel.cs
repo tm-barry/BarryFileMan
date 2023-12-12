@@ -71,6 +71,12 @@ namespace BarryFileMan.ViewModels
             }
         }
 
+        [RelayCommand]
+        private void ShowHelp()
+        {
+            AppManager.HelpWindowShowAsync();
+        }
+
         public MainWindowViewModel()
         {
             ChangeViewContent(SelectedToolPaneItem);

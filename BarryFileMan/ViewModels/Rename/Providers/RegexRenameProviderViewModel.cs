@@ -2,15 +2,18 @@
 using Avalonia.Controls.Models.TreeDataGrid;
 using BarryFileMan.Attributes.Validation;
 using BarryFileMan.Enums.Rename;
+using BarryFileMan.Managers;
 using BarryFileMan.Rename.Exceptions;
 using BarryFileMan.Rename.Interfaces;
 using BarryFileMan.Rename.Models;
 using BarryFileMan.Rename.Models.Regex;
 using BarryFileMan.Rename.Providers.Regex;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace BarryFileMan.ViewModels.Rename.Providers
 {

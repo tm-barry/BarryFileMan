@@ -3,14 +3,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        x:Class="BarryFileMan.Views.Common.Hyperlink"
-		x:Name="hyperlinkBtn"
+        x:Class="BarryFileMan.Views.Help.HelpLink"
+		x:Name="helpLink"
 		Background="Transparent"
 		BorderThickness="0"
-		Click="OpenHyperlink">
+		Click="HelpLink_Click">
 	<Button.Template>
 		<ControlTemplate>
-			<TextBlock Text="{Binding #hyperlinkBtn.Content}" Foreground="{DynamicResource SystemAccentColor}" TextDecorations="Underline">
+			<TextBlock Text="{Binding #helpLink.Content}" Foreground="{DynamicResource SystemAccentColor}" TextDecorations="Underline">
 				<TextBlock.Styles>
 					<Style Selector="TextBlock:pointerover">
 						<Setter Property="Foreground" Value="{DynamicResource SystemAccentColorLight1}"/>
