@@ -1,6 +1,7 @@
 ﻿using Avalonia.Platform;
 using BarryFileMan.Enums.Help;
 using BarryFileMan.Helpers;
+using BarryFileMan.ViewModels.Help.Sections;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
@@ -14,11 +15,30 @@ namespace BarryFileMan.ViewModels.Help
 {
     public partial class HelpViewModel : ObservableObject
     {
+        private readonly FlattenSectionViewModel _flattenSectionViewModel = new();
+        private readonly HelpSectionViewModel _helpSectionViewModel = new();
+        private readonly RenameRegexSectionViewModel _renameRegexSectionViewModel = new();
+        private readonly RenameSectionViewModel _renameSectionViewModel = new();
+
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(CurrentSection))]
         private ObservableCollection<HelpSections> _sections = new() { };
 
         public HelpSections CurrentSection => Sections.LastOrDefault();
+
+        public BaseSectionViewModel CurrentSectionVM
+        {
+            get
+            {
+                return CurrentSection switch
+                {
+                    HelpSections.Rename => _renameSectionViewModel,
+                    HelpSections.RenameRegex => _renameRegexSectionViewModel,
+                    HelpSections.Flatten => _flattenSectionViewModel,
+                    _ => _helpSectionViewModel,
+                };
+            }
+        }
 
         [ObservableProperty]
         private string? _markdownText = null;
@@ -43,6 +63,7 @@ namespace BarryFileMan.ViewModels.Help
         private void Sections_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             OnPropertyChanged(nameof(CurrentSection));
+            OnPropertyChanged(nameof(CurrentSectionVM));
             GoBackCommand.NotifyCanExecuteChanged();
         }
 

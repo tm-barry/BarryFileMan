@@ -59,6 +59,7 @@
 				</Style>
 			</Grid.Styles>
 
+			<!-- Match Provider Selection -->
 			<ComboBox Grid.Row="0" Margin="5"
 					  MinWidth="100"
 					  HorizontalAlignment="Center"
@@ -78,6 +79,7 @@
 				</ComboBox.ItemTemplate>
 			</ComboBox>
 
+			<!-- Match Provider Settings -->
 			<Expander Grid.Row="1" Margin="0,0,0,10"
 					  HorizontalAlignment="Stretch"
 					  IsExpanded="{Binding ProviderSettingsExpanded}"
@@ -94,14 +96,15 @@
 				</Expander.Header>
 				<ContentControl Content="{Binding RenameProvider}"/>
 			</Expander>
-			
-			
+
+			<!-- File List Header -->
 			<TextBlock Grid.Row="2" HorizontalAlignment="Left" Margin="5"
 					   Text="Original Files"/>
 
 			<TextBlock Grid.Row="2" HorizontalAlignment="Right" Margin="5"
 					   Text="New Names"/>
 
+			<!-- File List -->
 			<ListBox Grid.Row="3"
 					 CornerRadius="3"
 					 ItemsSource="{Binding Files}"

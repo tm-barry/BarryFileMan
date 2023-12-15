@@ -37,6 +37,8 @@
 			   DisplayMode="CompactInline" 
 			   CompactPaneLength="69" 
 			   OpenPaneLength="150">
+		
+		<!-- Side Panel -->
 		<SplitView.Pane>
 			<Grid x:Name="toolPaneGrid" RowDefinitions="Auto,Auto,*,Auto,Auto">
 
@@ -126,14 +128,15 @@
 			</Grid>
 		</SplitView.Pane>
 
+		<!-- Main View -->
 		<Grid RowDefinitions="Auto,*">
 			
 			<!-- View Header -->
-			<Grid Grid.Row="0">
-				<TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"
-						   FontSize="22" FontWeight="Bold"
-						   Text="{Binding Title}"/>
-			</Grid>
+			<TextBlock Grid.Row="0" Margin="5"
+					   HorizontalAlignment="Center"
+					   VerticalAlignment="Center"
+					   FontSize="22" FontWeight="Bold"
+					   Text="{Binding Title}"/>
 
 			<!-- View Content -->
 			<Grid Grid.Row="1">

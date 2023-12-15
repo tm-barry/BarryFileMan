@@ -5,7 +5,7 @@
 					xmlns:svg="using:Avalonia.Svg.Skia">
 	<!-- Preview DataTemplate -->
 	<Design.PreviewWith>
-		<Grid Width="600" Height="450">
+		<Grid Width="750" Height="300">
 			<Grid.Resources>
 				<ResourceDictionary>
 					<ResourceDictionary.MergedDictionaries>

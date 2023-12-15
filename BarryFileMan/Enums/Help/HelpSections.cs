@@ -4,6 +4,7 @@
     {
         Help,
         Rename,
-        RenameRegex
+        RenameRegex,
+        Flatten
     }
 }

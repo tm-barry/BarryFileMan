@@ -5,7 +5,7 @@
 					xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia">
 	<!-- Preview DataTemplate -->
 	<Design.PreviewWith>
-		<Grid Width="600" Height="450">
+		<Grid Width="500" Height="500">
 			<Grid.Resources>
 				<ResourceDictionary>
 					<ResourceDictionary.MergedDictionaries>

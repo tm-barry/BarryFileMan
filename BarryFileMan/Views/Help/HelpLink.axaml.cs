@@ -19,7 +19,6 @@ public partial class HelpLink : Button
     public HelpLink()
     {
         InitializeComponent();
-        Click += HelpLink_Click;
     }
 
     private void HelpLink_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)

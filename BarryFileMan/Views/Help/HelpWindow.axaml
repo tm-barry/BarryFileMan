@@ -10,6 +10,14 @@
         Title="Help"
 		Height="500" Width="500"
 		x:DataType="vm:HelpViewModel">
+	<Window.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceInclude Source="/Views/Help/Sections/HelpSectionViewTemplate.axaml"/>
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+	</Window.Resources>
+	
 	<Grid RowDefinitions="Auto,*">
 		
 		<!-- Top Buttons -->
@@ -54,11 +62,13 @@
 			</Button>
 		</Grid>
 
-		<Grid Grid.Row="1" RowDefinitions="Auto, Auto"
-			  VerticalAlignment="Center"
-			  HorizontalAlignment="Center">
-			<TextBlock Grid.Row="0" Text="TODO"/>
-			<TextBlock Grid.Row="1" Text="{Binding CurrentSection}"/>
-		</Grid>
+		<!-- Help Section -->
+		<ScrollViewer Grid.Row="1" Margin="10">
+			<ScrollViewer.DataTemplates>
+				<StaticResource ResourceKey="helpSectionView"/>
+			</ScrollViewer.DataTemplates>
+			
+			<ContentControl Content="{Binding CurrentSectionVM}"/>
+		</ScrollViewer>
 	</Grid>
 </Window>
