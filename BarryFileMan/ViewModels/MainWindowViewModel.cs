@@ -72,7 +72,7 @@ namespace BarryFileMan.ViewModels
         }
 
         [RelayCommand]
-        private void ShowHelp()
+        private static void ShowHelp()
         {
             AppManager.HelpWindowShowAsync();
         }

@@ -87,7 +87,7 @@ namespace BarryFileMan.Managers.Config
         {
             try
             {
-                File.WriteAllText(_filePath, JsonSerializer.Serialize(config));
+                File.WriteAllText(_filePath, JsonSerializer.Serialize(config, new JsonSerializerOptions { WriteIndented = true }));
                 UpdateConfigSubject(config);
             }
             catch { }
@@ -98,7 +98,7 @@ namespace BarryFileMan.Managers.Config
         {
             try
             {
-                await File.WriteAllTextAsync(_filePath, JsonSerializer.Serialize(config));
+                await File.WriteAllTextAsync(_filePath, JsonSerializer.Serialize(config, new JsonSerializerOptions { WriteIndented = true }));
                 UpdateConfigSubject(config);
             }
             catch { }

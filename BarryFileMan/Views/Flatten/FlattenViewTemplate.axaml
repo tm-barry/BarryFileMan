@@ -196,7 +196,7 @@
 			<!-- Files Listbox Placeholder -->
 			<Grid Grid.Row="3" IsHitTestVisible="false" IsVisible="{Binding !HasFiles}">
 				<TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
-						   Text="No File Found"
+						   Text="No File(s) Found"
 						   Opacity="0.5"/>
 			</Grid>
 
