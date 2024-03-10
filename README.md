@@ -4,7 +4,7 @@
 
 <h1 align="center">BarryFileMan</h1>
 
-BarryFileMan is a file manager with a primary focus of renaming and managing media files (tv shows, movies, books, and comics).
+BarryFileMan is a file manager with a primary focus of renaming and managing media files/folders (tv shows, movies, ect.).
 
 ## License
 

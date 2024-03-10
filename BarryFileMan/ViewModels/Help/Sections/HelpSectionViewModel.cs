@@ -11,7 +11,7 @@ namespace BarryFileMan.ViewModels.Help.Sections
         public override HelpSections Section => HelpSections.Help;
         public static string AppDescription => AboutViewModel.AppDescription;
         public static Uri AppUri => AboutViewModel.AppUri;
-        public IEnumerable<PageViewModel> Pages => new List<PageViewModel>()
+        public static IEnumerable<PageViewModel> Pages => new List<PageViewModel>()
         {
             new("Rename", "Rename files using various match providers", HelpSections.Rename),
             new("Flatten", "Flatten a directory by moving all the files from subdirectories to the root directory", HelpSections.Flatten)

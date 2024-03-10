@@ -23,7 +23,6 @@
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
 				<ResourceInclude Source="/Views/About/AboutViewTemplate.axaml"/>
-				<ResourceInclude Source="/Views/Comics/ComicsViewTemplate.axaml"/>
 				<ResourceInclude Source="/Views/Flatten/FlattenViewTemplate.axaml"/>
 				<ResourceInclude Source="/Views/Rename/RenameViewTemplate.axaml"/>
 				<ResourceInclude Source="/Views/Settings/SettingsViewTemplate.axaml"/>
@@ -72,17 +71,6 @@
 							<TextBlock Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Text="Flatten"/>
 						</Grid>
 					</ToggleButton>
-					<!--<ToggleButton HorizontalAlignment="Stretch" Margin="5"
-								  Command="{Binding ToolPaneItemSelectedCommand}"
-								  CommandParameter="comics"
-								  IsChecked="{Binding SelectedToolPaneItem, Mode=OneWay,
-									Converter={StaticResource toolPaneItemConverter},
-									ConverterParameter=comics}">
-						<Grid ColumnDefinitions="Auto,*">
-							<materialIcons:MaterialIcon Grid.Column="0" Kind="NewspaperVariant" Height="32" Width="32"/>
-							<TextBlock Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Text="Comics"/>
-						</Grid>
-					</ToggleButton>-->
 				</StackPanel>
 
 				<StackPanel Grid.Row="3" Margin="5">
@@ -142,7 +130,6 @@
 			<Grid Grid.Row="1">
 				<Grid.DataTemplates>
 					<StaticResource ResourceKey="aboutView"/>
-					<StaticResource ResourceKey="comicsView"/>
 					<StaticResource ResourceKey="flattenView"/>
 					<StaticResource ResourceKey="renameView"/>
 					<StaticResource ResourceKey="settingsView"/>
