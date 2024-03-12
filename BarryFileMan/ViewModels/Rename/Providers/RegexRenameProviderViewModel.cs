@@ -39,9 +39,9 @@ namespace BarryFileMan.ViewModels.Rename.Providers
 
         public static ReadOnlyCollection<ItemViewModel<RegexRenameMatchTypes>> MatchTypes => new List<ItemViewModel<RegexRenameMatchTypes>>()
         {
-            new(RegexRenameMatchTypes.Filename, "Filename", false),
-            new(RegexRenameMatchTypes.FilenameDirectory, "Filename & Directory", false),
-            new(RegexRenameMatchTypes.FullPath, "Full Path", false)
+            new(RegexRenameMatchTypes.Filename, Resources.Resources.Filename, false),
+            new(RegexRenameMatchTypes.FilenameDirectory, Resources.Resources.FilenameAndDirectory, false),
+            new(RegexRenameMatchTypes.FullPath, Resources.Resources.FullPath, false)
         }.AsReadOnly();
 
         [ObservableProperty]
@@ -129,9 +129,9 @@ namespace BarryFileMan.ViewModels.Rename.Providers
             Columns =
             {
                 new HierarchicalExpanderColumn<RenameMatchNodeViewModel>(
-                    new TemplateColumn<RenameMatchNodeViewModel>("Name", "MatchNameCell"),
+                    new TemplateColumn<RenameMatchNodeViewModel>(Resources.Resources.Name, "MatchNameCell"),
                     x => x.SubNodes, x => x.HasSubNodes, x=> x.IsExpanded),
-                new TextColumn<RenameMatchNodeViewModel, string>("Value", x => x.Value),
+                new TextColumn<RenameMatchNodeViewModel, string>(Resources.Resources.Value, x => x.Value),
             }
         };
 

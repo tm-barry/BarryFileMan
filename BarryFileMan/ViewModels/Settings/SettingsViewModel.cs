@@ -48,8 +48,10 @@ namespace BarryFileMan.ViewModels.Settings
             try
             {
                 var result = await AppManager.MsgBoxShowWindowDialogAsync(
-                    "Revert to Default", "This will revert all settings to the application's defaults. Are you sure you want to continue?", 
-                    MsgBoxButtons.YesNo, MsgBoxIcons.Question);
+                    Resources.Resources.RevertToDefault, 
+                    Resources.Resources.RevertToDefaultConfirmationMessage, 
+                    MsgBoxButtons.YesNo, 
+                    MsgBoxIcons.Question);
 
                 if(result == MsgBoxResult.Yes)
                 {
@@ -58,7 +60,7 @@ namespace BarryFileMan.ViewModels.Settings
                     if(config == null)
                     {
                         await AppManager.MsgBoxShowWindowDialogAsync(
-                            "Error", "Something went wrong reverting to default settings.", MsgBoxButtons.Ok, MsgBoxIcons.Error);
+                            Resources.Resources.Error, Resources.Resources.RevertToDefaultErrorMessage, MsgBoxButtons.Ok, MsgBoxIcons.Error);
                     }
                     else
                     {
@@ -69,7 +71,7 @@ namespace BarryFileMan.ViewModels.Settings
             catch(Exception ex)
             {
                 await AppManager.MsgBoxShowWindowDialogAsync(
-                        "Error", $"{ex.Message}\n{ex.InnerException?.Message}", MsgBoxButtons.Ok, MsgBoxIcons.Error);
+                        Resources.Resources.Error, $"{ex.Message}\n{ex.InnerException?.Message}", MsgBoxButtons.Ok, MsgBoxIcons.Error);
             }
 
             IsBusy = false;
@@ -97,7 +99,7 @@ namespace BarryFileMan.ViewModels.Settings
             catch (Exception ex)
             {
                 await AppManager.MsgBoxShowWindowDialogAsync(
-                        "Error", $"{ex.Message}\n{ex.InnerException?.Message}", MsgBoxButtons.Ok, MsgBoxIcons.Error);
+                        Resources.Resources.Error, $"{ex.Message}\n{ex.InnerException?.Message}", MsgBoxButtons.Ok, MsgBoxIcons.Error);
             }
         }
 

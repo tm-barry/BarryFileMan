@@ -9,12 +9,11 @@ namespace BarryFileMan.ViewModels.Help.Sections
     public class HelpSectionViewModel : BaseSectionViewModel
     {
         public override HelpSections Section => HelpSections.Help;
-        public static string AppDescription => AboutViewModel.AppDescription;
         public static Uri AppUri => AboutViewModel.AppUri;
         public static IEnumerable<PageViewModel> Pages => new List<PageViewModel>()
         {
-            new("Rename", "Rename files using various match providers", HelpSections.Rename),
-            new("Flatten", "Flatten a directory by moving all the files from subdirectories to the root directory", HelpSections.Flatten)
+            new(Resources.Resources.Rename, Resources.Resources.RenamePageDescription, HelpSections.Rename),
+            new(Resources.Resources.Flatten, Resources.Resources.FlattenPageDescription, HelpSections.Flatten)
         };
     }
 

@@ -1,6 +1,7 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 					xmlns:vm="using:BarryFileMan.ViewModels.Settings"
+					xmlns:lang="using:BarryFileMan.Resources"
 					xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia">
 
 	<!-- Preview DataTemplate -->
@@ -27,17 +28,17 @@
 		<Grid RowDefinitions="*,Auto">
 			<ScrollViewer Grid.Row="0">
 				<StackPanel>
-					<!--Themes-->
+					<!--General-->
 					<TextBlock FontWeight="Bold" Margin="10,5,5,5"
-							   Text="General"/>
+							   Text="{x:Static lang:Resources.General}"/>
 					<Border BorderThickness="1" CornerRadius="3" Padding="10"
 							BorderBrush="{DynamicResource SystemBaseMediumColor}">
 						<Grid ColumnDefinitions="*,*" 
-							  RowDefinitions="Auto,Auto">
-							<TextBlock Grid.Column="0" Grid.Row="0"
+							  RowDefinitions="Auto,Auto,Auto">
+							<TextBlock Grid.Column="0" Grid.Row="0" Margin="10,0,0,0"
 									   VerticalAlignment="Center"
-									   Text="Theme:"/>
-							<ItemsControl Grid.Column="1" Grid.Row="0"
+									   Text="{x:Static lang:Resources.Theme}"/>
+							<ItemsControl Grid.Column="1" Grid.Row="0" Margin="0,0,10,0"
 										  HorizontalAlignment="Left"
 										  ItemsSource="{Binding Config.General.Themes}">
 								<ItemsControl.ItemTemplate>
@@ -49,10 +50,12 @@
 								</ItemsControl.ItemTemplate>
 							</ItemsControl>
 
-							<TextBlock Grid.Column="0" Grid.Row="1" Margin="0,20,0,0"
+							<Separator Grid.Row="1" Grid.ColumnSpan="2" Margin="0,10,0,10"/>
+							
+							<TextBlock Grid.Column="0" Grid.Row="2" Margin="10,0,0,0"
 									   VerticalAlignment="Center"
-									   Text="Sidebar Expanded Default:"/>
-							<CheckBox Grid.Column="1" Grid.Row="1" Margin="0,20,0,0"
+									   Text="{x:Static lang:Resources.SidebarExpandedDefault}"/>
+							<CheckBox Grid.Column="1" Grid.Row="2" Margin="0,0,10,0"
 									  HorizontalAlignment="Left"
 									  IsChecked="{Binding Config.General.SidebarExpandedDefault}"/>
 						</Grid>
@@ -60,12 +63,16 @@
 
 					<!--Rename-->
 					<TextBlock FontWeight="Bold" Margin="10,20,5,5"
-							   Text="Rename"/>
+							   Text="{x:Static lang:Resources.Rename}"/>
 					<Border BorderThickness="1" CornerRadius="3" Padding="10"
 							BorderBrush="{DynamicResource SystemBaseMediumColor}">
 						<Grid ColumnDefinitions="*,*">
-							<TextBlock Grid.Column="0" Text="Default Load Option:" VerticalAlignment="Center"/>
-							<ItemsControl Grid.Column="1" ItemsSource="{Binding Config.Rename.RenameLoadOptions}" HorizontalAlignment="Left">
+							<TextBlock Grid.Column="0" Margin="10,0,0,0"
+									   Text="{x:Static lang:Resources.DefaultLoadOption}" 
+									   VerticalAlignment="Center"/>
+							<ItemsControl Grid.Column="1" Margin="0,0,10,0"
+										  ItemsSource="{Binding Config.Rename.RenameLoadOptions}" 
+										  HorizontalAlignment="Left">
 								<ItemsControl.ItemTemplate>
 									<DataTemplate>
 										<RadioButton GroupName="renameDefaultLoadOptions"
@@ -85,7 +92,7 @@
 					Command="{Binding RevertToDefaultCommand}">
 				<Grid ColumnDefinitions="Auto,*">
 					<materialIcons:MaterialIcon Grid.Column="0" Kind="CogRefresh"/>
-					<TextBlock Grid.Column="1" Margin="5,0,0,0" VerticalAlignment="Center" Text="Default"/>
+					<TextBlock Grid.Column="1" Margin="5,0,0,0" VerticalAlignment="Center" Text="{x:Static lang:Resources.Default}"/>
 				</Grid>
 			</Button>
 
@@ -97,7 +104,7 @@
 						Command="{Binding UndoChangesCommand}">
 					<Grid ColumnDefinitions="Auto,*">
 						<materialIcons:MaterialIcon Grid.Column="0" Kind="Undo"/>
-						<TextBlock Grid.Column="1" Margin="5,0,0,0" VerticalAlignment="Center" Text="Undo"/>
+						<TextBlock Grid.Column="1" Margin="5,0,0,0" VerticalAlignment="Center" Text="{x:Static lang:Resources.Undo}"/>
 					</Grid>
 				</Button>
 				<Button Height="32" Margin="10,0,0,0"
@@ -105,7 +112,7 @@
 						Command="{Binding SaveChangesCommand}">
 					<Grid ColumnDefinitions="Auto,*">
 						<materialIcons:MaterialIcon Grid.Column="0" Kind="ContentSave"/>
-						<TextBlock Grid.Column="1" Margin="5,0,0,0" VerticalAlignment="Center" Text="Save"/>
+						<TextBlock Grid.Column="1" Margin="5,0,0,0" VerticalAlignment="Center" Text="{x:Static lang:Resources.Save}"/>
 					</Grid>
 				</Button>
 			</StackPanel>

@@ -38,10 +38,10 @@ namespace BarryFileMan.ViewModels
             {
                 return SelectedToolPaneItem switch
                 {
-                    "about" => "About",
-                    "flatten" => "Flatten",
-                    "rename" => "Rename",
-                    "settings" => "Settings",
+                    "about" => Resources.Resources.About,
+                    "flatten" => Resources.Resources.Flatten,
+                    "rename" => Resources.Resources.Rename,
+                    "settings" => Resources.Resources.Settings,
                     _ => string.Empty,
                 };
             }

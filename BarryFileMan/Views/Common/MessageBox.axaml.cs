@@ -29,16 +29,16 @@ public partial class MessageBox : Window
         msgbox.MsgIcon.IsVisible = materialIconKind.HasValue;
 
         if (buttons == MsgBoxButtons.Ok || buttons == MsgBoxButtons.OkCancel)
-            msgbox.AddButton("Ok", MsgBoxResult.Ok, true);
+            msgbox.AddButton(BarryFileMan.Resources.Resources.Ok, MsgBoxResult.Ok, true);
 
         if (buttons == MsgBoxButtons.YesNo || buttons == MsgBoxButtons.YesNoCancel)
         {
-            msgbox.AddButton("Yes", MsgBoxResult.Yes);
-            msgbox.AddButton("No", MsgBoxResult.No, true);
+            msgbox.AddButton(BarryFileMan.Resources.Resources.Yes, MsgBoxResult.Yes);
+            msgbox.AddButton(BarryFileMan.Resources.Resources.No, MsgBoxResult.No, true);
         }
 
         if (buttons == MsgBoxButtons.OkCancel || buttons == MsgBoxButtons.YesNoCancel)
-            msgbox.AddButton("Cancel", MsgBoxResult.Cancel, true);
+            msgbox.AddButton(BarryFileMan.Resources.Resources.Cancel, MsgBoxResult.Cancel, true);
 
         var tcs = new TaskCompletionSource<MsgBoxResult>();
         msgbox.Closed += delegate { tcs.TrySetResult(msgbox._msgBoxResult); };

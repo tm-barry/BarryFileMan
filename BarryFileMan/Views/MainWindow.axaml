@@ -6,6 +6,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:svg="using:Avalonia.Svg.Skia"
+		xmlns:lang="using:BarryFileMan.Resources"
 		xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="BarryFileMan.Views.MainWindow"
@@ -57,7 +58,7 @@
 									ConverterParameter=rename}">
 						<Grid ColumnDefinitions="Auto,*">
 							<materialIcons:MaterialIcon Grid.Column="0" Kind="Rename" Height="32" Width="32"/>
-							<TextBlock Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Text="Rename"/>
+							<TextBlock Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Text="{x:Static lang:Resources.Rename}"/>
 						</Grid>
 					</ToggleButton>
 					<ToggleButton HorizontalAlignment="Stretch" Margin="5"
@@ -68,7 +69,7 @@
 									ConverterParameter=flatten}">
 						<Grid ColumnDefinitions="Auto,*">
 							<materialIcons:MaterialIcon Grid.Column="0" Kind="Bulldozer" Height="32" Width="32"/>
-							<TextBlock Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Text="Flatten"/>
+							<TextBlock Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Text="{x:Static lang:Resources.Flatten}"/>
 						</Grid>
 					</ToggleButton>
 				</StackPanel>
@@ -83,7 +84,7 @@
 										ConverterParameter=settings}">
 						<Grid ColumnDefinitions="Auto,*">
 							<materialIcons:MaterialIcon Grid.Column="0" Kind="Cog" Height="32" Width="32"/>
-							<TextBlock Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Text="Settings" IsVisible="{Binding ToolPaneOpen}"/>
+							<TextBlock Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Text="{x:Static lang:Resources.Settings}" IsVisible="{Binding ToolPaneOpen}"/>
 						</Grid>
 					</ToggleButton>
 					<Button Margin="5"
@@ -91,7 +92,7 @@
 								  Command="{Binding ShowHelpCommand}">
 						<Grid ColumnDefinitions="Auto,*">
 							<materialIcons:MaterialIcon Grid.Column="0" Kind="HelpCircle" Height="32" Width="32"/>
-							<TextBlock Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Text="Help" IsVisible="{Binding ToolPaneOpen}"/>
+							<TextBlock Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Text="{x:Static lang:Resources.Help}" IsVisible="{Binding ToolPaneOpen}"/>
 						</Grid>
 					</Button>
 					<ToggleButton Margin="5"
@@ -103,7 +104,7 @@
 									ConverterParameter=about}">
 						<Grid ColumnDefinitions="Auto,*">
 							<materialIcons:MaterialIcon Grid.Column="0" Kind="Information" Height="32" Width="32"/>
-							<TextBlock Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Text="About" IsVisible="{Binding ToolPaneOpen}"/>
+							<TextBlock Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Text="{x:Static lang:Resources.About}" IsVisible="{Binding ToolPaneOpen}"/>
 						</Grid>
 					</ToggleButton>
 				</StackPanel>

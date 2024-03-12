@@ -47,8 +47,8 @@ namespace BarryFileMan.ViewModels.Settings
         private void ApplyConfig()
         {
             RenameLoadOptions.Clear();
-            RenameLoadOptions.Add(new ItemViewModel<RenameLoadOption>(RenameLoadOption.Files, "Files", _config.DefaultLoadOption == RenameLoadOption.Files));
-            RenameLoadOptions.Add(new ItemViewModel<RenameLoadOption>(RenameLoadOption.Folders, "Folders", _config.DefaultLoadOption == RenameLoadOption.Folders));
+            RenameLoadOptions.Add(new ItemViewModel<RenameLoadOption>(RenameLoadOption.Files, Resources.Resources.Files, _config.DefaultLoadOption == RenameLoadOption.Files));
+            RenameLoadOptions.Add(new ItemViewModel<RenameLoadOption>(RenameLoadOption.Folders, Resources.Resources.Folders, _config.DefaultLoadOption == RenameLoadOption.Folders));
         }
 
         public override UserRenameConfig UndoChanges()

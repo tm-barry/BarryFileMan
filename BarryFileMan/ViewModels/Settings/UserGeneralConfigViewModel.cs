@@ -56,9 +56,9 @@ namespace BarryFileMan.ViewModels.Settings
         private void ApplyConfig()
         {
             Themes.Clear();
-            Themes.Add(new ItemViewModel<Theme>(Theme.Default, "System Default", _config.Theme == Theme.Default));
-            Themes.Add(new ItemViewModel<Theme>(Theme.Dark, "Dark", _config.Theme == Theme.Dark));
-            Themes.Add(new ItemViewModel<Theme>(Theme.Light, "Light", _config.Theme == Theme.Light));
+            Themes.Add(new ItemViewModel<Theme>(Theme.Default, Resources.Resources.SystemDefault, _config.Theme == Theme.Default));
+            Themes.Add(new ItemViewModel<Theme>(Theme.Dark, Resources.Resources.Dark, _config.Theme == Theme.Dark));
+            Themes.Add(new ItemViewModel<Theme>(Theme.Light, Resources.Resources.Light, _config.Theme == Theme.Light));
 
             SidebarExpandedDefault = _config.SidebarExpandedDefault;
         }

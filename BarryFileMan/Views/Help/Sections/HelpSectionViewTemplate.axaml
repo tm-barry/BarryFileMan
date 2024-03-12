@@ -3,6 +3,7 @@
 					xmlns:vm="using:BarryFileMan.ViewModels.Help.Sections"
 					xmlns:vc="using:BarryFileMan.Views.Common"
 					xmlns:help="using:BarryFileMan.Views.Help"
+					xmlns:lang="using:BarryFileMan.Resources"
 					xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia">
 	<!-- Preview DataTemplate -->
 	<Design.PreviewWith>
@@ -34,13 +35,13 @@
 				<TextBlock FontSize="32" FontWeight="Bold"
 						   VerticalAlignment="Center"
 						   TextWrapping="Wrap"
-						   Text="Help"/>
+						   Text="{x:Static lang:Resources.Help}"/>
 			</StackPanel>
 			<Separator Margin="0,5,0,5"/>
 
 			<!-- App Description -->
 			<TextBlock TextWrapping="Wrap"
-					   Text="{Binding AppDescription}"/>
+					   Text="{x:Static lang:Resources.AppDescription}"/>
 			<vc:Hyperlink Content="{Binding AppUri}" Margin="0,10,0,0"/>
 
 			<!-- Pages Header -->
@@ -48,7 +49,7 @@
 					   FontSize="24" FontWeight="Bold"
 					   VerticalAlignment="Center"
 					   TextWrapping="Wrap"
-					   Text="Pages"/>
+					   Text="{x:Static lang:Resources.Pages}"/>
 			<Separator Margin="0,5,0,5"/>
 
 			<DataGrid ItemsSource="{Binding Pages}"

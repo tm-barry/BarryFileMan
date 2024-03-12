@@ -4,6 +4,7 @@
 					xmlns:vh="using:BarryFileMan.Views.Help"
 					xmlns:cc="using:BarryFileMan.Converters"
 					xmlns:he="using:BarryFileMan.Enums.Help"
+					xmlns:lang="using:BarryFileMan.Resources"
 					xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia">
 	<!-- Preview DataTemplate -->
 	<Design.PreviewWith>
@@ -35,7 +36,7 @@
 
 				<StackPanel Orientation="Horizontal">
 					<TextBlock FontWeight="Bold"
-						   Text="Match Pattern"/>
+						   Text="{x:Static lang:Resources.MatchPattern}"/>
 					<vh:HelpButton Margin="5,0,0,0" Height="16" Width="16"
 								   Section="{x:Static he:HelpSections.RenameRegex}"/>
 				</StackPanel>
@@ -45,7 +46,7 @@
 
 				<TextBlock Margin="0,10,0,0"
 						   FontWeight="Bold"
-						   Text="Match Type"/>
+						   Text="{x:Static lang:Resources.MatchType}"/>
 				<ComboBox HorizontalAlignment="Stretch"
 						  ItemsSource="{Binding MatchTypes}"
 						  DisplayMemberBinding="{Binding Display}"
@@ -53,14 +54,14 @@
 
 				<TextBlock Margin="0,10,0,0"
 						   FontWeight="Bold"
-						   Text="Test String"/>
+						   Text="{x:Static lang:Resources.TestString}"/>
 				<TextBox Text="{Binding TestString}"
 						 TextWrapping="Wrap"
 						 MaxHeight="50"/>
 
 				<StackPanel Orientation="Horizontal" Margin="0,10,0,0">
 					<TextBlock FontWeight="Bold"
-							   Text="Rename Pattern"/>
+							   Text="{x:Static lang:Resources.RenamePattern}"/>
 					<vh:HelpButton Margin="5,0,0,0" Height="16" Width="16"
 								   Section="{x:Static he:HelpSections.Rename}"/>
 				</StackPanel>
@@ -70,7 +71,7 @@
 
 				<TextBlock Margin="0,10,0,0"
 						   FontWeight="Bold"
-						   Text="Renamed String"/>
+						   Text="{x:Static lang:Resources.RenamedString}"/>
 				<TextBox Text="{Binding RenamedTestString}"
 						 IsReadOnly="True"
 						 TextWrapping="Wrap"
@@ -81,7 +82,7 @@
 				
 				<TextBlock Grid.Row="0"
 						   FontWeight="Bold"
-						   Text="Match Groups"/>
+						   Text="{x:Static lang:Resources.MatchGroups}"/>
 				<TreeDataGrid Grid.Row="1"
 							  BorderThickness="1"
 							  BorderBrush="{DynamicResource SystemBaseMediumColor}"
@@ -109,7 +110,7 @@
 				<!-- Matches Placeholder -->
 				<Grid Grid.Row="1" IsHitTestVisible="false" IsVisible="{Binding !HasTestMatches}">
 					<TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
-							   Text="No Matches Found"
+							   Text="{x:Static lang:Resources.NoMatchesFound}"
 							   Opacity="0.5"/>
 				</Grid>
 			</Grid>

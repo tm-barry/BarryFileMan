@@ -20,7 +20,7 @@ namespace BarryFileMan.ViewModels.Rename
     {
         public static ReadOnlyCollection<RenameProviderTypeItemViewModel> ProviderTypes => new List<RenameProviderTypeItemViewModel>()
         {
-            new(RenameProviderTypes.Regex, "Regex", "regex")
+            new(RenameProviderTypes.Regex, Resources.Resources.Regex, "regex")
         }.AsReadOnly();
 
         [ObservableProperty]
@@ -59,8 +59,8 @@ namespace BarryFileMan.ViewModels.Rename
 
         public ReadOnlyCollection<RenameLoadOptionViewModel> LoadOptions => new List<RenameLoadOptionViewModel>()
         {
-            new(RenameLoadOption.Files, "Files", "FileMultiple", LoadFilesCommand),
-            new(RenameLoadOption.Folders, "Folders", "FolderMultiple", LoadFoldersCommand),
+            new(RenameLoadOption.Files, Resources.Resources.Files, "FileMultiple", LoadFilesCommand),
+            new(RenameLoadOption.Folders, Resources.Resources.Folders, "FolderMultiple", LoadFoldersCommand),
         }.AsReadOnly();
 
         [ObservableProperty]
@@ -118,7 +118,7 @@ namespace BarryFileMan.ViewModels.Rename
             SelectedLoadOption = LoadOptions.First((item) => item.Type == RenameLoadOption.Folders);
             var folders = await AppManager.OpenFolderPickerAsync(new FolderPickerOpenOptions
             {
-                Title = "Load Folder",
+                Title = Resources.Resources.LoadFolder,
                 AllowMultiple = true,
             });
             await AddStorageItems(folders);
@@ -130,7 +130,7 @@ namespace BarryFileMan.ViewModels.Rename
             SelectedLoadOption = LoadOptions.First((item) => item.Type == RenameLoadOption.Files);
             var files = await AppManager.OpenFilePickerAsync(new FilePickerOpenOptions
             {
-                Title = "Load Files",
+                Title = Resources.Resources.LoadFiles,
                 AllowMultiple = true,
             });
             await AddStorageItems(files);
@@ -177,10 +177,10 @@ namespace BarryFileMan.ViewModels.Rename
             MsgBoxResult? result = null;
             if(Files.Any((file) => file.RenameError != null))
                 result = await AppManager.MsgBoxShowWindowDialogAsync(
-                    "Error", "Some files have errors and can't be renamed. Do you still want to continue?", MsgBoxButtons.YesNo, MsgBoxIcons.Error);
+                    Resources.Resources.Error, Resources.Resources.RenameFilesSaveErrorsConfirmation, MsgBoxButtons.YesNo, MsgBoxIcons.Error);
 
             result ??= await AppManager.MsgBoxShowWindowDialogAsync(
-                    "Rename", "Files will be renamed. Do you want to continue?", MsgBoxButtons.YesNo, MsgBoxIcons.Question);
+                    Resources.Resources.Rename, Resources.Resources.RenameFilesSaveConfirmation, MsgBoxButtons.YesNo, MsgBoxIcons.Question);
 
             if(result == MsgBoxResult.Yes)
             {
@@ -208,10 +208,13 @@ namespace BarryFileMan.ViewModels.Rename
 
                 if(failedFiles.Count > 0)
                     await AppManager.MsgBoxShowWindowDialogAsync(
-                        "Error", $"The following files failed to be renamed:\n\n{string.Join('\n', failedFiles)}", MsgBoxButtons.Ok, MsgBoxIcons.Error);
+                        Resources.Resources.Error, 
+                        string.Format(Resources.Resources.FilesFailedToRenameMessage, string.Join('\n', failedFiles)), 
+                        MsgBoxButtons.Ok, 
+                        MsgBoxIcons.Error);
                 else
                     await AppManager.MsgBoxShowWindowDialogAsync(
-                        "Success", $"Files successfully renamed!", MsgBoxButtons.Ok, MsgBoxIcons.Success);
+                        Resources.Resources.Success, Resources.Resources.FilesRenamedSuccessMessage, MsgBoxButtons.Ok, MsgBoxIcons.Success);
             }
         }
 

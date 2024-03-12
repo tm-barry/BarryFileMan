@@ -12,7 +12,7 @@ namespace BarryFileMan.ViewModels.Rename.Providers
         [NotifyPropertyChangedFor(nameof(SettingsDisplay))]
         private string _display;
 
-        public string SettingsDisplay => $"{Display} Settings";
+        public string SettingsDisplay => $"{Display} {Resources.Resources.Settings}";
 
         [ObservableProperty]
         private string _icon;

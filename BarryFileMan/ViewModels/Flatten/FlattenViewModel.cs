@@ -125,7 +125,7 @@ namespace BarryFileMan.ViewModels.Flatten
             {
                 var folders = await AppManager.OpenFolderPickerAsync(new FolderPickerOpenOptions
                 {
-                    Title = "Select Folder to Flatten",
+                    Title = Resources.Resources.FlattenFolderPickerTitle,
                     AllowMultiple = false,
                 });
 
@@ -136,7 +136,7 @@ namespace BarryFileMan.ViewModels.Flatten
             {
                 Files.Clear();
                 await AppManager.MsgBoxShowWindowDialogAsync(
-                        "Error", $"{ ex.Message }\n{ ex.InnerException?.Message }", MsgBoxButtons.Ok, MsgBoxIcons.Error);
+                        Resources.Resources.Error, $"{ ex.Message }\n{ ex.InnerException?.Message }", MsgBoxButtons.Ok, MsgBoxIcons.Error);
             }
 
             await ApplyFilters();
@@ -170,7 +170,10 @@ namespace BarryFileMan.ViewModels.Flatten
             bool hadError = false;
 
             var mbResult = await AppManager.MsgBoxShowWindowDialogAsync(
-                "Flatten Folder", $"Are you sure you want to flatten the following folder?\n\n{FolderPath}", MsgBoxButtons.YesNo, MsgBoxIcons.Question);
+                Resources.Resources.FlattenFolder,
+                string.Format(Resources.Resources.FlattenFolderConfirmationQuestion, FolderPath), 
+                MsgBoxButtons.YesNo, 
+                MsgBoxIcons.Question);
 
             if (mbResult == MsgBoxResult.Yes)
             {
@@ -193,7 +196,10 @@ namespace BarryFileMan.ViewModels.Flatten
                 {
                     var failedListString = string.Join("\n", failedFiles);
                     await AppManager.MsgBoxShowWindowDialogAsync(
-                        "Error", $"Failed to move the following files:\n{failedListString}", MsgBoxButtons.Ok, MsgBoxIcons.Error);
+                        Resources.Resources.Error, 
+                        string.Format(Resources.Resources.FailedToMoveFilesMessage, failedListString), 
+                        MsgBoxButtons.Ok, 
+                        MsgBoxIcons.Error);
                     failedFiles = new();
                     hadError = true;
                 }
@@ -219,7 +225,9 @@ namespace BarryFileMan.ViewModels.Flatten
                 {
                     var failedListString = string.Join("\n", failedFiles);
                     await AppManager.MsgBoxShowWindowDialogAsync(
-                        "Error", $"Failed to delete the following excluded files:\n{failedListString}", MsgBoxButtons.Ok, MsgBoxIcons.Error);
+                        Resources.Resources.Error, string.Format(Resources.Resources.FailedToDeleteExcludedFilesMessage, failedListString), 
+                        MsgBoxButtons.Ok, 
+                        MsgBoxIcons.Error);
                     failedFiles = new();
                     hadError = true;
                 }
@@ -233,7 +241,10 @@ namespace BarryFileMan.ViewModels.Flatten
                     catch (Exception ex)
                     {
                         await AppManager.MsgBoxShowWindowDialogAsync(
-                            "Error", $"Failed to delete empty folders!\n{ex.Message}\n{ex.InnerException?.Message}", MsgBoxButtons.Ok, MsgBoxIcons.Error);
+                            Resources.Resources.Error, 
+                            string.Format(Resources.Resources.FailedToDeleteEmptyFoldersMessage, ex.Message, ex.InnerException?.Message), 
+                            MsgBoxButtons.Ok, 
+                            MsgBoxIcons.Error);
                         hadError = true;
                     }
                 }
@@ -243,7 +254,11 @@ namespace BarryFileMan.ViewModels.Flatten
 
                 if (!hadError)
                 {
-                    await AppManager.MsgBoxShowWindowDialogAsync("Success", "Folder successfully flattened!", MsgBoxButtons.Ok, MsgBoxIcons.Success);
+                    await AppManager.MsgBoxShowWindowDialogAsync(
+                        Resources.Resources.Success, 
+                        Resources.Resources.FolderFlattenedSuccessMessage, 
+                        MsgBoxButtons.Ok, 
+                        MsgBoxIcons.Success);
                 }
             }
 
@@ -299,7 +314,10 @@ namespace BarryFileMan.ViewModels.Flatten
             {
                 files.Clear();
                 await AppManager.MsgBoxShowWindowDialogAsync(
-                        "Error", $"{ex.Message}\n{ex.InnerException?.Message}", MsgBoxButtons.Ok, MsgBoxIcons.Error);
+                        Resources.Resources.Error, 
+                        $"{ex.Message}\n{ex.InnerException?.Message}", 
+                        MsgBoxButtons.Ok, 
+                        MsgBoxIcons.Error);
             }
 
             Files.Clear();
