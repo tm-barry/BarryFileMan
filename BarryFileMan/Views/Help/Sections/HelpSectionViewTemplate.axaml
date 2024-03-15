@@ -58,16 +58,14 @@
 
 				<!--Headers-->
 				<TextBlock Grid.Column="0" Grid.Row="0" Margin="5"
-						   Opacity="0.75"
-						   FontWeight="UltraLight"
+						   FontWeight="Light"
 						   Text="{x:Static lang:Resources.Name}"/>
 				<Border Grid.Column="1" Grid.RowSpan="100"
 						Opacity="0.75"
 						BorderBrush="{DynamicResource SystemBaseMediumColor}"
 						BorderThickness="1,0,0,0"/>
 				<TextBlock Grid.Column="2" Grid.Row="0" Margin="5"
-						   Opacity="0.75"
-						   FontWeight="UltraLight"
+						   FontWeight="Light"
 						   Text="{x:Static lang:Resources.Description}"/>
 				<Border Grid.ColumnSpan="3" Grid.Row="1" Padding="0"
 						Opacity="0.75"
