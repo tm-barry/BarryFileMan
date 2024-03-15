@@ -4,6 +4,7 @@
 					xmlns:vc="using:BarryFileMan.Views.Common"
 					xmlns:help="using:BarryFileMan.Views.Help"
 					xmlns:lang="using:BarryFileMan.Resources"
+					xmlns:enums="using:BarryFileMan.Enums.Help"
 					xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia">
 	<!-- Preview DataTemplate -->
 	<Design.PreviewWith>
@@ -52,33 +53,56 @@
 					   Text="{x:Static lang:Resources.Pages}"/>
 			<Separator Margin="0,5,0,5"/>
 
-			<DataGrid ItemsSource="{Binding Pages}"
-					  IsReadOnly="True"
-					  CanUserReorderColumns="False"
-					  CanUserResizeColumns="False"
-					  CanUserSortColumns="False"
-					  GridLinesVisibility="All"
-					  Focusable="False">
-				<DataGrid.Styles>
-					<Style Selector="TextBlock">
-						<Setter Property="TextWrapping" Value="Wrap" />
-					</Style>
-				</DataGrid.Styles>
-				<DataGrid.Columns>
-					<DataGridTemplateColumn Header="Name">
-						<DataTemplate>
-							<help:HelpLink Content="{Binding Name}"
-										   IsHitTestVisible="True"
-										   VerticalAlignment="Center"
-										   HorizontalAlignment="Center"
-										   Section="{Binding Section}"/>
-						</DataTemplate>
-					</DataGridTemplateColumn>
-					<DataGridTextColumn Width="*"
-										Header="Description" 
-										Binding="{Binding Description}"/>
-				</DataGrid.Columns>
-			</DataGrid>
+			<Grid ColumnDefinitions="Auto,Auto,*"
+				  RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto">
+
+				<!--Headers-->
+				<TextBlock Grid.Column="0" Grid.Row="0" Margin="5"
+						   Opacity="0.75"
+						   FontWeight="UltraLight"
+						   Text="{x:Static lang:Resources.Name}"/>
+				<Border Grid.Column="1" Grid.RowSpan="100"
+						Opacity="0.75"
+						BorderBrush="{DynamicResource SystemBaseMediumColor}"
+						BorderThickness="1,0,0,0"/>
+				<TextBlock Grid.Column="2" Grid.Row="0" Margin="5"
+						   Opacity="0.75"
+						   FontWeight="UltraLight"
+						   Text="{x:Static lang:Resources.Description}"/>
+				<Border Grid.ColumnSpan="3" Grid.Row="1" Padding="0"
+						Opacity="0.75"
+						BorderBrush="{DynamicResource SystemBaseMediumColor}"
+						BorderThickness="0,1,0,0"/>
+
+
+				<!--Rename Page-->
+				<help:HelpLink Grid.Column="0" Grid.Row="2" Margin="10"
+							   FontWeight="Bold"
+							   Content="{x:Static lang:Resources.Rename}"
+							   VerticalAlignment="Center"
+							   Section="{x:Static enums:HelpSections.Rename}"/>
+				<TextBlock Grid.Column="2" Grid.Row="2" Margin="10"
+						   TextWrapping="Wrap"
+						   Text="{x:Static lang:Resources.RenamePageDescription}"/>
+				<Border Grid.ColumnSpan="3" Grid.Row="3" Padding="0"
+						Opacity="0.75"
+						BorderBrush="{DynamicResource SystemBaseMediumColor}"
+						BorderThickness="0,1,0,0"/>
+
+				<!--Flatten Page-->
+				<help:HelpLink Grid.Column="0" Grid.Row="4" Margin="10"
+							   FontWeight="Bold"
+							   Content="{x:Static lang:Resources.Flatten}"
+							   VerticalAlignment="Center"
+							   Section="{x:Static enums:HelpSections.Flatten}"/>
+				<TextBlock Grid.Column="2" Grid.Row="4" Margin="10"
+						   TextWrapping="Wrap"
+						   Text="{x:Static lang:Resources.FlattenPageDescription}"/>
+				<Border Grid.ColumnSpan="3" Grid.Row="5" Padding="0"
+						Opacity="0.75"
+						BorderBrush="{DynamicResource SystemBaseMediumColor}"
+						BorderThickness="0,1,0,0"/>
+			</Grid>
 			
 		</StackPanel>
 	</DataTemplate>

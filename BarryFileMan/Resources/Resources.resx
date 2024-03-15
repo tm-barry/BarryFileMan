@@ -156,8 +156,17 @@
   <data name="DeleteEmptyFolders" xml:space="preserve">
     <value>Delete Empty Folders</value>
   </data>
+  <data name="DeleteEmptyFoldersDescription" xml:space="preserve">
+    <value>Used to indicate if folders that are empty after flattening should be deleted on save.</value>
+  </data>
   <data name="DeleteExcludedFiles" xml:space="preserve">
     <value>Delete Excluded Files</value>
+  </data>
+  <data name="DeleteExcludedFilesDescription" xml:space="preserve">
+    <value>Used to indicate if files marked excluded should be deleted on save.</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Description</value>
   </data>
   <data name="DragDropFilesFolders" xml:space="preserve">
     <value>Drag and Drop Files or Folders</value>
@@ -217,6 +226,9 @@
   </data>
   <data name="FlattenFolderPickerTitle" xml:space="preserve">
     <value>Select Folder to Flatten</value>
+  </data>
+  <data name="FlattenOptions" xml:space="preserve">
+    <value>Flatten Options</value>
   </data>
   <data name="FlattenPageDescription" xml:space="preserve">
     <value>Flatten a directory by moving all the files from subdirectories to the root directory.</value>
@@ -295,6 +307,9 @@
   </data>
   <data name="RegexFileFilter" xml:space="preserve">
     <value>Regex File Filter</value>
+  </data>
+  <data name="RegexFileFilterDescription" xml:space="preserve">
+    <value>Used to filter down the list of files to those that match the entered regular expression.</value>
   </data>
   <data name="RegexFileFilterPlaceholder" xml:space="preserve">
     <value>Enter a regex expression (default: '.*')</value>

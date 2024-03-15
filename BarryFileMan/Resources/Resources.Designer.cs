@@ -178,11 +178,38 @@ namespace BarryFileMan.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Used to indicate if folders that are empty after flattening should be deleted on save..
+        /// </summary>
+        public static string DeleteEmptyFoldersDescription {
+            get {
+                return ResourceManager.GetString("DeleteEmptyFoldersDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete Excluded Files.
         /// </summary>
         public static string DeleteExcludedFiles {
             get {
                 return ResourceManager.GetString("DeleteExcludedFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Used to indicate if files marked excluded should be deleted on save..
+        /// </summary>
+        public static string DeleteExcludedFilesDescription {
+            get {
+                return ResourceManager.GetString("DeleteExcludedFilesDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Description.
+        /// </summary>
+        public static string Description {
+            get {
+                return ResourceManager.GetString("Description", resourceCulture);
             }
         }
         
@@ -344,6 +371,15 @@ namespace BarryFileMan.Resources {
         public static string FlattenFolderPickerTitle {
             get {
                 return ResourceManager.GetString("FlattenFolderPickerTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Flatten Options.
+        /// </summary>
+        public static string FlattenOptions {
+            get {
+                return ResourceManager.GetString("FlattenOptions", resourceCulture);
             }
         }
         
@@ -578,6 +614,15 @@ namespace BarryFileMan.Resources {
         public static string RegexFileFilter {
             get {
                 return ResourceManager.GetString("RegexFileFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Used to filter down the list of files to those that match the entered regular expression..
+        /// </summary>
+        public static string RegexFileFilterDescription {
+            get {
+                return ResourceManager.GetString("RegexFileFilterDescription", resourceCulture);
             }
         }
         

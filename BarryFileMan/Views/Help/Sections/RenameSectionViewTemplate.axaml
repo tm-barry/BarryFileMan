@@ -11,7 +11,7 @@
 			<Grid.Resources>
 				<ResourceDictionary>
 					<ResourceDictionary.MergedDictionaries>
-						<ResourceInclude Source="/Views/Help/Sections/renameSectionViewTemplate.axaml"/>
+						<ResourceInclude Source="/Views/Help/Sections/RenameSectionViewTemplate.axaml"/>
 					</ResourceDictionary.MergedDictionaries>
 				</ResourceDictionary>
 			</Grid.Resources>
@@ -20,7 +20,7 @@
 			</Grid.DataTemplates>
 
 			<ContentControl>
-				<vm:HelpSectionViewModel/>
+				<vm:RenameSectionViewModel/>
 			</ContentControl>
 		</Grid>
 	</Design.PreviewWith>

@@ -8,7 +8,8 @@
         x:Class="BarryFileMan.HelpWindow"
 		Icon="/Assets/barry-file-man-logo.ico"
         Title="Help"
-		Height="500" Width="500"
+		Height="500" MinHeight="400" 
+		Width="500" MinWidth="400"
 		x:DataType="vm:HelpViewModel">
 	<Window.Resources>
 		<ResourceDictionary>

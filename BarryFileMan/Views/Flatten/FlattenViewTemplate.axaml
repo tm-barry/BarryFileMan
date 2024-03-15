@@ -67,7 +67,7 @@
 					  ExpandDirection="Down"
 					  HorizontalAlignment="Stretch"
 					  IsExpanded="{Binding FlattenOptionsExpanded}"
-					  Header="Flatten Options">
+					  Header="{x:Static lang:Resources.FlattenOptions}">
 				<Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto">
 					<TextBlock Grid.Column="0" Grid.Row="0" Margin="5"
 							   HorizontalAlignment="Right"
@@ -116,13 +116,13 @@
 					<Style Selector="ListBoxItem">
 						<Setter Property="ContextFlyout">
 							<MenuFlyout>
-								<MenuItem Header="Copy Original" InputGesture="Ctrl+C"
+								<MenuItem Header="{x:Static lang:Resources.CopyOriginal}" InputGesture="Ctrl+C"
 										  Command="{Binding #flattenGrid.((vm:FlattenViewModel)DataContext).CopyOriginalFileCommand}"
 										  CommandParameter="{Binding}"/>
-								<MenuItem Header="Copy New" InputGesture="Ctrl+Shift+C"
+								<MenuItem Header="{x:Static lang:Resources.CopyNew}" InputGesture="Ctrl+Shift+C"
 										  Command="{Binding #flattenGrid.((vm:FlattenViewModel)DataContext).CopyNewFileCommand}"
 										  CommandParameter="{Binding}"/>
-								<MenuItem Header="Remove" InputGesture="Delete"
+								<MenuItem Header="{x:Static lang:Resources.Remove}" InputGesture="Delete"
 										  Command="{Binding #flattenGrid.((vm:FlattenViewModel)DataContext).RemoveFileCommand}"
 										  CommandParameter="{Binding}"/>
 							</MenuFlyout>

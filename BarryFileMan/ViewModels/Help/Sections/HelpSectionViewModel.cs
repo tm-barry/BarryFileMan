@@ -1,8 +1,6 @@
 ﻿using BarryFileMan.Enums.Help;
 using BarryFileMan.ViewModels.About;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 
 namespace BarryFileMan.ViewModels.Help.Sections
 {
@@ -10,11 +8,6 @@ namespace BarryFileMan.ViewModels.Help.Sections
     {
         public override HelpSections Section => HelpSections.Help;
         public static Uri AppUri => AboutViewModel.AppUri;
-        public static IEnumerable<PageViewModel> Pages => new List<PageViewModel>()
-        {
-            new(Resources.Resources.Rename, Resources.Resources.RenamePageDescription, HelpSections.Rename),
-            new(Resources.Resources.Flatten, Resources.Resources.FlattenPageDescription, HelpSections.Flatten)
-        };
     }
 
     public class PageViewModel

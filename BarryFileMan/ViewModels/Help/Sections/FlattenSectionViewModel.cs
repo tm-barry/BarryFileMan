@@ -1,4 +1,5 @@
 ﻿using BarryFileMan.Enums.Help;
+using System.Collections.Generic;
 
 namespace BarryFileMan.ViewModels.Help.Sections
 {
