@@ -4,6 +4,7 @@
 					xmlns:vc="using:BarryFileMan.Views.Common"
 					xmlns:help="using:BarryFileMan.Views.Help"
 					xmlns:lang="using:BarryFileMan.Resources"
+					xmlns:enums="using:BarryFileMan.Enums.Help"
 					xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia">
 	<!-- Preview DataTemplate -->
 	<Design.PreviewWith>
@@ -42,6 +43,48 @@
 			<!-- Rename Description -->
 			<TextBlock TextWrapping="Wrap"
 					   Text="{x:Static lang:Resources.RenamePageDescription}"/>
+
+			<!-- Rename Match Providers -->
+			<TextBlock Margin="0,15,0,0"
+					   FontSize="24" FontWeight="Bold"
+					   VerticalAlignment="Center"
+					   TextWrapping="Wrap"
+					   Text="{x:Static lang:Resources.RenameMatchProviders}"/>
+			<Separator Margin="0,5,0,5"/>
+
+			<Grid ColumnDefinitions="Auto,Auto,*"
+				  RowDefinitions="Auto,Auto,Auto,Auto">
+
+				<!--Headers-->
+				<TextBlock Grid.Column="0" Grid.Row="0" Margin="5"
+						   FontWeight="Light"
+						   Text="{x:Static lang:Resources.Name}"/>
+				<Border Grid.Column="1" Grid.RowSpan="100"
+						Opacity="0.75"
+						BorderBrush="{DynamicResource SystemBaseMediumColor}"
+						BorderThickness="1,0,0,0"/>
+				<TextBlock Grid.Column="2" Grid.Row="0" Margin="5"
+						   FontWeight="Light"
+						   Text="{x:Static lang:Resources.Description}"/>
+				<Border Grid.ColumnSpan="3" Grid.Row="1" Padding="0"
+						Opacity="0.75"
+						BorderBrush="{DynamicResource SystemBaseMediumColor}"
+						BorderThickness="0,1,0,0"/>
+
+				<!--Regex-->
+				<help:HelpLink Grid.Column="0" Grid.Row="2" Margin="10"
+							   FontWeight="Bold"
+							   Content="{x:Static lang:Resources.Regex}"
+							   VerticalAlignment="Center"
+							   Section="{x:Static enums:HelpSections.RenameRegex}"/>
+				<TextBlock Grid.Column="2" Grid.Row="2" Margin="10"
+						   TextWrapping="Wrap"
+						   Text="{x:Static lang:Resources.RegexRenameMatchProviderDescription}"/>
+				<Border Grid.ColumnSpan="3" Grid.Row="3" Padding="0"
+						Opacity="0.75"
+						BorderBrush="{DynamicResource SystemBaseMediumColor}"
+						BorderThickness="0,1,0,0"/>
+			</Grid>
 			
 		</StackPanel>
 	</DataTemplate>

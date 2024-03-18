@@ -636,6 +636,15 @@ namespace BarryFileMan.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Uses a user supplied regular expression to pull data/tags from the file/directory name..
+        /// </summary>
+        public static string RegexRenameMatchProviderDescription {
+            get {
+                return ResourceManager.GetString("RegexRenameMatchProviderDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Remove.
         /// </summary>
         public static string Remove {
@@ -677,6 +686,15 @@ namespace BarryFileMan.Resources {
         public static string RenameFilesSaveErrorsConfirmation {
             get {
                 return ResourceManager.GetString("RenameFilesSaveErrorsConfirmation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rename Match Providers.
+        /// </summary>
+        public static string RenameMatchProviders {
+            get {
+                return ResourceManager.GetString("RenameMatchProviders", resourceCulture);
             }
         }
         

@@ -314,6 +314,9 @@
   <data name="RegexFileFilterPlaceholder" xml:space="preserve">
     <value>Enter a regex expression (default: '.*')</value>
   </data>
+  <data name="RegexRenameMatchProviderDescription" xml:space="preserve">
+    <value>Uses a user supplied regular expression to pull data/tags from the file/directory name.</value>
+  </data>
   <data name="Remove" xml:space="preserve">
     <value>Remove</value>
   </data>
@@ -328,6 +331,9 @@
   </data>
   <data name="RenameFilesSaveErrorsConfirmation" xml:space="preserve">
     <value>Some files have errors and can't be renamed. Do you still want to continue?</value>
+  </data>
+  <data name="RenameMatchProviders" xml:space="preserve">
+    <value>Rename Match Providers</value>
   </data>
   <data name="RenamePageDescription" xml:space="preserve">
     <value>Rename files using various match providers.</value>

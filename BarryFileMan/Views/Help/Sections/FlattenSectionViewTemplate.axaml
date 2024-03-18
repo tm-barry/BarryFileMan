@@ -44,6 +44,7 @@
 			<TextBlock TextWrapping="Wrap"
 					   Text="{x:Static lang:Resources.FlattenPageDescription}"/>
 
+			<!-- Flatten Options -->
 			<TextBlock Margin="0,15,0,0"
 					   FontSize="24" FontWeight="Bold"
 					   VerticalAlignment="Center"

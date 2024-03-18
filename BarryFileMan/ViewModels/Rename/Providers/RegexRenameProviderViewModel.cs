@@ -77,7 +77,7 @@ namespace BarryFileMan.ViewModels.Rename.Providers
         private string _testString = string.Empty;
         partial void OnTestStringChanged(string value)
         {
-            TestMatches = FindMatches(value, MatchPattern, out var error);
+            TestMatches = FindMatches(value, MatchPattern, out var error) ?? new List<IRenameMatch>();
             MatchPatternError = error;
         }
 

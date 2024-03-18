@@ -23,54 +23,50 @@ namespace BarryFileMan.Rename.Providers
         public RenameResult Rename(IEnumerable<IRenameMatch> matches, string renamePattern)
         {
             var renamedString = renamePattern;
+            var tags = new List<RenameTag>();
             var errors = new List<string>();
             if (matches == null || !matches.Any())
             {
                 errors.Add("No matches found!");
             }
-            else
+
+            var regex = new System.Text.RegularExpressions.Regex(_renameTagPattern);
+            var renamePatternMatches = regex.Matches(renamePattern);
+            if (renamePatternMatches.Any())
             {
-                var regex = new System.Text.RegularExpressions.Regex(_renameTagPattern);
-                var renamePatternMatches = regex.Matches(renamePattern);
-                if (renamePatternMatches.Any())
+                foreach (Match renameMatch in renamePatternMatches.Cast<Match>())
                 {
-                    foreach (Match renameMatch in renamePatternMatches.Cast<Match>())
+                    var renameTag = new RenameTag(renameMatch.Value, renameMatch.Groups["tag"].Value, renameMatch.Index, renameMatch.Length);
+
+                    if (string.IsNullOrEmpty(renameTag.Error) && renameTag.Functions.All((function) => string.IsNullOrEmpty(function.Error)))
                     {
-                        var renameTag = new RenameTag(renameMatch.Value, renameMatch.Groups["tag"].Value, renameMatch.Index, renameMatch.Length);
-                        if (string.IsNullOrEmpty(renameTag.Error) && renameTag.Functions.All((function) => string.IsNullOrEmpty(function.Error)))
+                        IRenameMatch? match = null;
+                        if (renameTag.MatchIndex == -1)
+                            match = matches?.LastOrDefault();
+                        else
+                            match = matches?.ElementAtOrDefault(renameTag.MatchIndex);
+
+                        if (match != null)
                         {
-                            IRenameMatch? match = null;
-                            if (renameTag.MatchIndex == -1)
-                                match = matches.LastOrDefault();
-                            else
-                                match = matches.ElementAtOrDefault(renameTag.MatchIndex);
-
-                            if (match != null)
+                            IRenameMatchGroupValue? groupValue = null;
+                            if (match.Groups.ContainsKey(renameTag.TagName))
                             {
-                                IRenameMatchGroupValue? groupValue = null;
-                                if (match.Groups.ContainsKey(renameTag.TagName))
-                                {
-                                    if (renameTag.GroupIndex == -1)
-                                        groupValue = match.Groups[renameTag.TagName].LastOrDefault();
-                                    else
-                                        groupValue = match.Groups[renameTag.TagName].ElementAtOrDefault(renameTag.GroupIndex);
-                                }
-
-                                if (groupValue != null)
-                                {
-                                    try
-                                    {
-                                        var renamedTagStr = BaseRenameProvider<TMatchOptions>.CalculateRenamedTag(groupValue, renameTag);
-                                        renamedString = renamedString.Replace(renameTag.Tag, renamedTagStr);
-                                    }
-                                    catch(Exception ex)
-                                    {
-                                        errors.Add(ex.Message);
-                                    }
-                                }
+                                if (renameTag.GroupIndex == -1)
+                                    groupValue = match.Groups[renameTag.TagName].LastOrDefault();
                                 else
+                                    groupValue = match.Groups[renameTag.TagName].ElementAtOrDefault(renameTag.GroupIndex);
+                            }
+
+                            if (groupValue != null)
+                            {
+                                try
                                 {
-                                    renamedString = renamedString.Replace(renameTag.Tag, string.Empty);
+                                    var renamedTagStr = BaseRenameProvider<TMatchOptions>.CalculateRenamedTag(groupValue, renameTag);
+                                    renamedString = renamedString.Replace(renameTag.Tag, renamedTagStr);
+                                }
+                                catch (Exception ex)
+                                {
+                                    errors.Add(ex.Message);
                                 }
                             }
                             else
@@ -80,24 +76,30 @@ namespace BarryFileMan.Rename.Providers
                         }
                         else
                         {
-                            if(!string.IsNullOrEmpty(renameTag.Error))
-                            {
-                                errors.Add(renameTag.Error);
-                            }
+                            renamedString = renamedString.Replace(renameTag.Tag, string.Empty);
+                        }
+                    }
+                    else
+                    {
+                        if (!string.IsNullOrEmpty(renameTag.Error))
+                        {
+                            errors.Add(renameTag.Error);
+                        }
 
-                            foreach(var function in renameTag.Functions)
+                        foreach (var function in renameTag.Functions)
+                        {
+                            if (!string.IsNullOrEmpty(function.Error))
                             {
-                                if(!string.IsNullOrEmpty(function.Error))
-                                {
-                                    errors.Add(function.Error);
-                                }
+                                errors.Add(function.Error);
                             }
                         }
                     }
+
+                    tags.Add(renameTag);
                 }
             }
 
-            return new RenameResult(renamedString, errors.Count > 0 ? errors : null);
+            return new RenameResult(renamedString, tags, errors.Count > 0 ? errors : null);
         }
 
         private static string CalculateRenamedTag(IRenameMatchGroupValue groupValue, RenameTag renameTag)
@@ -111,7 +113,7 @@ namespace BarryFileMan.Rename.Providers
         }
     }
 
-    internal class RenameTag
+    public class RenameTag
     {
         private static readonly string _renameInnerTagPattern = "\\G\\s*(?<tagName>(?:[a-zA-Z]|\\d)+)(?:{\\s*(?<matchIndex>-?\\d+)\\s*})?(?:\\[\\s*(?<groupIndex>-?\\d+)\\s*\\])?(?<function>.(?<functionName>(?:[a-zA-Z]|\\d)+)(?:\\((?<functionParams>.*?)\\)))*?\\s*$";
 
@@ -176,7 +178,7 @@ namespace BarryFileMan.Rename.Providers
         }
     }
 
-    internal class RenameTagFunction
+    public class RenameTagFunction
     {
         private static readonly string _renameFunctionPadParamPattern = "\\G\\s*(?<type>right|left)\\s*,\\s*\'(?<char>.)\'\\s*,\\s*(?<length>\\d+)\\s*$";
         private static readonly string _renameFunctionReplacePattern = "\\G\\s*\'(?<input>.*)\'\\s*,\\s*\'(?<replace>.*)\'\\s*$";
