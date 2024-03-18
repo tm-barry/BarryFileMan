@@ -117,8 +117,14 @@ namespace BarryFileMan.Rename.Providers
     {
         private static readonly string _renameInnerTagPattern = "\\G\\s*(?<tagName>(?:[a-zA-Z]|\\d)+)(?:{\\s*(?<matchIndex>-?\\d+)\\s*})?(?:\\[\\s*(?<groupIndex>-?\\d+)\\s*\\])?(?<function>.(?<functionName>(?:[a-zA-Z]|\\d)+)(?:\\((?<functionParams>.*?)\\)))*?\\s*$";
 
+        /// <summary>
+        /// Entire tag value including angle brackets, tag name, and functions ex.. <tagName.functions()>
+        /// </summary>
         public string Tag { get; }
-        public string Value { get; }
+        /// <summary>
+        /// Inner tag value excluding angle brackets
+        /// </summary>
+        public string InnerTag { get; }
         public int Index { get; }
         public int Length { get; }
         public string TagName { get; private set; } = string.Empty;
@@ -127,17 +133,17 @@ namespace BarryFileMan.Rename.Providers
         public IList<RenameTagFunction> Functions { get; } = new List<RenameTagFunction>();
         public string? Error { get; private set; }
 
-        public RenameTag(string tag, string value, int index, int length)
+        public RenameTag(string tag, string innerTag, int index, int length)
         {
             Tag = tag;
-            Value = value;
+            InnerTag = innerTag;
             Index = index;
             Length = length;
 
-            ParseValue(value);
+            ParseInnerTag(innerTag);
         }
 
-        private void ParseValue(string value)
+        private void ParseInnerTag(string value)
         {
             var regex = new System.Text.RegularExpressions.Regex(_renameInnerTagPattern);
             var match = regex.Match(value);
@@ -161,19 +167,24 @@ namespace BarryFileMan.Rename.Providers
                     GroupIndex = groupIndex;
                 }
 
+                var functions = match.Groups["function"]?.Captures;
                 var functionNames = match.Groups["functionName"]?.Captures;
                 var functionParams = match.Groups["functionParams"]?.Captures;
-                if (functionNames != null && functionParams != null && functionNames.Count == functionParams.Count)
+                if (functions != null && functionNames != null && functionParams != null 
+                    && functions.Count == functionNames.Count 
+                    && functionNames.Count == functionParams.Count)
                 {
                     for(int i = 0; i < functionNames.Count; i++)
                     {
-                        Functions.Add(new RenameTagFunction(functionNames[i].Value, functionParams[i].Value));
+                        Functions.Add(new RenameTagFunction(functionNames[i].Value, functionNames[i].Index, functionNames[i].Length,
+                            functionParams[i].Value, functionParams[i].Index, functionParams[i].Length,
+                            functions[i].Index, functions[i].Length));
                     }
                 }
             }
             else
             {
-                Error = $"<{Value}> tag is invalid!";
+                Error = $"<{InnerTag}> tag is invalid!";
             }
         }
     }
@@ -185,15 +196,29 @@ namespace BarryFileMan.Rename.Providers
         private static readonly string _renameFunctionTrimPattern = "\\G\\s*(?<type>left|right|both)\\s*$";
 
         public string Name { get; }
+        public int NameIndex { get; }
+        public int NameLength { get; }
         public string Params { get; }
+        public int ParamsIndex { get; }
+        public int ParamsLength { get; }
+        public int Index { get; }
+        public int Length { get; }
         public Func<string, string> Function { get; private set; } = (str) => str;
         public string? Error { get; private set; }
 
 
-        public RenameTagFunction(string name, string @params)
+        public RenameTagFunction(string name, int nameIndex, int nameLength, 
+            string @params, int paramsIndex, int paramsLength,
+            int index, int length)
         {
             Name = name;
+            NameIndex = nameIndex;
+            NameLength = nameLength;
             Params = @params;
+            ParamsIndex = paramsIndex;
+            ParamsLength = paramsLength;
+            Index = index;
+            Length = length;
 
             SetFunction(name, @params);
         }
