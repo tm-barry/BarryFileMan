@@ -16,6 +16,7 @@
 			<ResourceDictionary.MergedDictionaries>
 				<ResourceInclude Source="/Views/Help/Sections/FlattenSectionViewTemplate.axaml"/>
 				<ResourceInclude Source="/Views/Help/Sections/HelpSectionViewTemplate.axaml"/>
+				<ResourceInclude Source="/Views/Help/Sections/RenameRegexSectionViewTemplate.axaml"/>
 				<ResourceInclude Source="/Views/Help/Sections/RenameSectionViewTemplate.axaml"/>
 			</ResourceDictionary.MergedDictionaries>
 		</ResourceDictionary>
@@ -70,6 +71,7 @@
 			<ScrollViewer.DataTemplates>
 				<StaticResource ResourceKey="flattenSectionView"/>
 				<StaticResource ResourceKey="helpSectionView"/>
+				<StaticResource ResourceKey="renameRegexSectionView"/>
 				<StaticResource ResourceKey="renameSectionView"/>
 			</ScrollViewer.DataTemplates>
 			

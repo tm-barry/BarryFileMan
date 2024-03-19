@@ -10,7 +10,10 @@
 		Click="OpenHyperlink">
 	<Button.Template>
 		<ControlTemplate>
-			<TextBlock Text="{Binding #hyperlinkBtn.Content}" Foreground="{DynamicResource SystemAccentColor}" TextDecorations="Underline">
+			<TextBlock Text="{Binding #hyperlinkBtn.Content}" 
+					   Foreground="{DynamicResource SystemAccentColor}" 
+					   TextDecorations="Underline"
+					   TextWrapping="Wrap">
 				<TextBlock.Styles>
 					<Style Selector="TextBlock:pointerover">
 						<Setter Property="Foreground" Value="{DynamicResource SystemAccentColorLight1}"/>

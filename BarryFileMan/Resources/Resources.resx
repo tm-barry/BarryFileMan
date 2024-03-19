@@ -168,6 +168,12 @@
   <data name="Description" xml:space="preserve">
     <value>Description</value>
   </data>
+  <data name="DotNetRegexQuickReferenceTitle" xml:space="preserve">
+    <value>.NET Regular Expression Language Quick Reference</value>
+  </data>
+  <data name="DotNetRegexQuickReferenceUrl" xml:space="preserve">
+    <value>https://learn.microsoft.com/en-us/dotnet/standard/base-types/regular-expression-language-quick-reference</value>
+  </data>
   <data name="DragDropFilesFolders" xml:space="preserve">
     <value>Drag and Drop Files or Folders</value>
   </data>
@@ -266,11 +272,26 @@
   <data name="MatchGroups" xml:space="preserve">
     <value>Match Groups</value>
   </data>
+  <data name="MatchGroupsDescription" xml:space="preserve">
+    <value>Displays the matches/groups of the current test string.</value>
+  </data>
   <data name="MatchPattern" xml:space="preserve">
     <value>Match Pattern</value>
   </data>
+  <data name="MatchPatternDescription" xml:space="preserve">
+    <value>Regular expression used to match data in the filename/directory. The regex group names are what can be used in the rename pattern tags. This uses .NET's regular expression syntax.</value>
+  </data>
   <data name="MatchType" xml:space="preserve">
     <value>Match Type</value>
+  </data>
+  <data name="MatchTypeDescription" xml:space="preserve">
+    <value>Indicates what the match pattern should use to find matches.
+
+Filename - Match only the filename
+
+Filename &amp; Directory - Match the filename and parent directory
+
+Full Path - Match the full path of the file/directory</value>
   </data>
   <data name="Name" xml:space="preserve">
     <value>Name</value>
@@ -317,6 +338,9 @@
   <data name="RegexRenameMatchProviderDescription" xml:space="preserve">
     <value>Uses a user supplied regular expression to pull data/tags from the file/directory name.</value>
   </data>
+  <data name="RegexSettings" xml:space="preserve">
+    <value>Regex Settings</value>
+  </data>
   <data name="Remove" xml:space="preserve">
     <value>Remove</value>
   </data>
@@ -325,6 +349,9 @@
   </data>
   <data name="RenamedString" xml:space="preserve">
     <value>Renamed String</value>
+  </data>
+  <data name="RenamedStringDescription" xml:space="preserve">
+    <value>Renamed test string result after applying the match/rename patterns.</value>
   </data>
   <data name="RenameFilesSaveConfirmation" xml:space="preserve">
     <value>Files will be renamed. Do you want to continue?</value>
@@ -340,6 +367,15 @@
   </data>
   <data name="RenamePattern" xml:space="preserve">
     <value>Rename Pattern</value>
+  </data>
+  <data name="RenamePatternDescription" xml:space="preserve">
+    <value>Rename pattern syntax used to rename the string. For the regex provider you can use the match pattern group names for the tags. See the main rename help page for a reference of the syntax.</value>
+  </data>
+  <data name="RenamePatternSyntax" xml:space="preserve">
+    <value>Rename Pattern Syntax</value>
+  </data>
+  <data name="RenameRegexHelpTitle" xml:space="preserve">
+    <value>Rename - Regex</value>
   </data>
   <data name="RevertToDefault" xml:space="preserve">
     <value>Revert to Default</value>
@@ -367,6 +403,9 @@
   </data>
   <data name="TestString" xml:space="preserve">
     <value>Test String</value>
+  </data>
+  <data name="TestStringDescription" xml:space="preserve">
+    <value>A string used to test out the current match/rename patterns.</value>
   </data>
   <data name="Theme" xml:space="preserve">
     <value>Theme</value>

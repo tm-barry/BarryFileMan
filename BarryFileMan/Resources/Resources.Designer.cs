@@ -214,6 +214,24 @@ namespace BarryFileMan.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .NET Regular Expression Language Quick Reference.
+        /// </summary>
+        public static string DotNetRegexQuickReferenceTitle {
+            get {
+                return ResourceManager.GetString("DotNetRegexQuickReferenceTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://learn.microsoft.com/en-us/dotnet/standard/base-types/regular-expression-language-quick-reference.
+        /// </summary>
+        public static string DotNetRegexQuickReferenceUrl {
+            get {
+                return ResourceManager.GetString("DotNetRegexQuickReferenceUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Drag and Drop Files or Folders.
         /// </summary>
         public static string DragDropFilesFolders {
@@ -492,6 +510,15 @@ namespace BarryFileMan.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Displays the matches/groups of the current test string..
+        /// </summary>
+        public static string MatchGroupsDescription {
+            get {
+                return ResourceManager.GetString("MatchGroupsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Match Pattern.
         /// </summary>
         public static string MatchPattern {
@@ -501,11 +528,35 @@ namespace BarryFileMan.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Regular expression used to match data in the filename/directory. The regex group names are what can be used in the rename pattern tags. This uses .NET&apos;s regular expression syntax..
+        /// </summary>
+        public static string MatchPatternDescription {
+            get {
+                return ResourceManager.GetString("MatchPatternDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Match Type.
         /// </summary>
         public static string MatchType {
             get {
                 return ResourceManager.GetString("MatchType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Indicates what the match pattern should use to find matches.
+        ///
+        ///Filename - Match only the filename
+        ///
+        ///Filename &amp; Directory - Match the filename and parent directory
+        ///
+        ///Full Path - Match the full path of the file/directory.
+        /// </summary>
+        public static string MatchTypeDescription {
+            get {
+                return ResourceManager.GetString("MatchTypeDescription", resourceCulture);
             }
         }
         
@@ -645,6 +696,15 @@ namespace BarryFileMan.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Regex Settings.
+        /// </summary>
+        public static string RegexSettings {
+            get {
+                return ResourceManager.GetString("RegexSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Remove.
         /// </summary>
         public static string Remove {
@@ -668,6 +728,15 @@ namespace BarryFileMan.Resources {
         public static string RenamedString {
             get {
                 return ResourceManager.GetString("RenamedString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Renamed test string result after applying the match/rename patterns..
+        /// </summary>
+        public static string RenamedStringDescription {
+            get {
+                return ResourceManager.GetString("RenamedStringDescription", resourceCulture);
             }
         }
         
@@ -713,6 +782,33 @@ namespace BarryFileMan.Resources {
         public static string RenamePattern {
             get {
                 return ResourceManager.GetString("RenamePattern", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rename pattern syntax used to rename the string. For the regex provider you can use the match pattern group names for the tags. See the main rename help page for a reference of the syntax..
+        /// </summary>
+        public static string RenamePatternDescription {
+            get {
+                return ResourceManager.GetString("RenamePatternDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rename Pattern Syntax.
+        /// </summary>
+        public static string RenamePatternSyntax {
+            get {
+                return ResourceManager.GetString("RenamePatternSyntax", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rename - Regex.
+        /// </summary>
+        public static string RenameRegexHelpTitle {
+            get {
+                return ResourceManager.GetString("RenameRegexHelpTitle", resourceCulture);
             }
         }
         
@@ -794,6 +890,15 @@ namespace BarryFileMan.Resources {
         public static string TestString {
             get {
                 return ResourceManager.GetString("TestString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A string used to test out the current match/rename patterns..
+        /// </summary>
+        public static string TestStringDescription {
+            get {
+                return ResourceManager.GetString("TestStringDescription", resourceCulture);
             }
         }
         
