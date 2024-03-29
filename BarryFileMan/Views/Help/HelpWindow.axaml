@@ -27,40 +27,38 @@
 		<!-- Top Buttons -->
 		<Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto">
 			<Button Grid.Column="0" Margin="5"
-					Background="Transparent"
 					BorderThickness="0"
 					Command="{Binding GoBackCommand}">
 				<Button.Template>
 					<ControlTemplate>
-						<materialIcons:MaterialIcon Height="36"
-													Width="36"
-													Kind="ArrowLeftBold"
-													Foreground="{DynamicResource SystemBaseHighColor}">
-							<materialIcons:MaterialIcon.Styles>
-								<Style Selector="materialIcons|MaterialIcon:pointerover">
+						<Grid Background="Transparent">
+							<Grid.Styles>
+								<Style Selector="Grid:pointerover > materialIcons|MaterialIcon">
 									<Setter Property="Foreground" Value="{DynamicResource SystemBaseMediumColor}"/>
 								</Style>
-							</materialIcons:MaterialIcon.Styles>
-						</materialIcons:MaterialIcon>
+							</Grid.Styles>
+							<materialIcons:MaterialIcon Height="36" Width="36"
+														Kind="ArrowLeftBold"
+														Foreground="{DynamicResource SystemBaseHighColor}"/>
+						</Grid>
 					</ControlTemplate>
 				</Button.Template>
 			</Button>
 			<Button Grid.Column="2" Margin="5"
-					Background="Transparent"
 					BorderThickness="0"
 					Command="{Binding GoHomeCommand}">
 				<Button.Template>
 					<ControlTemplate>
-						<materialIcons:MaterialIcon Height="36"
-													Width="36"
-													Kind="Home"
-													Foreground="{DynamicResource SystemBaseHighColor}">
-							<materialIcons:MaterialIcon.Styles>
-								<Style Selector="materialIcons|MaterialIcon:pointerover">
+						<Grid Background="Transparent">
+							<Grid.Styles>
+								<Style Selector="Grid:pointerover > materialIcons|MaterialIcon">
 									<Setter Property="Foreground" Value="{DynamicResource SystemBaseMediumColor}"/>
 								</Style>
-							</materialIcons:MaterialIcon.Styles>
-						</materialIcons:MaterialIcon>
+							</Grid.Styles>
+							<materialIcons:MaterialIcon Height="36" Width="36"
+														Kind="Home"
+														Foreground="{DynamicResource SystemBaseHighColor}"/>
+						</Grid>
 					</ControlTemplate>
 				</Button.Template>
 			</Button>

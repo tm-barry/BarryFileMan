@@ -6,21 +6,21 @@
         mc:Ignorable="d" d:DesignWidth="100" d:DesignHeight="100"
         x:Class="BarryFileMan.Views.Help.HelpButton"
 		x:Name="helpButton"
-		Background="Transparent"
 		BorderThickness="0"
 		Click="HelpButton_Click">
 	<Button.Template>
 		<ControlTemplate>
-			<materialIcons:MaterialIcon Height="{Binding #helpButton.IconHeight}" 
-										Width="{Binding #helpButton.IconWidth}" 
-										Kind="HelpCircle"
-										Foreground="{DynamicResource SystemAccentColor}">
-				<materialIcons:MaterialIcon.Styles>
-					<Style Selector="materialIcons|MaterialIcon:pointerover">
+			<Grid Background="Transparent">
+				<Grid.Styles>
+					<Style Selector="Grid:pointerover > materialIcons|MaterialIcon">
 						<Setter Property="Foreground" Value="{DynamicResource SystemAccentColorLight1}"/>
 					</Style>
-				</materialIcons:MaterialIcon.Styles>
-			</materialIcons:MaterialIcon>
+				</Grid.Styles>
+				<materialIcons:MaterialIcon Height="{Binding #helpButton.IconHeight}"
+											Width="{Binding #helpButton.IconWidth}"
+											Kind="HelpCircle"
+											Foreground="{DynamicResource SystemAccentColor}"/>
+			</Grid>
 		</ControlTemplate>
 	</Button.Template>
 </Button>
