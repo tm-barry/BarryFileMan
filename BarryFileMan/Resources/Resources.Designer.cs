@@ -259,6 +259,15 @@ namespace BarryFileMan.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Example.
+        /// </summary>
+        public static string Example {
+            get {
+                return ResourceManager.GetString("Example", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Excluded.
         /// </summary>
         public static string Excluded {
@@ -434,6 +443,84 @@ namespace BarryFileMan.Resources {
         public static string FullPath {
             get {
                 return ResourceManager.GetString("FullPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Function.
+        /// </summary>
+        public static string Function {
+            get {
+                return ResourceManager.GetString("Function", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pad( type, char, length )
+        ///
+        ///Used to pad a tag to a certain length, such as padding a number with leading 0s.
+        ///
+        ///type - left|right
+        ///char - character to use to pad
+        ///length - what length to pad to.
+        /// </summary>
+        public static string FunctionPad {
+            get {
+                return ResourceManager.GetString("FunctionPad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;tagName.pad( left, &apos;0&apos;, 2 )&gt;.
+        /// </summary>
+        public static string FunctionPadExample {
+            get {
+                return ResourceManager.GetString("FunctionPadExample", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to replace( input, replace )
+        ///
+        ///Used to replace a string within a tag with another string.
+        ///
+        ///input - string to replace
+        ///replace - string to replace the input with.
+        /// </summary>
+        public static string FunctionReplace {
+            get {
+                return ResourceManager.GetString("FunctionReplace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;tagName.replace( &apos;.&apos;, &apos; &apos; )&gt;.
+        /// </summary>
+        public static string FunctionReplaceExample {
+            get {
+                return ResourceManager.GetString("FunctionReplaceExample", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to trim( type )
+        ///
+        ///Used to trim whitespace from a tag.
+        ///
+        ///type - left|right|both.
+        /// </summary>
+        public static string FunctionTrim {
+            get {
+                return ResourceManager.GetString("FunctionTrim", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;tagName.trim( both )&gt;.
+        /// </summary>
+        public static string FunctionTrimExample {
+            get {
+                return ResourceManager.GetString("FunctionTrimExample", resourceCulture);
             }
         }
         
@@ -804,6 +891,15 @@ namespace BarryFileMan.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Rename pattern uses a custom syntax using tags enclosed in angle brackets &lt;&gt;.  Functions such as .pad, .replace, and .trim can also be used on each tag to further format data.  Free text can also be used outside of tags..
+        /// </summary>
+        public static string RenamePatternSyntaxDescription {
+            get {
+                return ResourceManager.GetString("RenamePatternSyntaxDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Rename - Regex.
         /// </summary>
         public static string RenameRegexHelpTitle {
@@ -881,6 +977,87 @@ namespace BarryFileMan.Resources {
         public static string SystemDefault {
             get {
                 return ResourceManager.GetString("SystemDefault", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tag Format Functions.
+        /// </summary>
+        public static string TagFormatFunctions {
+            get {
+                return ResourceManager.GetString("TagFormatFunctions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tag values can be formatted using various built in functions.  Functions can be specified after the tag name by a period, function name, and function parameters like shown below..
+        /// </summary>
+        public static string TagFormatFunctionsDescription {
+            get {
+                return ResourceManager.GetString("TagFormatFunctionsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;tagName.replace(&apos;.&apos;,&apos; &apos;)&gt;.
+        /// </summary>
+        public static string TagFormatFunctionsExample {
+            get {
+                return ResourceManager.GetString("TagFormatFunctionsExample", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tag Group Index.
+        /// </summary>
+        public static string TagGroupIndex {
+            get {
+                return ResourceManager.GetString("TagGroupIndex", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to In the case there are multiple instances of a group in a single match, you can specify which group to use by adding the group index number in square brackets after the tag name like shown below.  If specifying both a match and group index, the group index must come after the match index.  Group index is zero based, so the first group would be 0.  If no group index is specified it will default to the first group.  If you specify a -1 for the group index it will use the last group..
+        /// </summary>
+        public static string TagGroupIndexDescription {
+            get {
+                return ResourceManager.GetString("TagGroupIndexDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;tagName{2}[1]&gt;.
+        /// </summary>
+        public static string TagGroupIndexExample {
+            get {
+                return ResourceManager.GetString("TagGroupIndexExample", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tag Match Index.
+        /// </summary>
+        public static string TagMatchIndex {
+            get {
+                return ResourceManager.GetString("TagMatchIndex", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to In the case there are multiple matches for a file, you can specify which match to use by adding the match index number in curly brackets after the tag name like shown below.  Match index is zero based, so the first match would be 0.  If no match index is specified it will default to the first match.  If you specify a -1 for the match index it will use the last match..
+        /// </summary>
+        public static string TagMatchIndexDescription {
+            get {
+                return ResourceManager.GetString("TagMatchIndexDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;tagName{2}&gt;.
+        /// </summary>
+        public static string TagMatchIndexExample {
+            get {
+                return ResourceManager.GetString("TagMatchIndexExample", resourceCulture);
             }
         }
         

@@ -8,7 +8,7 @@
 					xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia">
 	<!-- Preview DataTemplate -->
 	<Design.PreviewWith>
-		<Grid Width="500" Height="500">
+		<Grid Width="500" Height="1024">
 			<Grid.Resources>
 				<ResourceDictionary>
 					<ResourceDictionary.MergedDictionaries>
@@ -81,6 +81,126 @@
 						   TextWrapping="Wrap"
 						   Text="{x:Static lang:Resources.RegexRenameMatchProviderDescription}"/>
 				<Border Grid.ColumnSpan="3" Grid.Row="3" Padding="0"
+						Opacity="0.75"
+						BorderBrush="{DynamicResource SystemBaseMediumColor}"
+						BorderThickness="0,1,0,0"/>
+			</Grid>
+
+			<!-- Rename Pattern Syntax Header -->
+			<TextBlock Margin="0,15,0,0"
+					   FontSize="24" FontWeight="Bold"
+					   VerticalAlignment="Center"
+					   TextWrapping="Wrap"
+					   Text="{x:Static lang:Resources.RenamePatternSyntax}"/>
+			<Separator Margin="0,5,0,5"/>
+
+			<!-- Rename Pattern Syntax Description -->
+			<TextBlock TextWrapping="Wrap"
+					   Text="{x:Static lang:Resources.RenamePatternSyntaxDescription}"/>
+
+			<!-- Rename Pattern Tag Match Index Syntax Header -->
+			<TextBlock Margin="10,15,0,0"
+					   FontSize="18" FontWeight="Bold"
+					   VerticalAlignment="Center"
+					   TextWrapping="Wrap"
+					   Text="{x:Static lang:Resources.TagMatchIndex}"/>
+
+			<!-- Rename Pattern Tag Match Index Description -->
+			<TextBlock Margin="10,10,0,0" TextWrapping="Wrap"
+					   Text="{x:Static lang:Resources.TagMatchIndexDescription}"/>
+
+			<!-- Rename Pattern Tag Match Index Example -->
+			<TextBlock Margin="20,10,0,0" TextWrapping="Wrap"
+					   FontWeight="Medium"
+					   Text="{x:Static lang:Resources.TagMatchIndexExample}"/>
+
+			<!-- Rename Pattern Tag Group Index Syntax Header -->
+			<TextBlock Margin="10,15,0,0"
+					   FontSize="18" FontWeight="Bold"
+					   VerticalAlignment="Center"
+					   TextWrapping="Wrap"
+					   Text="{x:Static lang:Resources.TagGroupIndex}"/>
+
+			<!-- Rename Pattern Tag Group Index Description -->
+			<TextBlock Margin="10,10,0,0" TextWrapping="Wrap"
+					   Text="{x:Static lang:Resources.TagGroupIndexDescription}"/>
+
+			<!-- Rename Pattern Tag Group Index Example -->
+			<TextBlock Margin="20,10,0,0" TextWrapping="Wrap"
+					   FontWeight="Medium"
+					   Text="{x:Static lang:Resources.TagGroupIndexExample}"/>
+
+			<!-- Rename Pattern Tag Format Functions Header -->
+			<TextBlock Margin="10,15,0,0"
+					   FontSize="18" FontWeight="Bold"
+					   VerticalAlignment="Center"
+					   TextWrapping="Wrap"
+					   Text="{x:Static lang:Resources.TagFormatFunctions}"/>
+
+			<!-- Rename Pattern Tag Format Functions Description -->
+			<TextBlock Margin="10,10,0,0" TextWrapping="Wrap"
+					   Text="{x:Static lang:Resources.TagFormatFunctionsDescription}"/>
+
+			<!-- Rename Pattern Tag Match Index Example -->
+			<TextBlock Margin="20,10,0,0" TextWrapping="Wrap"
+					   FontWeight="Medium"
+					   Text="{x:Static lang:Resources.TagFormatFunctionsExample}"/>
+
+			<Grid Margin="10,10,0,0"
+				  ColumnDefinitions="*,Auto,*"
+				  RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+
+				<!--Headers-->
+				<TextBlock Grid.Column="0" Grid.Row="0" Margin="5"
+						   FontWeight="Bold"
+						   Text="{x:Static lang:Resources.Function}"/>
+				<Border Grid.Column="1" Grid.RowSpan="100"
+						Opacity="0.75"
+						BorderBrush="{DynamicResource SystemBaseMediumColor}"
+						BorderThickness="1,0,0,0"/>
+				<TextBlock Grid.Column="2" Grid.Row="0" Margin="5"
+						   FontWeight="Bold"
+						   Text="{x:Static lang:Resources.Example}"/>
+				<Border Grid.ColumnSpan="3" Grid.Row="1" Padding="0"
+						Opacity="0.75"
+						BorderBrush="{DynamicResource SystemBaseMediumColor}"
+						BorderThickness="0,1,0,0"/>
+
+				<!--Pad-->
+				<TextBlock Grid.Column="0" Grid.Row="2" Margin="10"
+						   FontWeight="Medium"
+						   TextWrapping="Wrap"
+						   Text="{x:Static lang:Resources.FunctionPad}"/>
+				<TextBlock Grid.Column="2" Grid.Row="2" Margin="10"
+						   TextWrapping="Wrap"
+						   Text="{x:Static lang:Resources.FunctionPadExample}"/>
+				<Border Grid.ColumnSpan="3" Grid.Row="3" Padding="0"
+						Opacity="0.75"
+						BorderBrush="{DynamicResource SystemBaseMediumColor}"
+						BorderThickness="0,1,0,0"/>
+
+				<!--Replace-->
+				<TextBlock Grid.Column="0" Grid.Row="4" Margin="10"
+						   FontWeight="Medium"
+						   TextWrapping="Wrap"
+						   Text="{x:Static lang:Resources.FunctionReplace}"/>
+				<TextBlock Grid.Column="2" Grid.Row="4" Margin="10"
+						   TextWrapping="Wrap"
+						   Text="{x:Static lang:Resources.FunctionReplaceExample}"/>
+				<Border Grid.ColumnSpan="3" Grid.Row="5" Padding="0"
+						Opacity="0.75"
+						BorderBrush="{DynamicResource SystemBaseMediumColor}"
+						BorderThickness="0,1,0,0"/>
+
+				<!--Trim-->
+				<TextBlock Grid.Column="0" Grid.Row="6" Margin="10"
+						   FontWeight="Medium"
+						   TextWrapping="Wrap"
+						   Text="{x:Static lang:Resources.FunctionTrim}"/>
+				<TextBlock Grid.Column="2" Grid.Row="6" Margin="10"
+						   TextWrapping="Wrap"
+						   Text="{x:Static lang:Resources.FunctionTrimExample}"/>
+				<Border Grid.ColumnSpan="3" Grid.Row="7" Padding="0"
 						Opacity="0.75"
 						BorderBrush="{DynamicResource SystemBaseMediumColor}"
 						BorderThickness="0,1,0,0"/>

@@ -183,6 +183,9 @@
   <data name="Error" xml:space="preserve">
     <value>Error</value>
   </data>
+  <data name="Example" xml:space="preserve">
+    <value>Example</value>
+  </data>
   <data name="Excluded" xml:space="preserve">
     <value>Excluded</value>
   </data>
@@ -247,6 +250,42 @@
   </data>
   <data name="FullPath" xml:space="preserve">
     <value>Full Path</value>
+  </data>
+  <data name="Function" xml:space="preserve">
+    <value>Function</value>
+  </data>
+  <data name="FunctionPad" xml:space="preserve">
+    <value>pad( type, char, length )
+
+Used to pad a tag to a certain length, such as padding a number with leading 0s.
+
+type - left|right
+char - character to use to pad
+length - what length to pad to</value>
+  </data>
+  <data name="FunctionPadExample" xml:space="preserve">
+    <value>&lt;tagName.pad( left, '0', 2 )&gt;</value>
+  </data>
+  <data name="FunctionReplace" xml:space="preserve">
+    <value>replace( input, replace )
+
+Used to replace a string within a tag with another string.
+
+input - string to replace
+replace - string to replace the input with</value>
+  </data>
+  <data name="FunctionReplaceExample" xml:space="preserve">
+    <value>&lt;tagName.replace( '.', ' ' )&gt;</value>
+  </data>
+  <data name="FunctionTrim" xml:space="preserve">
+    <value>trim( type )
+
+Used to trim whitespace from a tag.
+
+type - left|right|both</value>
+  </data>
+  <data name="FunctionTrimExample" xml:space="preserve">
+    <value>&lt;tagName.trim( both )&gt;</value>
   </data>
   <data name="General" xml:space="preserve">
     <value>General</value>
@@ -374,6 +413,9 @@ Full Path - Match the full path of the file/directory</value>
   <data name="RenamePatternSyntax" xml:space="preserve">
     <value>Rename Pattern Syntax</value>
   </data>
+  <data name="RenamePatternSyntaxDescription" xml:space="preserve">
+    <value>Rename pattern uses a custom syntax using tags enclosed in angle brackets &lt;&gt;.  Functions such as .pad, .replace, and .trim can also be used on each tag to further format data.  Free text can also be used outside of tags.</value>
+  </data>
   <data name="RenameRegexHelpTitle" xml:space="preserve">
     <value>Rename - Regex</value>
   </data>
@@ -400,6 +442,33 @@ Full Path - Match the full path of the file/directory</value>
   </data>
   <data name="SystemDefault" xml:space="preserve">
     <value>System Default</value>
+  </data>
+  <data name="TagFormatFunctions" xml:space="preserve">
+    <value>Tag Format Functions</value>
+  </data>
+  <data name="TagFormatFunctionsDescription" xml:space="preserve">
+    <value>Tag values can be formatted using various built in functions.  Functions can be specified after the tag name by a period, function name, and function parameters like shown below.</value>
+  </data>
+  <data name="TagFormatFunctionsExample" xml:space="preserve">
+    <value>&lt;tagName.replace('.',' ')&gt;</value>
+  </data>
+  <data name="TagGroupIndex" xml:space="preserve">
+    <value>Tag Group Index</value>
+  </data>
+  <data name="TagGroupIndexDescription" xml:space="preserve">
+    <value>In the case there are multiple instances of a group in a single match, you can specify which group to use by adding the group index number in square brackets after the tag name like shown below.  If specifying both a match and group index, the group index must come after the match index.  Group index is zero based, so the first group would be 0.  If no group index is specified it will default to the first group.  If you specify a -1 for the group index it will use the last group.</value>
+  </data>
+  <data name="TagGroupIndexExample" xml:space="preserve">
+    <value>&lt;tagName{2}[1]&gt;</value>
+  </data>
+  <data name="TagMatchIndex" xml:space="preserve">
+    <value>Tag Match Index</value>
+  </data>
+  <data name="TagMatchIndexDescription" xml:space="preserve">
+    <value>In the case there are multiple matches for a file, you can specify which match to use by adding the match index number in curly brackets after the tag name like shown below.  Match index is zero based, so the first match would be 0.  If no match index is specified it will default to the first match.  If you specify a -1 for the match index it will use the last match.</value>
+  </data>
+  <data name="TagMatchIndexExample" xml:space="preserve">
+    <value>&lt;tagName{2}&gt;</value>
   </data>
   <data name="TestString" xml:space="preserve">
     <value>Test String</value>
