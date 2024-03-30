@@ -6,6 +6,7 @@
     <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+    <ApplicationIcon>Assets\barry-file-man-logo.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,6 +15,10 @@
 
   <ItemGroup>
     <None Remove="Assets\barry-file-man-logo.svg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Assets\barry-file-man-logo.ico" />
   </ItemGroup>
 
 
