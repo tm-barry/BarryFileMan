@@ -10,10 +10,16 @@ namespace BarryFileMan.Managers.Config
 {
     public class JsonUserConfigManager : IConfigManager<UserConfig>
     {
-        private readonly string _filePath = "user.json";
-        private readonly UserConfig _defaultUserConfig = new();
+        private static readonly string _portableFolderPath = "user";
+        private static readonly string _appDatafolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "BarryFileMan");
+        private static readonly string _fileName = "settings.json";
 
+        private readonly UserConfig _defaultUserConfig = new();
         private readonly Subject<UserConfig> _configSubject = new();
+
+        private string FolderPath => Directory.Exists(_portableFolderPath) ? _portableFolderPath : _appDatafolderPath;
+        private string FilePath => Path.Combine(FolderPath, _fileName);
+
         public IObservable<UserConfig> ConfigObservable => _configSubject.AsObservable();
         public UserConfig Config { get; private set; }
 
@@ -29,9 +35,9 @@ namespace BarryFileMan.Managers.Config
             UserConfig? config = null;
             try
             {
-                if (File.Exists(_filePath))
+                if (File.Exists(FilePath))
                 {
-                    configString = File.ReadAllText(_filePath);
+                    configString = File.ReadAllText(FilePath);
                 }
 
                 if (!string.IsNullOrWhiteSpace(configString))
@@ -54,9 +60,9 @@ namespace BarryFileMan.Managers.Config
             UserConfig? config = null;
             try
             {
-                if (File.Exists(_filePath))
+                if (File.Exists(FilePath))
                 {
-                    configString = await File.ReadAllTextAsync(_filePath);
+                    configString = await File.ReadAllTextAsync(FilePath);
                 }
 
                 if (!string.IsNullOrWhiteSpace(configString))
@@ -87,7 +93,8 @@ namespace BarryFileMan.Managers.Config
         {
             try
             {
-                File.WriteAllText(_filePath, JsonSerializer.Serialize(config, new JsonSerializerOptions { WriteIndented = true }));
+                HandleDirectoryCreation();
+                File.WriteAllText(FilePath, JsonSerializer.Serialize(config, new JsonSerializerOptions { WriteIndented = true }));
                 UpdateConfigSubject(config);
             }
             catch { }
@@ -98,11 +105,20 @@ namespace BarryFileMan.Managers.Config
         {
             try
             {
-                await File.WriteAllTextAsync(_filePath, JsonSerializer.Serialize(config, new JsonSerializerOptions { WriteIndented = true }));
+                HandleDirectoryCreation();
+                await File.WriteAllTextAsync(FilePath, JsonSerializer.Serialize(config, new JsonSerializerOptions { WriteIndented = true }));
                 UpdateConfigSubject(config);
             }
             catch { }
             return config;
+        }
+
+        private void HandleDirectoryCreation()
+        {
+            if (!Directory.Exists(FolderPath))
+            {
+                Directory.CreateDirectory(FolderPath);
+            }
         }
 
         private void UpdateConfigSubject(UserConfig config)
