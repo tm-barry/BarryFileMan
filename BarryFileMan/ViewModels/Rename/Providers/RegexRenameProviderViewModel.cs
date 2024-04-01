@@ -145,7 +145,7 @@ namespace BarryFileMan.ViewModels.Rename.Providers
         public RegexRenameProviderViewModel(RenameViewModel viewModel) : base(viewModel)
         {
             ViewModel.PropertyChanged += ViewModel_PropertyChanged;
-            TestString = "\\ParentFolder\\Show.Name.S01E01.1080p.x265-TEST";
+            TestString = "\\ParentFolder\\Show.Name.S01E01";
             SelectedMatchTypeIndex = 1;
         }
 
