@@ -77,7 +77,7 @@ namespace BarryFileMan.ViewModels
         public MainWindowViewModel()
         {
             ChangeViewContent(SelectedToolPaneItem);
-            ToolPaneOpen = AppManager.UserConfig.Config.General.SidebarExpandedDefault;
+            OnUserConfigChanged(AppManager.UserConfig.Config);
             AppManager.UserConfig.ConfigObservable.Subscribe(OnUserConfigChanged);
         }
 

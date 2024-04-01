@@ -169,11 +169,29 @@ namespace BarryFileMan.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Default Regex File Filter.
+        /// </summary>
+        public static string DefaultRegexFileFilter {
+            get {
+                return ResourceManager.GetString("DefaultRegexFileFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete Empty Folders.
         /// </summary>
         public static string DeleteEmptyFolders {
             get {
                 return ResourceManager.GetString("DeleteEmptyFolders", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete Empty Folders Default.
+        /// </summary>
+        public static string DeleteEmptyFoldersDefault {
+            get {
+                return ResourceManager.GetString("DeleteEmptyFoldersDefault", resourceCulture);
             }
         }
         
@@ -192,6 +210,15 @@ namespace BarryFileMan.Resources {
         public static string DeleteExcludedFiles {
             get {
                 return ResourceManager.GetString("DeleteExcludedFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete Excluded Files Default.
+        /// </summary>
+        public static string DeleteExcludedFilesDefault {
+            get {
+                return ResourceManager.GetString("DeleteExcludedFilesDefault", resourceCulture);
             }
         }
         
@@ -386,6 +413,15 @@ namespace BarryFileMan.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Select a folder to flatten....
         /// </summary>
+        public static string FlattenFolderDialogWatermark {
+            get {
+                return ResourceManager.GetString("FlattenFolderDialogWatermark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a folder to flatten....
+        /// </summary>
         public static string FlattenFolderPickerPlaceholder {
             get {
                 return ResourceManager.GetString("FlattenFolderPickerPlaceholder", resourceCulture);
@@ -416,6 +452,15 @@ namespace BarryFileMan.Resources {
         public static string FlattenPageDescription {
             get {
                 return ResourceManager.GetString("FlattenPageDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter a regex expression (default: &apos;.*&apos;).
+        /// </summary>
+        public static string FlattenRegexFileFilterWatermark {
+            get {
+                return ResourceManager.GetString("FlattenRegexFileFilterWatermark", resourceCulture);
             }
         }
         

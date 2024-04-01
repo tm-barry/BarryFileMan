@@ -1,6 +1,7 @@
 ﻿using Avalonia.Platform.Storage;
 using BarryFileMan.Attributes.Validation;
 using BarryFileMan.Managers;
+using BarryFileMan.Models.Config;
 using BarryFileMan.Views.Common;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -11,6 +12,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace BarryFileMan.ViewModels.Flatten
 {
@@ -96,6 +98,10 @@ namespace BarryFileMan.ViewModels.Flatten
         public FlattenViewModel()
         {
             Files.CollectionChanged += Files_CollectionChanged;
+
+            // Load default option from config
+            OnUserConfigChanged(AppManager.UserConfig.Config);
+            AppManager.UserConfig.ConfigObservable.Subscribe(OnUserConfigChanged);
         }
 
         ~FlattenViewModel()
@@ -107,6 +113,13 @@ namespace BarryFileMan.ViewModels.Flatten
         {
             OnPropertyChanged(nameof(HasFiles));
             OnPropertyChanged(nameof(FilteredFiles));
+        }
+
+        private void OnUserConfigChanged(UserConfig userConfig)
+        {
+            FileFilterRegexPattern = userConfig.Flatten.DefaultRegexFileFilter;
+            ShouldDeleteExcludedFiles = userConfig.Flatten.DeleteExcludedFilesDefault;
+            ShouldDeleteEmptyFolders = userConfig.Flatten.DeleteEmptyFoldersDefault;
         }
 
         [RelayCommand]
@@ -129,8 +142,10 @@ namespace BarryFileMan.ViewModels.Flatten
                     AllowMultiple = false,
                 });
 
-                StorageFolder = folders?.FirstOrDefault();
-
+                if (folders != null)
+                {
+                    StorageFolder = folders[0];
+                }
             }
             catch (Exception ex)
             {

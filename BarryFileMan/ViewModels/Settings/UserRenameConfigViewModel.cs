@@ -21,7 +21,7 @@ namespace BarryFileMan.ViewModels.Settings
 
         public RenameLoadOption SelectedDefaultLoadOption => RenameLoadOptions.ElementAtOrDefault(SelectedDefaultLoadOptionIndex ?? -1)?.Item ?? RenameLoadOption.Files;
 
-        public bool IsDirty => SelectedDefaultLoadOption != _config.DefaultLoadOption;
+        public override bool IsDirty => SelectedDefaultLoadOption != _config.DefaultLoadOption;
 
         public UserRenameConfigViewModel(UserRenameConfig config)
         {

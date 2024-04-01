@@ -1,16 +1,17 @@
-﻿using BarryFileMan.Enums.Rename;
-
-namespace BarryFileMan.Models.Config
+﻿namespace BarryFileMan.Models.Config
 {
     public class UserConfig
     {
+        public UserFlattenConfig Flatten { get; set; }
+
         public UserGeneralConfig General { get; set; }
 
         public UserRenameConfig Rename { get; set; }
 
-        public UserConfig() : this(new(), new()) { }
-        public UserConfig(UserGeneralConfig general, UserRenameConfig rename) 
+        public UserConfig() : this(new(), new(), new()) { }
+        public UserConfig(UserFlattenConfig flatten, UserGeneralConfig general, UserRenameConfig rename) 
         {
+            Flatten = flatten;
             General = general;
             Rename = rename;
         }

@@ -153,14 +153,23 @@
   <data name="DefaultLoadOption" xml:space="preserve">
     <value>Default Load Option</value>
   </data>
+  <data name="DefaultRegexFileFilter" xml:space="preserve">
+    <value>Default Regex File Filter</value>
+  </data>
   <data name="DeleteEmptyFolders" xml:space="preserve">
     <value>Delete Empty Folders</value>
+  </data>
+  <data name="DeleteEmptyFoldersDefault" xml:space="preserve">
+    <value>Delete Empty Folders Default</value>
   </data>
   <data name="DeleteEmptyFoldersDescription" xml:space="preserve">
     <value>Used to indicate if folders that are empty after flattening should be deleted on save.</value>
   </data>
   <data name="DeleteExcludedFiles" xml:space="preserve">
     <value>Delete Excluded Files</value>
+  </data>
+  <data name="DeleteExcludedFilesDefault" xml:space="preserve">
+    <value>Delete Excluded Files Default</value>
   </data>
   <data name="DeleteExcludedFilesDescription" xml:space="preserve">
     <value>Used to indicate if files marked excluded should be deleted on save.</value>
@@ -230,6 +239,9 @@
 
 {0}</value>
   </data>
+  <data name="FlattenFolderDialogWatermark" xml:space="preserve">
+    <value>Select a folder to flatten...</value>
+  </data>
   <data name="FlattenFolderPickerPlaceholder" xml:space="preserve">
     <value>Select a folder to flatten...</value>
   </data>
@@ -241,6 +253,9 @@
   </data>
   <data name="FlattenPageDescription" xml:space="preserve">
     <value>Flatten a directory by moving all the files from subdirectories to the root directory.</value>
+  </data>
+  <data name="FlattenRegexFileFilterWatermark" xml:space="preserve">
+    <value>Enter a regex expression (default: '.*')</value>
   </data>
   <data name="FolderFlattenedSuccessMessage" xml:space="preserve">
     <value>Folder successfully flattened!</value>

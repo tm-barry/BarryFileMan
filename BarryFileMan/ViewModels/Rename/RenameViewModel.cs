@@ -64,14 +64,14 @@ namespace BarryFileMan.ViewModels.Rename
         }.AsReadOnly();
 
         [ObservableProperty]
-        private RenameLoadOptionViewModel _selectedLoadOption;
+        private RenameLoadOptionViewModel? _selectedLoadOption;
 
         public RenameViewModel()
         {
             Files.CollectionChanged += Files_CollectionChanged;
 
             // Load default option from config
-            SelectedLoadOption = LoadOptions.FirstOrDefault((option) => option.Type == AppManager.UserConfig.Config.Rename.DefaultLoadOption) ?? LoadOptions.First();
+            OnUserConfigChanged(AppManager.UserConfig.Config);
             AppManager.UserConfig.ConfigObservable.Subscribe(OnUserConfigChanged);
 
             // TODO - make this default configurable through settings when we add more provider types
@@ -105,11 +105,7 @@ namespace BarryFileMan.ViewModels.Rename
 
         private void OnUserConfigChanged(UserConfig userConfig)
         {
-            var option = LoadOptions.FirstOrDefault((option) => option.Type == userConfig.Rename.DefaultLoadOption);
-            if (option != null)
-            {
-                SelectedLoadOption = option;
-            }
+            SelectedLoadOption = LoadOptions.FirstOrDefault((option) => option.Type == userConfig.Rename.DefaultLoadOption) ?? LoadOptions.First();
         }
 
         [RelayCommand]

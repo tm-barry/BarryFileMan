@@ -24,7 +24,7 @@ namespace BarryFileMan.ViewModels.Settings
         [NotifyPropertyChangedFor(nameof(IsDirty))]
         private bool _sidebarExpandedDefault;
 
-        public bool IsDirty => SelectedTheme != _config.Theme || SidebarExpandedDefault != _config.SidebarExpandedDefault;
+        public override bool IsDirty => SelectedTheme != _config.Theme || SidebarExpandedDefault != _config.SidebarExpandedDefault;
 
         public UserGeneralConfigViewModel(UserGeneralConfig config)
         {
