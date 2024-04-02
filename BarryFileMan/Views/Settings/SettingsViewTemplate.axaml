@@ -31,7 +31,7 @@
 					<!--General-->
 					<TextBlock FontWeight="Bold" Margin="10,5,5,5"
 							   Text="{x:Static lang:Resources.General}"/>
-					<Border BorderThickness="1" CornerRadius="3" Padding="10"
+					<Border BorderThickness="2" CornerRadius="3" Padding="10"
 							BorderBrush="{DynamicResource SystemBaseMediumColor}">
 						<Grid ColumnDefinitions="*,*" 
 							  RowDefinitions="Auto,Auto,Auto">
@@ -71,7 +71,7 @@
 					<!--Rename-->
 					<TextBlock FontWeight="Bold" Margin="10,20,5,5"
 							   Text="{x:Static lang:Resources.Rename}"/>
-					<Border BorderThickness="1" CornerRadius="3" Padding="10"
+					<Border BorderThickness="2" CornerRadius="3" Padding="10"
 							BorderBrush="{DynamicResource SystemBaseMediumColor}">
 						<Grid ColumnDefinitions="*,*">
 							<!--Default Load Option-->
@@ -100,7 +100,7 @@
 					<!--Flatten-->
 					<TextBlock FontWeight="Bold" Margin="10,20,5,5"
 							   Text="{x:Static lang:Resources.Flatten}"/>
-					<Border BorderThickness="1" CornerRadius="3" Padding="10"
+					<Border BorderThickness="2" CornerRadius="3" Padding="10"
 							BorderBrush="{DynamicResource SystemBaseMediumColor}">
 						<Grid ColumnDefinitions="*,*"
 							  RowDefinitions="Auto,Auto,Auto,Auto,Auto">
