@@ -2,6 +2,7 @@
 using BarryFileMan.Attributes.Validation;
 using BarryFileMan.Managers;
 using BarryFileMan.Models.Config;
+using BarryFileMan.Rename.Extensions;
 using BarryFileMan.Views.Common;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -12,7 +13,6 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace BarryFileMan.ViewModels.Flatten
 {
@@ -67,7 +67,7 @@ namespace BarryFileMan.ViewModels.Flatten
         partial void OnFileFilterRegexPatternChanged(string? value)
         {
             var regex = string.IsNullOrWhiteSpace(value) ? ".*" : value;
-            if (Common.Regex.Extensions.IsValidRegex(regex, out _fileFilterRegex, out var regexError))
+            if (regex.IsValidRegex(out _fileFilterRegex, out var regexError))
             {
                 FileFilterRegexError = null;
             }

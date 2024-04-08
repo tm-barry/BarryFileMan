@@ -1,6 +1,6 @@
-﻿namespace BarryFileMan.Common.Regex
+﻿namespace BarryFileMan.Rename.Extensions
 {
-    public static class Extensions
+    public static class RegexExtensions
     {
         public static bool IsValidRegex(this string? pattern, out System.Text.RegularExpressions.Regex regex, out string? error)
         {

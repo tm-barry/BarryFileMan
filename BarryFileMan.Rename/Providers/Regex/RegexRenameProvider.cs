@@ -1,6 +1,6 @@
-﻿using BarryFileMan.Common.Regex;
-using BarryFileMan.Rename.Enums;
+﻿using BarryFileMan.Rename.Enums;
 using BarryFileMan.Rename.Exceptions;
+using BarryFileMan.Rename.Extensions;
 using BarryFileMan.Rename.Interfaces;
 using BarryFileMan.Rename.Models.Regex;
 using System.Text.RegularExpressions;

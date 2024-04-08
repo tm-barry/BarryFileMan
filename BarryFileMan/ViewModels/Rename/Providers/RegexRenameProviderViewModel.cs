@@ -206,7 +206,7 @@ namespace BarryFileMan.ViewModels.Rename.Providers
             {
                 try
                 {
-                    matches = _provider.Match(input ?? string.Empty, new RegexRenameProviderMatchOptions { RegexPattern = regexPattern });
+                    matches = _provider.Match(input ?? string.Empty, new(regexPattern));
                 }
                 catch (InvalidRegexException ex)
                 {

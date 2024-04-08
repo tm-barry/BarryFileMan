@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BarryFileMan", "BarryFileMa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BarryFileMan.Rename", "BarryFileMan.Rename\BarryFileMan.Rename.csproj", "{20162683-D76B-4C84-A0C2-1AEAE16730D6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BarryFileMan.Common", "BarryFileMan.Common\BarryFileMan.Common.csproj", "{605F4370-AACA-4287-A912-5F180606AA71}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E04C880D-CB16-4945-8F8B-EF36D50863C9}"
 	ProjectSection(SolutionItems) = preProject
 		license.md = license.md
@@ -29,10 +27,6 @@ Global
 		{20162683-D76B-4C84-A0C2-1AEAE16730D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{20162683-D76B-4C84-A0C2-1AEAE16730D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{20162683-D76B-4C84-A0C2-1AEAE16730D6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{605F4370-AACA-4287-A912-5F180606AA71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{605F4370-AACA-4287-A912-5F180606AA71}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{605F4370-AACA-4287-A912-5F180606AA71}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{605F4370-AACA-4287-A912-5F180606AA71}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
