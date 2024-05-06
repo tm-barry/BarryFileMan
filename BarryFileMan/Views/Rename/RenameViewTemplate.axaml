@@ -8,7 +8,8 @@
 					xmlns:ia="using:Avalonia.Xaml.Interactions.Core"
 					xmlns:b="using:BarryFileMan.Behaviors"
 					xmlns:lang="using:BarryFileMan.Resources"
-					xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia">
+					xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+					xmlns:svg="using:Avalonia.Svg.Skia">
 	<!-- Preview DataTemplate -->
 	<Design.PreviewWith>
 		<Grid Width="600" Height="600">
@@ -68,13 +69,18 @@
 					  ItemsSource="{Binding ProviderTypes}">
 				<ComboBox.ItemTemplate>
 					<DataTemplate DataType="vmp:RenameProviderTypeItemViewModel">
-						<StackPanel Orientation="Horizontal">
-							<materialIcons:MaterialIcon Height="24" Width="24"
+						<StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+							<materialIcons:MaterialIcon Height="{Binding IconHeight}" 
+														Width="{Binding IconWidth}"
 														Kind="{Binding Icon}"
 														IsVisible="{Binding !IsImage}"/>
-							<!-- TODO - implement image icon -->
-							<TextBlock Text="{Binding Display}" Margin="10,0,0,0"
-									   VerticalAlignment="Center"/>
+							<Svg Height="{Binding IconHeight}"
+								 Width="{Binding IconWidth}"
+								 Path="{Binding Icon}" 
+								 IsVisible="{Binding IsImage}"/>
+							<TextBlock Margin="10,0,0,0" Width="50"
+									   VerticalAlignment="Center"
+									   Text="{Binding Display}"/>
 						</StackPanel>
 					</DataTemplate>
 				</ComboBox.ItemTemplate>
@@ -87,10 +93,14 @@
 					  ExpandDirection="Down">
 				<Expander.Header>
 					<StackPanel Orientation="Horizontal">
-						<materialIcons:MaterialIcon Height="24" Width="24"
+						<materialIcons:MaterialIcon Height="{Binding SelectedProviderType.IconHeight}"
+													Width="{Binding SelectedProviderType.IconWidth}"
 													Kind="{Binding SelectedProviderType.Icon}"
 													IsVisible="{Binding !SelectedProviderType.IsImage}"/>
-						<!-- TODO - implement image icon -->
+						<Svg Height="{Binding SelectedProviderType.IconHeight}"
+							 Width="{Binding SelectedProviderType.IconWidth}"
+							 Path="{Binding SelectedProviderType.Icon}"
+							 IsVisible="{Binding SelectedProviderType.IsImage}"/>
 						<TextBlock Text="{Binding SelectedProviderType.SettingsDisplay}" Margin="10,0,0,0"
 								   VerticalAlignment="Center"/>
 					</StackPanel>

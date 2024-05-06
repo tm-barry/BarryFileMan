@@ -18,10 +18,16 @@ namespace BarryFileMan.ViewModels.Rename
 {
     public partial class RenameViewModel : ObservableObject
     {
-        public static ReadOnlyCollection<RenameProviderTypeItemViewModel> ProviderTypes => new List<RenameProviderTypeItemViewModel>()
+        public static ReadOnlyCollection<RenameProviderTypeItemViewModel> AllProviderTypes => new List<RenameProviderTypeItemViewModel>()
         {
-            new(RenameProviderTypes.Regex, Resources.Resources.Regex, "regex")
+            new(RenameProviderTypes.Regex, Resources.Resources.Regex, "regex", 24, 24),
+            new(RenameProviderTypes.TMDB_Movie, Resources.Resources.Movie, "/Assets/tmdb-alt-short-logo.svg", null, 64, true),
+            new(RenameProviderTypes.TMDB_TV, Resources.Resources.TV, "/Assets/tmdb-alt-short-logo.svg", null, 64, true)
         }.AsReadOnly();
+
+        public static ReadOnlyCollection<RenameProviderTypeItemViewModel> ProviderTypes => AllProviderTypes.Where(pt =>
+            pt.Type != RenameProviderTypes.TMDB_Movie && pt.Type != RenameProviderTypes.TMDB_TV
+            || !string.IsNullOrWhiteSpace(AppManager.UserConfig.Config.Tmdb.ApiKey)).ToList().AsReadOnly();
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(SelectedProviderType))]
@@ -106,6 +112,7 @@ namespace BarryFileMan.ViewModels.Rename
         private void OnUserConfigChanged(UserConfig userConfig)
         {
             SelectedLoadOption = LoadOptions.FirstOrDefault((option) => option.Type == userConfig.Rename.DefaultLoadOption) ?? LoadOptions.First();
+            OnPropertyChanged(nameof(ProviderTypes));
         }
 
         [RelayCommand]

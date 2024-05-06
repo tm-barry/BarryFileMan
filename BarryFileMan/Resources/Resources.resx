@@ -353,6 +353,9 @@ Filename &amp; Directory - Match the filename and parent directory
 
 Full Path - Match the full path of the file/directory</value>
   </data>
+  <data name="Movie" xml:space="preserve">
+    <value>Movie</value>
+  </data>
   <data name="Name" xml:space="preserve">
     <value>Name</value>
   </data>
@@ -500,14 +503,14 @@ Full Path - Match the full path of the file/directory</value>
   <data name="Theme" xml:space="preserve">
     <value>Theme</value>
   </data>
-  <data name="TMDB" xml:space="preserve">
-    <value>TMDB</value>
-  </data>
   <data name="TmdbApiKeyWatermark" xml:space="preserve">
     <value>https://www.themoviedb.org/settings/api</value>
   </data>
   <data name="TMDBAttribution" xml:space="preserve">
     <value>This application uses TMDB and the TMDB APIs but is not endorsed, certified, or otherwise approved by TMDB.</value>
+  </data>
+  <data name="TV" xml:space="preserve">
+    <value>TV</value>
   </data>
   <data name="Undo" xml:space="preserve">
     <value>Undo</value>

@@ -18,13 +18,22 @@ namespace BarryFileMan.ViewModels.Rename.Providers
         private string _icon;
 
         [ObservableProperty]
+        private int? _iconHeight;
+
+        [ObservableProperty]
+        private int? _iconWidth;
+
+        [ObservableProperty]
         private bool _isImage;
 
-        public RenameProviderTypeItemViewModel(RenameProviderTypes type, string display, string icon, bool isImage = false)
+        public RenameProviderTypeItemViewModel(RenameProviderTypes type, string display, string icon, 
+            int? iconHeight = null, int? iconWidth = null, bool isImage = false)
         {
             Type = type;
             Display = display;
             Icon = icon;
+            IconHeight = iconHeight;
+            IconWidth = iconWidth;
             IsImage = isImage;
         }
     }

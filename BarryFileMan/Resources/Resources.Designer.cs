@@ -711,6 +711,15 @@ namespace BarryFileMan.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Movie.
+        /// </summary>
+        public static string Movie {
+            get {
+                return ResourceManager.GetString("Movie", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Name.
         /// </summary>
         public static string Name {
@@ -1152,15 +1161,6 @@ namespace BarryFileMan.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to TMDB.
-        /// </summary>
-        public static string TMDB {
-            get {
-                return ResourceManager.GetString("TMDB", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to https://www.themoviedb.org/settings/api.
         /// </summary>
         public static string TmdbApiKeyWatermark {
@@ -1175,6 +1175,15 @@ namespace BarryFileMan.Resources {
         public static string TMDBAttribution {
             get {
                 return ResourceManager.GetString("TMDBAttribution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TV.
+        /// </summary>
+        public static string TV {
+            get {
+                return ResourceManager.GetString("TV", resourceCulture);
             }
         }
         
