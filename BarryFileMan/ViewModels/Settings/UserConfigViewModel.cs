@@ -15,17 +15,22 @@ namespace BarryFileMan.ViewModels.Settings
         [ObservableProperty]
         private UserRenameConfigViewModel _rename;
 
-        public override bool IsDirty => Flatten.IsDirty || General.IsDirty || Rename.IsDirty;
+        [ObservableProperty]
+        private UserTMDBConfigViewModel _tmdb;
+
+        public override bool IsDirty => Flatten.IsDirty || General.IsDirty || Rename.IsDirty || Tmdb.IsDirty;
 
         public UserConfigViewModel(UserConfig config)
         {
             Flatten = new(config.Flatten);
             General = new(config.General);
             Rename = new(config.Rename);
+            Tmdb = new(config.Tmdb);
 
             Flatten.PropertyChanged += UserConfig_PropertyChanged;
             General.PropertyChanged += UserConfig_PropertyChanged;
             Rename.PropertyChanged += UserConfig_PropertyChanged;
+            Tmdb.PropertyChanged += UserConfig_PropertyChanged;
         }
 
         ~UserConfigViewModel()
@@ -33,6 +38,7 @@ namespace BarryFileMan.ViewModels.Settings
             Flatten.PropertyChanged -= UserConfig_PropertyChanged;
             General.PropertyChanged -= UserConfig_PropertyChanged;
             Rename.PropertyChanged -= UserConfig_PropertyChanged;
+            Tmdb.PropertyChanged -= UserConfig_PropertyChanged;
         }
 
         private void UserConfig_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -43,12 +49,12 @@ namespace BarryFileMan.ViewModels.Settings
 
         public override UserConfig UndoChanges()
         {
-            return new(Flatten.UndoChanges(), General.UndoChanges(), Rename.UndoChanges());
+            return new(Flatten.UndoChanges(), General.UndoChanges(), Rename.UndoChanges(), Tmdb.UndoChanges());
         }
 
         public override UserConfig ApplyChanges()
         {
-            return new(Flatten.ApplyChanges(), General.ApplyChanges(), Rename.ApplyChanges());
+            return new(Flatten.ApplyChanges(), General.ApplyChanges(), Rename.ApplyChanges(), Tmdb.ApplyChanges());
         }
     }
 }

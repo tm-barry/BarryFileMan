@@ -52,13 +52,6 @@
 						  DisplayMemberBinding="{Binding Display}"
 						  SelectedIndex="{Binding SelectedMatchTypeIndex}"/>
 
-				<TextBlock Margin="0,10,0,0"
-						   FontWeight="Bold"
-						   Text="{x:Static lang:Resources.TestString}"/>
-				<TextBox Text="{Binding TestString}"
-						 TextWrapping="Wrap"
-						 MaxHeight="50"/>
-
 				<StackPanel Orientation="Horizontal" Margin="0,10,0,0">
 					<TextBlock FontWeight="Bold"
 							   Text="{x:Static lang:Resources.RenamePattern}"/>
@@ -68,6 +61,13 @@
 				<TextBox Text="{Binding RenamePattern}"
 						 TextWrapping="Wrap"
 						 MaxHeight="75"/>
+
+				<TextBlock Margin="0,10,0,0"
+						   FontWeight="Bold"
+						   Text="{x:Static lang:Resources.TestString}"/>
+				<TextBox Text="{Binding TestString}"
+						 TextWrapping="Wrap"
+						 MaxHeight="50"/>
 
 				<TextBlock Margin="0,10,0,0"
 						   FontWeight="Bold"

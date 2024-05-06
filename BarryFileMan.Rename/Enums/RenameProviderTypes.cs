@@ -2,6 +2,8 @@
 {
     public enum RenameProviderTypes
     {
-        Regex
+        Regex,
+        TMDB_Movie,
+        TMDB_TV,
     }
 }

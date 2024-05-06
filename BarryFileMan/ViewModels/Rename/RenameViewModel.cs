@@ -135,6 +135,7 @@ namespace BarryFileMan.ViewModels.Rename
         [RelayCommand]
         private void ClearFiles()
         {
+            SelectedFile = null;
             Files.Clear();
         }
 

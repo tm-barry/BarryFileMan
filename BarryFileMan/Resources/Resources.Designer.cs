@@ -70,6 +70,15 @@ namespace BarryFileMan.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to API Key.
+        /// </summary>
+        public static string ApiKey {
+            get {
+                return ResourceManager.GetString("ApiKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to BarryFileMan is a file manager with a primary focus of renaming and managing media files and folders..
         /// </summary>
         public static string AppDescription {
@@ -593,6 +602,15 @@ namespace BarryFileMan.Resources {
         public static string HelpRenameRegexTitle {
             get {
                 return ResourceManager.GetString("HelpRenameRegexTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Include Adult.
+        /// </summary>
+        public static string IncludeAdult {
+            get {
+                return ResourceManager.GetString("IncludeAdult", resourceCulture);
             }
         }
         
@@ -1130,6 +1148,33 @@ namespace BarryFileMan.Resources {
         public static string Theme {
             get {
                 return ResourceManager.GetString("Theme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TMDB.
+        /// </summary>
+        public static string TMDB {
+            get {
+                return ResourceManager.GetString("TMDB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://www.themoviedb.org/settings/api.
+        /// </summary>
+        public static string TmdbApiKeyWatermark {
+            get {
+                return ResourceManager.GetString("TmdbApiKeyWatermark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This application uses TMDB and the TMDB APIs but is not endorsed, certified, or otherwise approved by TMDB..
+        /// </summary>
+        public static string TMDBAttribution {
+            get {
+                return ResourceManager.GetString("TMDBAttribution", resourceCulture);
             }
         }
         

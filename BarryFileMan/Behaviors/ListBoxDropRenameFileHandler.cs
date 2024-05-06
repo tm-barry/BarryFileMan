@@ -1,6 +1,7 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Platform.Storage;
+using Avalonia.Threading;
 using Avalonia.Xaml.Interactions.DragAndDrop;
 using BarryFileMan.ViewModels;
 using BarryFileMan.ViewModels.Rename;
@@ -66,11 +67,11 @@ namespace BarryFileMan.Behaviors
 
         private void AddFolder(IList<RenameFileViewModel> items, IStorageFolder folder)
         {
-            Task.Run(async () => 
-            { 
+            Dispatcher.UIThread.InvokeAsync(async () =>
+            {
                 var storageItems = await folder.GetItemsAsync().ToListAsync();
                 AddStorageItems(items, storageItems);
-            }).Wait();
+            });
         }
 
         public override bool Validate(object? sender, DragEventArgs e, object? sourceContext, object? targetContext, object? state)

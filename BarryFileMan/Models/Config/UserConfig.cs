@@ -8,12 +8,15 @@
 
         public UserRenameConfig Rename { get; set; }
 
-        public UserConfig() : this(new(), new(), new()) { }
-        public UserConfig(UserFlattenConfig flatten, UserGeneralConfig general, UserRenameConfig rename) 
+        public UserTMDBConfig Tmdb { get; set; }
+
+        public UserConfig() : this(new(), new(), new(), new()) { }
+        public UserConfig(UserFlattenConfig flatten, UserGeneralConfig general, UserRenameConfig rename, UserTMDBConfig tmdb) 
         {
             Flatten = flatten;
             General = general;
             Rename = rename;
+            Tmdb = tmdb;
         }
     }
 }

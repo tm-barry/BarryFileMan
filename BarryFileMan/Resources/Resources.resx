@@ -120,6 +120,9 @@
   <data name="About" xml:space="preserve">
     <value>About</value>
   </data>
+  <data name="ApiKey" xml:space="preserve">
+    <value>API Key</value>
+  </data>
   <data name="AppDescription" xml:space="preserve">
     <value>BarryFileMan is a file manager with a primary focus of renaming and managing media files and folders.</value>
   </data>
@@ -311,6 +314,9 @@ type - left|right|both</value>
   <data name="HelpRenameRegexTitle" xml:space="preserve">
     <value>Rename - Regex</value>
   </data>
+  <data name="IncludeAdult" xml:space="preserve">
+    <value>Include Adult</value>
+  </data>
   <data name="Light" xml:space="preserve">
     <value>Light</value>
   </data>
@@ -493,6 +499,15 @@ Full Path - Match the full path of the file/directory</value>
   </data>
   <data name="Theme" xml:space="preserve">
     <value>Theme</value>
+  </data>
+  <data name="TMDB" xml:space="preserve">
+    <value>TMDB</value>
+  </data>
+  <data name="TmdbApiKeyWatermark" xml:space="preserve">
+    <value>https://www.themoviedb.org/settings/api</value>
+  </data>
+  <data name="TMDBAttribution" xml:space="preserve">
+    <value>This application uses TMDB and the TMDB APIs but is not endorsed, certified, or otherwise approved by TMDB.</value>
   </data>
   <data name="Undo" xml:space="preserve">
     <value>Undo</value>
