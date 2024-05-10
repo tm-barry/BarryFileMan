@@ -11,7 +11,7 @@ namespace BarryFileMan.Rename.Providers.Regex
     {
         public RegexRenameProvider() : base(RenameProviderTypes.Regex) { }
 
-        public override IEnumerable<IRenameMatch>? Match(string input, RegexRenameProviderMatchOptions? options)
+        public override IEnumerable<IRenameMatch>? Match(RegexRenameProviderMatchOptions? options)
         {
             var regexPattern = options?.RegexPattern;
             if (!regexPattern.IsValidRegex(out var regex, out var error))
@@ -19,7 +19,7 @@ namespace BarryFileMan.Rename.Providers.Regex
                 throw new InvalidRegexException(error);
             }
 
-            var matches = regex.Matches(input);
+            var matches = regex.Matches(options?.Input ?? string.Empty);
             List<RegexRenameMatch>? renameMatches = null;
             if (matches.Any())
             {
@@ -58,9 +58,9 @@ namespace BarryFileMan.Rename.Providers.Regex
             return renameMatches;
         }
 
-        public override Task<IEnumerable<IRenameMatch>?> MatchAsync(string input, RegexRenameProviderMatchOptions? options)
+        public override Task<IEnumerable<IRenameMatch>?> MatchAsync(RegexRenameProviderMatchOptions? options)
         {
-            return Task.Run(() => Match(input, options));
+            return Task.Run(() => Match(options));
         }
     }
 }

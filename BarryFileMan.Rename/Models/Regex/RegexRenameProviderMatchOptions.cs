@@ -4,10 +4,13 @@
     {
         public string RegexPattern { get; set; }
 
-        public RegexRenameProviderMatchOptions() : this(string.Empty) { }
-        public RegexRenameProviderMatchOptions(string regexPattern)
+        public string Input { get; set; }
+
+        public RegexRenameProviderMatchOptions() : this(string.Empty, string.Empty) { }
+        public RegexRenameProviderMatchOptions(string regexPattern, string input)
         {
             RegexPattern = regexPattern;
+            Input = input;
         }
     }
 }

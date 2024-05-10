@@ -7,8 +7,8 @@ namespace BarryFileMan.Rename.Interfaces
     {
         RenameProviderTypes ProviderType { get; }
 
-        IEnumerable<IRenameMatch>? Match(string input, TMatchOptions? options);
-        Task<IEnumerable<IRenameMatch>?> MatchAsync(string input, TMatchOptions? options);
-        RenameResult Rename(IEnumerable<IRenameMatch> matches, string renamePattern);
+        IEnumerable<IRenameMatch>? Match(TMatchOptions? options);
+        Task<IEnumerable<IRenameMatch>?> MatchAsync(TMatchOptions? options);
+        RenameResult Rename(IEnumerable<IRenameMatch> matches, string renamePattern, string? fallbackValue = null);
     }
 }

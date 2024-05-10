@@ -8,12 +8,12 @@ namespace BarryFileMan.Rename.Providers.TMDB
     {
         public TMDBTvRenameProvider() : base(RenameProviderTypes.TMDB_TV) { }
 
-        public override IEnumerable<IRenameMatch>? Match(string input, TMDBRenameProviderMatchOptions? options)
+        public override IEnumerable<IRenameMatch>? Match(TMDBRenameProviderMatchOptions? options)
         {
             throw new NotImplementedException();
         }
 
-        public override Task<IEnumerable<IRenameMatch>?> MatchAsync(string input, TMDBRenameProviderMatchOptions? options)
+        public override Task<IEnumerable<IRenameMatch>?> MatchAsync(TMDBRenameProviderMatchOptions? options)
         {
             throw new NotImplementedException();
         }

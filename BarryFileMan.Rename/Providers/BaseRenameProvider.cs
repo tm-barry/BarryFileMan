@@ -16,11 +16,11 @@ namespace BarryFileMan.Rename.Providers
             ProviderType = providerType;
         }
 
-        public abstract IEnumerable<IRenameMatch>? Match(string input, TMatchOptions? options);
+        public abstract IEnumerable<IRenameMatch>? Match(TMatchOptions? options);
 
-        public abstract Task<IEnumerable<IRenameMatch>?> MatchAsync(string input, TMatchOptions? options);
+        public abstract Task<IEnumerable<IRenameMatch>?> MatchAsync(TMatchOptions? options);
 
-        public RenameResult Rename(IEnumerable<IRenameMatch> matches, string renamePattern)
+        public RenameResult Rename(IEnumerable<IRenameMatch> matches, string renamePattern, string? fallbackValue = null)
         {
             var renamedString = renamePattern;
             var tags = new List<RenameTag>();
@@ -71,12 +71,18 @@ namespace BarryFileMan.Rename.Providers
                             }
                             else
                             {
-                                renamedString = renamedString.Replace(renameTag.Tag, string.Empty);
+                                if (fallbackValue != null)
+                                {
+                                    renamedString = renamedString.Replace(renameTag.Tag, fallbackValue);
+                                }
                             }
                         }
                         else
                         {
-                            renamedString = renamedString.Replace(renameTag.Tag, string.Empty);
+                            if (fallbackValue != null)
+                            {
+                                renamedString = renamedString.Replace(renameTag.Tag, fallbackValue);
+                            }
                         }
                     }
                     else
