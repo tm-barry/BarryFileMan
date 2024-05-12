@@ -42,5 +42,8 @@ namespace BarryFileMan.Rename.Models.TMDB
 
         [JsonPropertyName("vote_count")]
         public int VoteCount { get; set; }
+
+        [JsonPropertyName("show_id")]
+        public int? ShowId { get; set; }
     }
 }

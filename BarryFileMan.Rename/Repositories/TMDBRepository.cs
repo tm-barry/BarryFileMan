@@ -43,6 +43,17 @@ namespace BarryFileMan.Rename.Repositories
             return GetAsync<TMDBMovie?>($"https://api.themoviedb.org/3/movie/{movieId}", queryParams);
         }
 
+        public Task<TMDBTv?> GetTvSeriesDetails(int seriesId, string? language = null, string? appendToResponse = null)
+        {
+            var queryParams = new List<Parameter>();
+            if (!string.IsNullOrWhiteSpace(language))
+                queryParams.Add(new QueryParameter("language", language));
+            if (!string.IsNullOrWhiteSpace(appendToResponse))
+                queryParams.Add(new QueryParameter("append_to_response", appendToResponse));
+
+            return GetAsync<TMDBTv?>($"https://api.themoviedb.org/3/tv/{seriesId}", queryParams);
+        }
+
         public Task<TMDBTvEpisode?> GetTvEpisodeDetails(int seriesId, int seasonNumber, int episodeNumber, string? language = null, string? appendToResponse = null)
         {
             var queryParams = new List<Parameter>();
