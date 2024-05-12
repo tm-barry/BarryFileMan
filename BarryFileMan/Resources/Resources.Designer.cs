@@ -615,6 +615,33 @@ namespace BarryFileMan.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Input.
+        /// </summary>
+        public static string Input {
+            get {
+                return ResourceManager.GetString("Input", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A string used to test out the current match/rename patterns..
+        /// </summary>
+        public static string InputDescription {
+            get {
+                return ResourceManager.GetString("InputDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Input/Output.
+        /// </summary>
+        public static string InputOutput {
+            get {
+                return ResourceManager.GetString("InputOutput", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Light.
         /// </summary>
         public static string Light {
@@ -801,6 +828,24 @@ namespace BarryFileMan.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Output.
+        /// </summary>
+        public static string Output {
+            get {
+                return ResourceManager.GetString("Output", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Renamed test string result after applying the match/rename patterns..
+        /// </summary>
+        public static string OutputDescription {
+            get {
+                return ResourceManager.GetString("OutputDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pages.
         /// </summary>
         public static string Pages {
@@ -878,24 +923,6 @@ namespace BarryFileMan.Resources {
         public static string Rename {
             get {
                 return ResourceManager.GetString("Rename", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Renamed String.
-        /// </summary>
-        public static string RenamedString {
-            get {
-                return ResourceManager.GetString("RenamedString", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Renamed test string result after applying the match/rename patterns..
-        /// </summary>
-        public static string RenamedStringDescription {
-            get {
-                return ResourceManager.GetString("RenamedStringDescription", resourceCulture);
             }
         }
         
@@ -1130,24 +1157,6 @@ namespace BarryFileMan.Resources {
         public static string TagMatchIndexExample {
             get {
                 return ResourceManager.GetString("TagMatchIndexExample", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Test String.
-        /// </summary>
-        public static string TestString {
-            get {
-                return ResourceManager.GetString("TestString", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to A string used to test out the current match/rename patterns..
-        /// </summary>
-        public static string TestStringDescription {
-            get {
-                return ResourceManager.GetString("TestStringDescription", resourceCulture);
             }
         }
         

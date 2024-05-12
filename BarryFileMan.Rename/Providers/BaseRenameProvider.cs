@@ -22,7 +22,7 @@ namespace BarryFileMan.Rename.Providers
 
         public RenameResult Rename(IEnumerable<IRenameMatch> matches, string renamePattern, string? fallbackValue = null)
         {
-            var renamedString = renamePattern;
+            var output = renamePattern;
             var tags = new List<RenameTag>();
             var errors = new List<string>();
             if (matches == null || !matches.Any())
@@ -62,7 +62,7 @@ namespace BarryFileMan.Rename.Providers
                                 try
                                 {
                                     var renamedTagStr = BaseRenameProvider<TMatchOptions>.CalculateRenamedTag(groupValue, renameTag);
-                                    renamedString = renamedString.Replace(renameTag.Tag, renamedTagStr);
+                                    output = output.Replace(renameTag.Tag, renamedTagStr);
                                 }
                                 catch (Exception ex)
                                 {
@@ -73,7 +73,7 @@ namespace BarryFileMan.Rename.Providers
                             {
                                 if (fallbackValue != null)
                                 {
-                                    renamedString = renamedString.Replace(renameTag.Tag, fallbackValue);
+                                    output = output.Replace(renameTag.Tag, fallbackValue);
                                 }
                             }
                         }
@@ -81,7 +81,7 @@ namespace BarryFileMan.Rename.Providers
                         {
                             if (fallbackValue != null)
                             {
-                                renamedString = renamedString.Replace(renameTag.Tag, fallbackValue);
+                                output = output.Replace(renameTag.Tag, fallbackValue);
                             }
                         }
                     }
@@ -105,7 +105,7 @@ namespace BarryFileMan.Rename.Providers
                 }
             }
 
-            return new RenameResult(renamedString, tags, errors.Count > 0 ? errors : null);
+            return new RenameResult(output, tags, errors.Count > 0 ? errors : null);
         }
 
         private static string CalculateRenamedTag(IRenameMatchGroupValue groupValue, RenameTag renameTag)

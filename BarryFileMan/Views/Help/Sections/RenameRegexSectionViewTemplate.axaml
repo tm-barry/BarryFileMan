@@ -105,10 +105,10 @@
 				<TextBlock Grid.Column="0" Grid.Row="6" Margin="10"
 						   FontWeight="Bold"
 						   VerticalAlignment="Center"
-						   Text="{x:Static lang:Resources.TestString}"/>
+						   Text="{x:Static lang:Resources.Input}"/>
 				<TextBlock Grid.Column="2" Grid.Row="6" Margin="10"
 						   TextWrapping="Wrap"
-						   Text="{x:Static lang:Resources.TestStringDescription}"/>
+						   Text="{x:Static lang:Resources.InputDescription}"/>
 				<Border Grid.ColumnSpan="3" Grid.Row="7" Padding="0"
 						Opacity="0.75"
 						BorderBrush="{DynamicResource SystemBaseMediumColor}"
@@ -135,10 +135,10 @@
 				<TextBlock Grid.Column="0" Grid.Row="10" Margin="10"
 						   FontWeight="Bold"
 						   VerticalAlignment="Center"
-						   Text="{x:Static lang:Resources.RenamedString}"/>
+						   Text="{x:Static lang:Resources.Output}"/>
 				<TextBlock Grid.Column="2" Grid.Row="10" Margin="10"
 						   TextWrapping="Wrap"
-						   Text="{x:Static lang:Resources.RenamedStringDescription}"/>
+						   Text="{x:Static lang:Resources.OutputDescription}"/>
 				<Border Grid.ColumnSpan="3" Grid.Row="11" Padding="0"
 						Opacity="0.75"
 						BorderBrush="{DynamicResource SystemBaseMediumColor}"

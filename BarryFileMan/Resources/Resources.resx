@@ -317,6 +317,15 @@ type - left|right|both</value>
   <data name="IncludeAdult" xml:space="preserve">
     <value>Include Adult</value>
   </data>
+  <data name="Input" xml:space="preserve">
+    <value>Input</value>
+  </data>
+  <data name="InputDescription" xml:space="preserve">
+    <value>A string used to test out the current match/rename patterns.</value>
+  </data>
+  <data name="InputOutput" xml:space="preserve">
+    <value>Input/Output</value>
+  </data>
   <data name="Light" xml:space="preserve">
     <value>Light</value>
   </data>
@@ -383,6 +392,12 @@ Full Path - Match the full path of the file/directory</value>
   <data name="OriginalPaths" xml:space="preserve">
     <value>Original Paths</value>
   </data>
+  <data name="Output" xml:space="preserve">
+    <value>Output</value>
+  </data>
+  <data name="OutputDescription" xml:space="preserve">
+    <value>Renamed test string result after applying the match/rename patterns.</value>
+  </data>
   <data name="Pages" xml:space="preserve">
     <value>Pages</value>
   </data>
@@ -409,12 +424,6 @@ Full Path - Match the full path of the file/directory</value>
   </data>
   <data name="Rename" xml:space="preserve">
     <value>Rename</value>
-  </data>
-  <data name="RenamedString" xml:space="preserve">
-    <value>Renamed String</value>
-  </data>
-  <data name="RenamedStringDescription" xml:space="preserve">
-    <value>Renamed test string result after applying the match/rename patterns.</value>
   </data>
   <data name="RenameFilesSaveConfirmation" xml:space="preserve">
     <value>Files will be renamed. Do you want to continue?</value>
@@ -493,12 +502,6 @@ Full Path - Match the full path of the file/directory</value>
   </data>
   <data name="TagMatchIndexExample" xml:space="preserve">
     <value>&lt;tagName{2}&gt;</value>
-  </data>
-  <data name="TestString" xml:space="preserve">
-    <value>Test String</value>
-  </data>
-  <data name="TestStringDescription" xml:space="preserve">
-    <value>A string used to test out the current match/rename patterns.</value>
   </data>
   <data name="Theme" xml:space="preserve">
     <value>Theme</value>

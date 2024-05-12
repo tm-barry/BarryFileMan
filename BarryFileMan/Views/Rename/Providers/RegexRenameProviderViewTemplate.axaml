@@ -32,7 +32,8 @@
 				<cc:IntToColorConverter x:Key="intToColorConverter"/>
 			</Grid.Resources>
 
-			<StackPanel Grid.Column="0" Margin="0,0,5,0">
+			<StackPanel Name="regexRenameSettingsCol" 
+						Grid.Column="0" Margin="0,0,5,0">
 
 				<StackPanel Orientation="Horizontal">
 					<TextBlock FontWeight="Bold"
@@ -64,21 +65,25 @@
 
 				<TextBlock Margin="0,10,0,0"
 						   FontWeight="Bold"
-						   Text="{x:Static lang:Resources.TestString}"/>
-				<TextBox Text="{Binding TestString}"
+						   Text="{x:Static lang:Resources.InputOutput}"/>
+				<TextBox Text="{Binding Input}"
 						 TextWrapping="Wrap"
-						 MaxHeight="50"/>
-
-				<TextBlock Margin="0,10,0,0"
-						   FontWeight="Bold"
-						   Text="{x:Static lang:Resources.RenamedString}"/>
-				<TextBox Text="{Binding RenamedTestString}"
-						 IsReadOnly="True"
-						 TextWrapping="Wrap"
-						 MaxHeight="50"/>
+						 MaxHeight="57"/>
+				<Border Margin="0,5,0,0"
+						BorderBrush="{DynamicResource SystemBaseMediumColor}"
+						CornerRadius="3"
+						BorderThickness="1">
+					<ScrollViewer MaxHeight="57">
+						<SelectableTextBlock Margin="3" Text="{Binding Output}"
+											 TextWrapping="Wrap"
+											 Background="Transparent"
+											 HorizontalAlignment="Stretch"/>
+					</ScrollViewer>
+				</Border>
 			</StackPanel>
 
-			<Grid Grid.Column="1" Margin="5,0,0,0" RowDefinitions="Auto,*">
+			<Grid Grid.Column="1" Margin="5,0,0,0" RowDefinitions="Auto,*"
+				  MaxHeight="{Binding #regexRenameSettingsCol.Bounds.Height}">
 				
 				<TextBlock Grid.Row="0"
 						   FontWeight="Bold"
@@ -87,7 +92,6 @@
 							  BorderThickness="1"
 							  BorderBrush="{DynamicResource SystemBaseMediumColor}"
 							  CornerRadius="3"
-							  MaxHeight="330"
 							  Source="{Binding TestMatchNodeColumns}">
 					<TreeDataGrid.Resources>
 						<!-- Template for Name column cells -->

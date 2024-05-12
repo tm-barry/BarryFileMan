@@ -26,7 +26,7 @@ namespace BarryFileMan.ViewModels.Rename.Providers
         private string _matchPattern = "(?:\\\\|/)(?<title>[^(?:\\\\|/)]+)(?:s|S)(?<season>\\d+)(?:e|E)(?<episode>\\d+)";
         partial void OnMatchPatternChanged(string value)
         {
-            TestMatches = FindMatches(TestString, value, out var error);
+            TestMatches = FindMatches(Input, value, out var error);
             MatchPatternError = error;
         }
 
@@ -51,7 +51,7 @@ namespace BarryFileMan.ViewModels.Rename.Providers
         {
             if (ViewModel.SelectedFile != null)
             {
-                TestString = GetFileMatchInput(ViewModel.SelectedFile);
+                Input = GetFileMatchInput(ViewModel.SelectedFile);
             }
         }
 
@@ -62,7 +62,7 @@ namespace BarryFileMan.ViewModels.Rename.Providers
         private string _renamePattern = "<title{-1}.replace(\'.\',\' \')>- S<season{-1}.pad(left,\'0\',2)>E<episode{-1}.pad(left,\'0\',2)>";
         partial void OnRenamePatternChanged(string value)
         {
-            RenamedTestString = RenameMatches(TestMatches, value, TestString, out var error);
+            Output = RenameMatches(TestMatches, value, Input, out var error);
             RenamePatternError = error;
         }
 
@@ -74,8 +74,8 @@ namespace BarryFileMan.ViewModels.Rename.Providers
         }
 
         [ObservableProperty]
-        private string _testString = string.Empty;
-        partial void OnTestStringChanged(string value)
+        private string _input = string.Empty;
+        partial void OnInputChanged(string value)
         {
             TestMatches = FindMatches(value, MatchPattern, out var error) ?? new List<IRenameMatch>();
             MatchPatternError = error;
@@ -86,7 +86,7 @@ namespace BarryFileMan.ViewModels.Rename.Providers
         private IEnumerable<IRenameMatch>? _testMatches;
         partial void OnTestMatchesChanged(IEnumerable<IRenameMatch>? value)
         {
-            RenamedTestString = RenameMatches(value, RenamePattern, TestString, out var error);
+            Output = RenameMatches(value, RenamePattern, Input, out var error);
             RenamePatternError = error;
 
             TestMatchNodes.Clear();
@@ -138,14 +138,14 @@ namespace BarryFileMan.ViewModels.Rename.Providers
         public bool HasTestMatches => TestMatches != null && TestMatches.Any();
 
         [ObservableProperty]
-        private string _renamedTestString = string.Empty;
+        private string _output = string.Empty;
 
         public RegexRenameProviderViewModel() : this(new RenameViewModel()) { }
 
         public RegexRenameProviderViewModel(RenameViewModel viewModel) : base(viewModel)
         {
             ViewModel.PropertyChanged += ViewModel_PropertyChanged;
-            TestString = "\\ParentFolder\\Show.Name.S01E01";
+            Input = "\\ParentFolder\\Show.Name.S01E01";
             SelectedMatchTypeIndex = 1;
         }
 
@@ -174,7 +174,7 @@ namespace BarryFileMan.ViewModels.Rename.Providers
             {
                 if (ViewModel.SelectedFile != null)
                 {
-                    TestString = GetFileMatchInput(ViewModel.SelectedFile);
+                    Input = GetFileMatchInput(ViewModel.SelectedFile);
                 }
             }
         }
@@ -220,7 +220,7 @@ namespace BarryFileMan.ViewModels.Rename.Providers
 
         private string RenameMatches(IEnumerable<IRenameMatch>? matches, string? renamePattern, string? fallbackValue, out string? error)
         {
-            string renamedString = fallbackValue ?? string.Empty;
+            string output = fallbackValue ?? string.Empty;
             error = null;
             if (!string.IsNullOrWhiteSpace(renamePattern))
             {
@@ -232,11 +232,11 @@ namespace BarryFileMan.ViewModels.Rename.Providers
                 }
                 else
                 {
-                    renamedString = renameResult.Value;
+                    output = renameResult.Value;
                 }
             }
 
-            return renamedString;
+            return output;
         }
     }
 }
