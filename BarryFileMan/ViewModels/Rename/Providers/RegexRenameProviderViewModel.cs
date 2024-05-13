@@ -2,18 +2,14 @@
 using Avalonia.Controls.Models.TreeDataGrid;
 using BarryFileMan.Attributes.Validation;
 using BarryFileMan.Enums.Rename;
-using BarryFileMan.Managers;
 using BarryFileMan.Rename.Exceptions;
 using BarryFileMan.Rename.Interfaces;
 using BarryFileMan.Rename.Models;
-using BarryFileMan.Rename.Models.Regex;
 using BarryFileMan.Rename.Providers.Regex;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace BarryFileMan.ViewModels.Rename.Providers
 {
@@ -23,10 +19,10 @@ namespace BarryFileMan.ViewModels.Rename.Providers
 
         [ObservableProperty]
         [HasErrorProperty(nameof(MatchPatternError))]
-        private string _matchPattern = "(?:\\\\|/)(?<title>[^(?:\\\\|/)]+)(?:s|S)(?<season>\\d+)(?:e|E)(?<episode>\\d+)";
+        private string _matchPattern = ".+";
         partial void OnMatchPatternChanged(string value)
         {
-            TestMatches = FindMatches(Input, value, out var error);
+            InputMatches = FindMatches(Input, value, out var error);
             MatchPatternError = error;
         }
 
@@ -46,7 +42,7 @@ namespace BarryFileMan.ViewModels.Rename.Providers
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(SelectedMatchType))]
-        private int? _selectedMatchTypeIndex;
+        private int? _selectedMatchTypeIndex = 0;
         partial void OnSelectedMatchTypeIndexChanged(int? value)
         {
             if (ViewModel.SelectedFile != null)
@@ -59,10 +55,10 @@ namespace BarryFileMan.ViewModels.Rename.Providers
 
         [ObservableProperty]
         [HasErrorProperty(nameof(RenamePatternError))]
-        private string _renamePattern = "<title{-1}.replace(\'.\',\' \')>- S<season{-1}.pad(left,\'0\',2)>E<episode{-1}.pad(left,\'0\',2)>";
+        private string _renamePattern = "<Match>";
         partial void OnRenamePatternChanged(string value)
         {
-            Output = RenameMatches(TestMatches, value, Input, out var error);
+            Output = RenameMatches(InputMatches, value, Input, out var error);
             RenamePatternError = error;
         }
 
@@ -77,19 +73,19 @@ namespace BarryFileMan.ViewModels.Rename.Providers
         private string _input = string.Empty;
         partial void OnInputChanged(string value)
         {
-            TestMatches = FindMatches(value, MatchPattern, out var error) ?? new List<IRenameMatch>();
+            InputMatches = FindMatches(value, MatchPattern, out var error) ?? new List<IRenameMatch>();
             MatchPatternError = error;
         }
 
         [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(HasTestMatches))]
-        private IEnumerable<IRenameMatch>? _testMatches;
-        partial void OnTestMatchesChanged(IEnumerable<IRenameMatch>? value)
+        [NotifyPropertyChangedFor(nameof(HasInputMatches))]
+        private IEnumerable<IRenameMatch>? _inputMatches;
+        partial void OnInputMatchesChanged(IEnumerable<IRenameMatch>? value)
         {
             Output = RenameMatches(value, RenamePattern, Input, out var error);
             RenamePatternError = error;
 
-            TestMatchNodes.Clear();
+            InputMatchNodes.Clear();
             if (value != null && value.Any())
             {
                 Dictionary<string, int> groupKeys = new();
@@ -115,16 +111,16 @@ namespace BarryFileMan.ViewModels.Rename.Providers
                             }
                         }
 
-                        TestMatchNodes.Add(new RenameMatchNodeViewModel(RenameMatchNodeType.Match, i, subNodes, isExpanded: i == 0));
+                        InputMatchNodes.Add(new RenameMatchNodeViewModel(RenameMatchNodeType.Match, i, subNodes, isExpanded: i == 0));
                     }
                 }
             }
         }
 
         [ObservableProperty]
-        private ObservableCollection<RenameMatchNodeViewModel> _testMatchNodes = new();
+        private ObservableCollection<RenameMatchNodeViewModel> _inputMatchNodes = new();
 
-        public HierarchicalTreeDataGridSource<RenameMatchNodeViewModel> TestMatchNodeColumns => new(TestMatchNodes)
+        public HierarchicalTreeDataGridSource<RenameMatchNodeViewModel> InputMatchNodeColumns => new(InputMatchNodes)
         {
             Columns =
             {
@@ -135,18 +131,25 @@ namespace BarryFileMan.ViewModels.Rename.Providers
             }
         };
 
-        public bool HasTestMatches => TestMatches != null && TestMatches.Any();
+        public bool HasInputMatches => InputMatches != null && InputMatches.Any();
 
         [ObservableProperty]
         private string _output = string.Empty;
 
         public RegexRenameProviderViewModel() : this(new RenameViewModel()) { }
 
-        public RegexRenameProviderViewModel(RenameViewModel viewModel) : base(viewModel)
+        public RegexRenameProviderViewModel(RenameViewModel viewModel, bool loadPreset = true) : base(viewModel)
         {
             ViewModel.PropertyChanged += ViewModel_PropertyChanged;
-            Input = "\\ParentFolder\\Show.Name.S01E01";
-            SelectedMatchTypeIndex = 1;
+
+            // TODO - load from preset
+            if (loadPreset)
+            {
+                MatchPattern = "(?:\\\\|/)(?<title>[^(?:\\\\|/)]+)(?:s|S)(?<season>\\d+)(?:e|E)(?<episode>\\d+)";
+                RenamePattern = "<title{-1}.replace(\'.\',\' \')>- S<season{-1}.pad(left,\'0\',2)>E<episode{-1}.pad(left,\'0\',2)>";
+                Input = "\\ParentFolder\\Show.Name.S01E01";
+                SelectedMatchTypeIndex = 1;
+            }
         }
 
         ~RegexRenameProviderViewModel()

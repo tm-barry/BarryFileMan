@@ -92,7 +92,7 @@
 							  BorderThickness="1"
 							  BorderBrush="{DynamicResource SystemBaseMediumColor}"
 							  CornerRadius="3"
-							  Source="{Binding TestMatchNodeColumns}">
+							  Source="{Binding InputMatchNodeColumns}">
 					<TreeDataGrid.Resources>
 						<!-- Template for Name column cells -->
 						<DataTemplate x:Key="MatchNameCell" DataType="vm:RenameMatchNodeViewModel">
@@ -112,7 +112,7 @@
 				</TreeDataGrid>
 				
 				<!-- Matches Placeholder -->
-				<Grid Grid.Row="1" IsHitTestVisible="false" IsVisible="{Binding !HasTestMatches}">
+				<Grid Grid.Row="1" IsHitTestVisible="false" IsVisible="{Binding !HasInputMatches}">
 					<TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
 							   Text="{x:Static lang:Resources.NoMatchesFound}"
 							   Opacity="0.5"/>
