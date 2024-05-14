@@ -1,138 +1,11 @@
-﻿using Avalonia.Controls;
-using Avalonia.Controls.Models.TreeDataGrid;
-using BarryFileMan.Attributes.Validation;
-using BarryFileMan.Enums.Rename;
-using BarryFileMan.Rename.Exceptions;
-using BarryFileMan.Rename.Interfaces;
-using BarryFileMan.Rename.Models;
-using BarryFileMan.Rename.Providers.Regex;
+﻿using BarryFileMan.Rename.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
 
 namespace BarryFileMan.ViewModels.Rename.Providers
 {
-    public partial class RegexRenameProviderViewModel : BaseRenameProviderViewModel
+    public partial class RegexRenameProviderViewModel : BaseRegexRenameProviderViewModel
     {
-        private readonly RegexRenameProvider _provider = new();
-
-        [ObservableProperty]
-        [HasErrorProperty(nameof(MatchPatternError))]
-        private string _matchPattern = ".+";
-        partial void OnMatchPatternChanged(string value)
-        {
-            InputMatches = FindMatches(Input, value, out var error);
-            MatchPatternError = error;
-        }
-
-        [ObservableProperty]
-        private string? _matchPatternError;
-        partial void OnMatchPatternErrorChanged(string? value)
-        {
-            ValidateProperty(MatchPattern, nameof(MatchPattern));
-        }
-
-        public static ReadOnlyCollection<ItemViewModel<RegexRenameMatchTypes>> MatchTypes => new List<ItemViewModel<RegexRenameMatchTypes>>()
-        {
-            new(RegexRenameMatchTypes.Filename, Resources.Resources.Filename, false),
-            new(RegexRenameMatchTypes.FilenameDirectory, Resources.Resources.FilenameAndDirectory, false),
-            new(RegexRenameMatchTypes.FullPath, Resources.Resources.FullPath, false)
-        }.AsReadOnly();
-
-        [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(SelectedMatchType))]
-        private int? _selectedMatchTypeIndex = 0;
-        partial void OnSelectedMatchTypeIndexChanged(int? value)
-        {
-            if (ViewModel.SelectedFile != null)
-            {
-                Input = GetFileMatchInput(ViewModel.SelectedFile);
-            }
-        }
-
-        public RegexRenameMatchTypes SelectedMatchType => MatchTypes.ElementAtOrDefault(SelectedMatchTypeIndex ?? -1)?.Item ?? RegexRenameMatchTypes.Filename;
-
-        [ObservableProperty]
-        [HasErrorProperty(nameof(RenamePatternError))]
-        private string _renamePattern = "<Match>";
-        partial void OnRenamePatternChanged(string value)
-        {
-            Output = RenameMatches(InputMatches, value, Input, out var error);
-            RenamePatternError = error;
-        }
-
-        [ObservableProperty]
-        private string? _renamePatternError;
-        partial void OnRenamePatternErrorChanged(string? value)
-        {
-            ValidateProperty(RenamePattern, nameof(RenamePattern));
-        }
-
-        [ObservableProperty]
-        private string _input = string.Empty;
-        partial void OnInputChanged(string value)
-        {
-            InputMatches = FindMatches(value, MatchPattern, out var error) ?? new List<IRenameMatch>();
-            MatchPatternError = error;
-        }
-
-        [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(HasInputMatches))]
-        private IEnumerable<IRenameMatch>? _inputMatches;
-        partial void OnInputMatchesChanged(IEnumerable<IRenameMatch>? value)
-        {
-            Output = RenameMatches(value, RenamePattern, Input, out var error);
-            RenamePatternError = error;
-
-            InputMatchNodes.Clear();
-            if (value != null && value.Any())
-            {
-                Dictionary<string, int> groupKeys = new();
-                int currentGroupKey = 0;
-                for (int i = 0; i < value.Count(); i++)
-                {
-                    var renameMatch = value.ElementAtOrDefault(i);
-                    if (renameMatch != null)
-                    {
-                        ObservableCollection<RenameMatchNodeViewModel> subNodes = new();
-                        foreach (var groupName in renameMatch.Groups.Keys)
-                        {
-                            if (!groupKeys.ContainsKey(groupName))
-                            {
-                                groupKeys.Add(groupName, currentGroupKey);
-                                currentGroupKey++;
-                            }
-
-                            var groupValues = renameMatch.Groups[groupName];
-                            for (int j = 0; j < groupValues.Count; j++)
-                            {
-                                subNodes.Add(new(RenameMatchNodeType.Tag, i, null, j, groupValues[j].Value, groupName, groupKeys[groupName]));
-                            }
-                        }
-
-                        InputMatchNodes.Add(new RenameMatchNodeViewModel(RenameMatchNodeType.Match, i, subNodes, isExpanded: i == 0));
-                    }
-                }
-            }
-        }
-
-        [ObservableProperty]
-        private ObservableCollection<RenameMatchNodeViewModel> _inputMatchNodes = new();
-
-        public HierarchicalTreeDataGridSource<RenameMatchNodeViewModel> InputMatchNodeColumns => new(InputMatchNodes)
-        {
-            Columns =
-            {
-                new HierarchicalExpanderColumn<RenameMatchNodeViewModel>(
-                    new TemplateColumn<RenameMatchNodeViewModel>(Resources.Resources.Name, "MatchNameCell"),
-                    x => x.SubNodes, x => x.HasSubNodes, x=> x.IsExpanded),
-                new TextColumn<RenameMatchNodeViewModel, string>(Resources.Resources.Value, x => x.Value),
-            }
-        };
-
-        public bool HasInputMatches => InputMatches != null && InputMatches.Any();
-
         [ObservableProperty]
         private string _output = string.Empty;
 
@@ -140,8 +13,6 @@ namespace BarryFileMan.ViewModels.Rename.Providers
 
         public RegexRenameProviderViewModel(RenameViewModel viewModel, bool loadPreset = true) : base(viewModel)
         {
-            ViewModel.PropertyChanged += ViewModel_PropertyChanged;
-
             // TODO - load from preset
             if (loadPreset)
             {
@@ -152,94 +23,20 @@ namespace BarryFileMan.ViewModels.Rename.Providers
             }
         }
 
-        ~RegexRenameProviderViewModel()
+        protected override void OnInputMatchesChangedBefore(IEnumerable<IRenameMatch>? value)
         {
-            ViewModel.PropertyChanged -= ViewModel_PropertyChanged;
+            HandleOutputRename(value, RenamePattern, Input);
         }
 
-        public override void ApplyFileRenames()
+        protected override void OnRenamePatternChangedBefore(string value)
         {
-            foreach(var file in ViewModel.Files)
-            {
-                file.IsDuplicate = false;
-                file.Matches = FindMatches(GetFileMatchInput(file), MatchPattern, out _);
-                var renamedFileName = RenameMatches(file.Matches, RenamePattern, file.FileNameWithoutExtension, out var renameError);
-                file.RenameError = renameError;
-                file.RenamedFileName = string.IsNullOrEmpty(renameError) ? renamedFileName : null;
-            }
-
-            HandleDuplicateFilenames();
+            HandleOutputRename(InputMatches, value, Input);
         }
 
-        private void ViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void HandleOutputRename(IEnumerable<IRenameMatch>? matches, string? renamePattern, string? fallbackValue)
         {
-            if (e.PropertyName == nameof(ViewModel.SelectedFile))
-            {
-                if (ViewModel.SelectedFile != null)
-                {
-                    Input = GetFileMatchInput(ViewModel.SelectedFile);
-                }
-            }
-        }
-
-        private string GetFileMatchInput(RenameFileViewModel? file)
-        {
-            string? input = null;
-            switch(SelectedMatchType)
-            {
-                case RegexRenameMatchTypes.Filename:
-                    input = file?.FileNameWithoutExtension;
-                    break;
-                case RegexRenameMatchTypes.FilenameDirectory:
-                    input = file?.RelativePathWithoutExtension;
-                    break;
-                case RegexRenameMatchTypes.FullPath:
-                    input = file?.FullPathWithoutExtension;
-                    break;
-            }
-
-            return input ?? string.Empty;
-        }
-
-        private IEnumerable<IRenameMatch>? FindMatches(string? input, string? regexPattern, out string? error)
-        {
-            IEnumerable<IRenameMatch>? matches = null;
-            error = null;
-            if (!string.IsNullOrWhiteSpace(regexPattern))
-            {
-                try
-                {
-                    matches = _provider.Match(new(regexPattern, input ?? string.Empty));
-                }
-                catch (InvalidRegexException ex)
-                {
-                    error = ex.Message;
-                    matches = null;
-                }
-            }
-
-            return matches;
-        }
-
-        private string RenameMatches(IEnumerable<IRenameMatch>? matches, string? renamePattern, string? fallbackValue, out string? error)
-        {
-            string output = fallbackValue ?? string.Empty;
-            error = null;
-            if (!string.IsNullOrWhiteSpace(renamePattern))
-            {
-                matches ??= Enumerable.Empty<IRenameMatch>();
-                RenameResult renameResult = _provider.Rename(matches, renamePattern);
-                if (renameResult.Errors?.Any() == true)
-                {
-                    error = string.Join('\n', renameResult.Errors);
-                }
-                else
-                {
-                    output = renameResult.Value;
-                }
-            }
-
-            return output;
+            Output = RegexRenameMatches(matches, renamePattern, fallbackValue, out var error);
+            RenamePatternError = error;
         }
     }
 }

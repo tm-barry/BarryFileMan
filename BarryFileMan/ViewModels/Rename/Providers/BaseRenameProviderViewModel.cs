@@ -14,12 +14,16 @@ namespace BarryFileMan.ViewModels.Rename.Providers
             ViewModel = viewModel;
         }
 
-        public abstract void ApplyFileRenames();
+        public virtual void ApplyFileRenames()
+        {
+            HandleDuplicateFilenames();
+        }
 
         protected void HandleDuplicateFilenames()
         {
             foreach (var file in ViewModel.Files.Where((f) => f.RenamedFileName != null))
             {
+                file.IsDuplicate = false;
                 var dupFiles = ViewModel.Files.Where((df) => df.FullPath != file.FullPath && df.RenamedFullPath == file.RenamedFullPath);
                 if (dupFiles.Any())
                 {
