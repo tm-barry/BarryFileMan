@@ -197,9 +197,10 @@ namespace BarryFileMan.Rename.Providers
 
     public class RenameTagFunction
     {
+        private static readonly string _renameFunctionAppendPrependParamPattern = "\\G\\s*'(?<value>.*)'\\s*$";
         private static readonly string _renameFunctionPadParamPattern = "\\G\\s*(?<type>right|left)\\s*,\\s*\'(?<char>.)\'\\s*,\\s*(?<length>\\d+)\\s*$";
-        private static readonly string _renameFunctionReplacePattern = "\\G\\s*\'(?<input>.*)\'\\s*,\\s*\'(?<replace>.*)\'\\s*$";
-        private static readonly string _renameFunctionTrimPattern = "\\G\\s*(?<type>left|right|both)\\s*$";
+        private static readonly string _renameFunctionReplaceParamPattern = "\\G\\s*\'(?<input>.*)\'\\s*,\\s*\'(?<replace>.*)\'\\s*$";
+        private static readonly string _renameFunctionTrimParamPattern = "\\G\\s*(?<type>left|right|both)\\s*$";
 
         public string Name { get; }
         public int NameIndex { get; }
@@ -233,8 +234,14 @@ namespace BarryFileMan.Rename.Providers
         {
             switch(name.ToLower())
             {
+                case "append":
+                    SetAppendPrependFunction(@params, true);
+                    break;
                 case "pad":
                     SetPadFunction(@params);
+                    break;
+                case "prepend":
+                    SetAppendPrependFunction(@params, false);
                     break;
                 case "replace":
                     SetReplaceFunction(@params);
@@ -245,6 +252,25 @@ namespace BarryFileMan.Rename.Providers
                 default:
                     Error = $"{name} is not a valid function!";
                     break;
+            }
+        }
+
+        private void SetAppendPrependFunction(string @params, bool append = true)
+        {
+            var regex = new System.Text.RegularExpressions.Regex(_renameFunctionAppendPrependParamPattern);
+            var match = regex.Match(@params);
+            if (match?.Success == true)
+            {
+                var value = match.Groups["value"].Value;
+
+                Function = (str) =>
+                {
+                    return append ? str + value : value + str;
+                };
+            }
+            else
+            {
+                Error = $"{Name}({Params}) params are not valid!";
             }
         }
 
@@ -277,7 +303,7 @@ namespace BarryFileMan.Rename.Providers
 
         private void SetReplaceFunction(string @params)
         {
-            var regex = new System.Text.RegularExpressions.Regex(_renameFunctionReplacePattern);
+            var regex = new System.Text.RegularExpressions.Regex(_renameFunctionReplaceParamPattern);
             var match = regex.Match(@params);
             if (match?.Success == true)
             {
@@ -296,7 +322,7 @@ namespace BarryFileMan.Rename.Providers
         }
         private void SetTrimFunction(string @params)
         {
-            var regex = new System.Text.RegularExpressions.Regex(_renameFunctionTrimPattern);
+            var regex = new System.Text.RegularExpressions.Regex(_renameFunctionTrimParamPattern);
             var match = regex.Match(@params);
             if (match?.Success == true)
             {

@@ -49,6 +49,11 @@ namespace BarryFileMan.ViewModels.Rename.Providers
         {
             // TODO - load from preset
             MatchPattern = "(?<show>[^(?:\\\\|/)]+)\\W(?:s|S)(?<season>\\d+)(?:e|E)(?<episode>\\d+)";
+            QueryRenamePattern = "<show.replace('.',' ')>";
+            YearRenamePattern = string.Empty;
+            SeasonRenamePattern = "<season>";
+            EpisodeRenamePattern = "<episode>";
+            LanguageRenamePattern = string.Empty;
             RenamePattern = "";
             Input = "\\ParentFolder\\Show.Name.S01E01";
             SelectedMatchTypeIndex = 1;
