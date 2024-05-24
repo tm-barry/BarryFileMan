@@ -45,6 +45,13 @@
 
 
   <ItemGroup>
+    <AvaloniaXaml Update="Views\Rename\Providers\TMDBTvRenameProviderViewTemplate.axaml">
+      <SubType>Designer</SubType>
+    </AvaloniaXaml>
+  </ItemGroup>
+
+
+  <ItemGroup>
     <Compile Update="Resources\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

@@ -19,7 +19,7 @@ namespace BarryFileMan.ViewModels.Rename.Providers
 
         [ObservableProperty]
         [HasErrorProperty(nameof(MatchPatternError))]
-        private string _matchPattern = ".+";
+        private string _matchPattern = string.Empty;
         partial void OnMatchPatternChanged(string value)
         {
             InputMatches = RegexFindMatches(Input, value, out var error);
@@ -55,7 +55,7 @@ namespace BarryFileMan.ViewModels.Rename.Providers
 
         [ObservableProperty]
         [HasErrorProperty(nameof(RenamePatternError))]
-        private string _renamePattern = "<Match>";
+        private string _renamePattern = string.Empty;
         protected virtual void OnRenamePatternChangedBefore(string value) { }
         partial void OnRenamePatternChanged(string value)
         {

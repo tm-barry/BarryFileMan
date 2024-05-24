@@ -286,6 +286,15 @@ namespace BarryFileMan.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Episode.
+        /// </summary>
+        public static string Episode {
+            get {
+                return ResourceManager.GetString("Episode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error.
         /// </summary>
         public static string Error {
@@ -642,6 +651,15 @@ namespace BarryFileMan.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Language.
+        /// </summary>
+        public static string Language {
+            get {
+                return ResourceManager.GetString("Language", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Light.
         /// </summary>
         public static string Light {
@@ -855,6 +873,15 @@ namespace BarryFileMan.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Query.
+        /// </summary>
+        public static string Query {
+            get {
+                return ResourceManager.GetString("Query", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Regex.
         /// </summary>
         public static string Regex {
@@ -1044,6 +1071,15 @@ namespace BarryFileMan.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Season.
+        /// </summary>
+        public static string Season {
+            get {
+                return ResourceManager.GetString("Season", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Settings.
         /// </summary>
         public static string Settings {
@@ -1170,6 +1206,15 @@ namespace BarryFileMan.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to TMDB.
+        /// </summary>
+        public static string TMDB {
+            get {
+                return ResourceManager.GetString("TMDB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to https://www.themoviedb.org/settings/api.
         /// </summary>
         public static string TmdbApiKeyWatermark {
@@ -1211,6 +1256,15 @@ namespace BarryFileMan.Resources {
         public static string Value {
             get {
                 return ResourceManager.GetString("Value", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Year.
+        /// </summary>
+        public static string Year {
+            get {
+                return ResourceManager.GetString("Year", resourceCulture);
             }
         }
         

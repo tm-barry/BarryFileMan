@@ -192,6 +192,9 @@
   <data name="Duplicate" xml:space="preserve">
     <value>Duplicate</value>
   </data>
+  <data name="Episode" xml:space="preserve">
+    <value>Episode</value>
+  </data>
   <data name="Error" xml:space="preserve">
     <value>Error</value>
   </data>
@@ -326,6 +329,9 @@ type - left|right|both</value>
   <data name="InputOutput" xml:space="preserve">
     <value>Input/Output</value>
   </data>
+  <data name="Language" xml:space="preserve">
+    <value>Language</value>
+  </data>
   <data name="Light" xml:space="preserve">
     <value>Light</value>
   </data>
@@ -401,6 +407,9 @@ Full Path - Match the full path of the file/directory</value>
   <data name="Pages" xml:space="preserve">
     <value>Pages</value>
   </data>
+  <data name="Query" xml:space="preserve">
+    <value>Query</value>
+  </data>
   <data name="Regex" xml:space="preserve">
     <value>Regex</value>
   </data>
@@ -464,6 +473,9 @@ Full Path - Match the full path of the file/directory</value>
   <data name="Save" xml:space="preserve">
     <value>Save</value>
   </data>
+  <data name="Season" xml:space="preserve">
+    <value>Season</value>
+  </data>
   <data name="Settings" xml:space="preserve">
     <value>Settings</value>
   </data>
@@ -506,6 +518,9 @@ Full Path - Match the full path of the file/directory</value>
   <data name="Theme" xml:space="preserve">
     <value>Theme</value>
   </data>
+  <data name="TMDB" xml:space="preserve">
+    <value>TMDB</value>
+  </data>
   <data name="TmdbApiKeyWatermark" xml:space="preserve">
     <value>https://www.themoviedb.org/settings/api</value>
   </data>
@@ -520,6 +535,9 @@ Full Path - Match the full path of the file/directory</value>
   </data>
   <data name="Value" xml:space="preserve">
     <value>Value</value>
+  </data>
+  <data name="Year" xml:space="preserve">
+    <value>Year</value>
   </data>
   <data name="Yes" xml:space="preserve">
     <value>Yes</value>

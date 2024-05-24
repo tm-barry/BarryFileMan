@@ -36,12 +36,16 @@
 				<ResourceDictionary>
 					<ResourceDictionary.MergedDictionaries>
 						<ResourceInclude Source="/Views/Rename/Providers/RegexRenameProviderViewTemplate.axaml"/>
+						<ResourceInclude Source="/Views/Rename/Providers/TMDBMovieRenameProviderViewTemplate.axaml"/>
+						<ResourceInclude Source="/Views/Rename/Providers/TMDBTvRenameProviderViewTemplate.axaml"/>
 					</ResourceDictionary.MergedDictionaries>
 				</ResourceDictionary>
 			</Grid.Resources>
 
 			<Grid.DataTemplates>
 				<StaticResource ResourceKey="regexRenameProviderView"/>
+				<StaticResource ResourceKey="tmdbMovieRenameProviderView"/>
+				<StaticResource ResourceKey="tmdbTvRenameProviderView"/>
 			</Grid.DataTemplates>
 			
 			<Grid.Styles>
@@ -63,7 +67,8 @@
 
 			<!-- Match Provider Selection -->
 			<ComboBox Grid.Row="0" Margin="5"
-					  MinWidth="100"
+					  MinWidth="175" 
+					  Height="30"
 					  HorizontalAlignment="Center"
 					  SelectedIndex="{Binding SelectedProviderTypeIndex}"
 					  ItemsSource="{Binding ProviderTypes}">

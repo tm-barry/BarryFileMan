@@ -11,16 +11,13 @@ namespace BarryFileMan.ViewModels.Rename.Providers
 
         public RegexRenameProviderViewModel() : this(new RenameViewModel()) { }
 
-        public RegexRenameProviderViewModel(RenameViewModel viewModel, bool loadPreset = true) : base(viewModel)
+        public RegexRenameProviderViewModel(RenameViewModel viewModel) : base(viewModel)
         {
             // TODO - load from preset
-            if (loadPreset)
-            {
-                MatchPattern = "(?:\\\\|/)(?<title>[^(?:\\\\|/)]+)(?:s|S)(?<season>\\d+)(?:e|E)(?<episode>\\d+)";
-                RenamePattern = "<title{-1}.replace(\'.\',\' \')>- S<season{-1}.pad(left,\'0\',2)>E<episode{-1}.pad(left,\'0\',2)>";
-                Input = "\\ParentFolder\\Show.Name.S01E01";
-                SelectedMatchTypeIndex = 1;
-            }
+            MatchPattern = "(?<show>[^(?:\\\\|/)]+)\\W(?:s|S)(?<season>\\d+)(?:e|E)(?<episode>\\d+)";
+            RenamePattern = "<show{-1}.replace(\'.\',\' \')>- S<season{-1}.pad(left,\'0\',2)>E<episode{-1}.pad(left,\'0\',2)>";
+            Input = "\\ParentFolder\\Show.Name.S01E01";
+            SelectedMatchTypeIndex = 1;
         }
 
         protected override void OnInputMatchesChangedBefore(IEnumerable<IRenameMatch>? value)

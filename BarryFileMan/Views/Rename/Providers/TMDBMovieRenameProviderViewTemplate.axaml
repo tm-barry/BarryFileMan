@@ -1,0 +1,230 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:vm="using:BarryFileMan.ViewModels.Rename.Providers"
+					xmlns:vh="using:BarryFileMan.Views.Help"
+					xmlns:cc="using:BarryFileMan.Converters"
+					xmlns:he="using:BarryFileMan.Enums.Help"
+					xmlns:lang="using:BarryFileMan.Resources"
+					xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia">
+	<!-- Preview DataTemplate -->
+	<Design.PreviewWith>
+		<Grid Width="600" Height="315">
+			<Grid.Resources>
+				<ResourceDictionary>
+					<ResourceDictionary.MergedDictionaries>
+						<ResourceInclude Source="/Views/Rename/Providers/TMDBMovieRenameProviderViewTemplate.axaml"/>
+					</ResourceDictionary.MergedDictionaries>
+				</ResourceDictionary>
+			</Grid.Resources>
+			<Grid.DataTemplates>
+				<StaticResource ResourceKey="tmdbMovieRenameProviderView"/>
+			</Grid.DataTemplates>
+
+			<ContentControl>
+				<vm:TMDBMovieRenameProviderViewModel/>
+			</ContentControl>
+		</Grid>
+	</Design.PreviewWith>
+
+	<DataTemplate x:Key="tmdbMovieRenameProviderView" x:DataType="vm:TMDBMovieRenameProviderViewModel">
+		<Grid ColumnDefinitions="*,*" RowDefinitions="*,Auto">
+			<Grid.Resources>
+				<cc:IntToColorConverter x:Key="intToColorConverter"/>
+			</Grid.Resources>
+			<Grid.Styles>
+				<Style Selector="TabItem">
+					<Setter Property="FontSize" Value="12"/>
+				</Style>
+			</Grid.Styles>
+
+			<!-- Settings -->
+			<Border Grid.Column="0" Grid.Row="0"
+					Margin="0,0,5,0"
+					BorderThickness="1" CornerRadius="3"
+					BorderBrush="{DynamicResource SystemBaseMediumColor}">
+				<TabControl Padding="0" MaxHeight="250">
+					<!--TMDB Settings-->
+					<TabItem Header="{x:Static lang:Resources.TMDB}">
+						<ScrollViewer>
+							<StackPanel Margin="10">
+								<StackPanel Orientation="Horizontal">
+									<TextBlock FontWeight="Bold"
+											   Text="{x:Static lang:Resources.RenamePattern}"/>
+									<vh:HelpButton Margin="5,0,0,0" Height="16" Width="16"
+												   Section="{x:Static he:HelpSections.Rename}"/>
+								</StackPanel>
+								<TextBox Text="{Binding RenamePattern}"
+										 TextWrapping="Wrap"
+										 MaxHeight="75"/>
+							</StackPanel>
+						</ScrollViewer>
+					</TabItem>
+					<!--Regex Settings-->
+					<TabItem Header="{x:Static lang:Resources.Regex}">
+						<ScrollViewer>
+							<StackPanel Margin="10">
+								<StackPanel Orientation="Horizontal">
+									<TextBlock FontWeight="Bold"
+										   Text="{x:Static lang:Resources.MatchPattern}"/>
+									<vh:HelpButton Margin="5,0,0,0" Height="16" Width="16"
+												   Section="{x:Static he:HelpSections.RenameRegex}"/>
+								</StackPanel>
+								<TextBox Text="{Binding MatchPattern}"
+										 TextWrapping="Wrap"
+										 MaxHeight="75"/>
+
+								<TextBlock Margin="0,10,0,0"
+										   FontWeight="Bold"
+										   Text="{x:Static lang:Resources.MatchType}"/>
+								<ComboBox HorizontalAlignment="Stretch"
+										  ItemsSource="{Binding MatchTypes}"
+										  DisplayMemberBinding="{Binding Display}"
+										  SelectedIndex="{Binding SelectedMatchTypeIndex}"/>
+
+								<TextBlock Margin="0,10,0,0"
+										   FontWeight="Bold"
+										   Text="{x:Static lang:Resources.Query}"/>
+								<Grid ColumnDefinitions="*,*">
+									<TextBox Grid.Column="0"
+											 Text="{Binding QueryRenamePattern}"
+											 TextWrapping="Wrap"
+											 MaxHeight="75"
+											 CornerRadius="3,0,0,3"/>
+									<Border Grid.Column="1"
+											BorderBrush="{DynamicResource SystemBaseMediumColor}"
+											CornerRadius="0,3,3,0"
+											BorderThickness="1">
+										<ScrollViewer MaxHeight="57">
+											<SelectableTextBlock Margin="3" Text="{Binding QueryOutput}"
+																 TextWrapping="Wrap"
+																 Background="Transparent"
+																 HorizontalAlignment="Stretch"/>
+										</ScrollViewer>
+									</Border>
+								</Grid>
+
+								<TextBlock Margin="0,10,0,0"
+										   FontWeight="Bold"
+										   Text="{x:Static lang:Resources.Year}"/>
+								<Grid ColumnDefinitions="*,*">
+									<TextBox Grid.Column="0"
+											 Text="{Binding YearRenamePattern}"
+											 TextWrapping="Wrap"
+											 MaxHeight="75"
+											 CornerRadius="3,0,0,3"/>
+									<Border Grid.Column="1"
+											BorderBrush="{DynamicResource SystemBaseMediumColor}"
+											CornerRadius="0,3,3,0"
+											BorderThickness="1">
+										<ScrollViewer MaxHeight="57">
+											<SelectableTextBlock Margin="3" Text="{Binding YearOutput}"
+																 TextWrapping="Wrap"
+																 Background="Transparent"
+																 HorizontalAlignment="Stretch"/>
+										</ScrollViewer>
+									</Border>
+								</Grid>
+
+								<TextBlock Margin="0,10,0,0"
+										   FontWeight="Bold"
+										   Text="{x:Static lang:Resources.Language}"/>
+								<Grid ColumnDefinitions="*,*">
+									<TextBox Grid.Column="0"
+											 Text="{Binding LanguageRenamePattern}"
+											 TextWrapping="Wrap"
+											 MaxHeight="75"
+											 CornerRadius="3,0,0,3"/>
+									<Border Grid.Column="1"
+											BorderBrush="{DynamicResource SystemBaseMediumColor}"
+											CornerRadius="0,3,3,0"
+											BorderThickness="1">
+										<ScrollViewer MaxHeight="57">
+											<SelectableTextBlock Margin="3" Text="{Binding LanguageOutput}"
+																 TextWrapping="Wrap"
+																 Background="Transparent"
+																 HorizontalAlignment="Stretch"/>
+										</ScrollViewer>
+									</Border>
+								</Grid>
+							</StackPanel>
+						</ScrollViewer>
+					</TabItem>
+				</TabControl>
+			</Border>
+
+			<!-- Matches -->
+			<TreeDataGrid Grid.Column="1" Grid.Row="0"
+						  Margin="5,0,0,0"
+						  MaxHeight="250"
+						  VerticalAlignment="Stretch"
+						  BorderThickness="1"
+						  BorderBrush="{DynamicResource SystemBaseMediumColor}"
+						  CornerRadius="3"
+						  Source="{Binding InputMatchNodeColumns}">
+				<TreeDataGrid.Resources>
+					<!-- Template for Name column cells -->
+					<DataTemplate x:Key="MatchNameCell" DataType="vm:RenameMatchNodeViewModel">
+						<StackPanel Orientation="Horizontal">
+							<materialIcons:MaterialIcon Height="16" Width="16"
+													Kind="{Binding Icon}"/>
+							<TextBlock Text="{Binding DisplayName}" VerticalAlignment="Center" Margin="5,0,0,0"/>
+						</StackPanel>
+					</DataTemplate>
+				</TreeDataGrid.Resources>
+
+				<TreeDataGrid.Styles>
+					<Style Selector="TreeDataGridRow" x:DataType="vm:RenameMatchNodeViewModel">
+						<Setter Property="Background" Value="{Binding GroupKey, Converter={StaticResource intToColorConverter}}"/>
+					</Style>
+				</TreeDataGrid.Styles>
+			</TreeDataGrid>
+
+			<!-- Matches Placeholder -->
+			<Grid Grid.Column="1" Grid.Row="0"
+				  Margin="5,0,0,0"
+				  IsHitTestVisible="false"
+				  IsVisible="{Binding !HasInputMatches}">
+				<TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+						   Text="{x:Static lang:Resources.NoMatchesFound}"
+						   Opacity="0.5"/>
+			</Grid>
+
+			<!-- Input/Output -->
+			<Grid Grid.Row="1" Grid.ColumnSpan="2"
+				  Margin="0,10,0,0">
+				<Border Padding="10"
+						BorderThickness="1" CornerRadius="3"
+						BorderBrush="{DynamicResource SystemBaseMediumColor}">
+					<Grid ColumnDefinitions="*,*">
+						<!-- Input -->
+						<StackPanel Grid.Column="0"
+									Margin="0,0,5,0">
+							<TextBlock FontWeight="Bold"
+									   Text="{x:Static lang:Resources.Input}"/>
+							<TextBox Text="{Binding Input}"
+									 TextWrapping="Wrap"
+									 MaxHeight="57"/>
+						</StackPanel>
+
+						<!-- Output -->
+						<StackPanel Grid.Column="1"
+									Margin="5,0,0,0">
+							<TextBlock FontWeight="Bold"
+									   Text="{x:Static lang:Resources.Output}"/>
+							<Border BorderBrush="{DynamicResource SystemBaseMediumColor}"
+									CornerRadius="3"
+									BorderThickness="1">
+								<ScrollViewer MaxHeight="57">
+									<SelectableTextBlock Margin="3" Text="{Binding Output}"
+														 TextWrapping="Wrap"
+														 Background="Transparent"
+														 HorizontalAlignment="Stretch"/>
+								</ScrollViewer>
+							</Border>
+						</StackPanel>
+					</Grid>
+				</Border>
+			</Grid>
+		</Grid>
+	</DataTemplate>
+</ResourceDictionary>

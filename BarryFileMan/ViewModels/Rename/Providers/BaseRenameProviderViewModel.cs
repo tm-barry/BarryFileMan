@@ -1,5 +1,4 @@
-﻿using BarryFileMan.ViewModels.Flatten;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.Generic;
 using System.Linq;
 

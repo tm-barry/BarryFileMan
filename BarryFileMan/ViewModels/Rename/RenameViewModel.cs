@@ -39,6 +39,12 @@ namespace BarryFileMan.ViewModels.Rename
                 case RenameProviderTypes.Regex:
                     RenameProvider = new RegexRenameProviderViewModel(this);
                     break;
+                case RenameProviderTypes.TMDB_Movie:
+                    RenameProvider = new TMDBMovieRenameProviderViewModel(this);
+                    break;
+                case RenameProviderTypes.TMDB_TV:
+                    RenameProvider = new TMDBTvRenameProviderViewModel(this);
+                    break;
                 default:
                     RenameProvider = null;
                     break;
