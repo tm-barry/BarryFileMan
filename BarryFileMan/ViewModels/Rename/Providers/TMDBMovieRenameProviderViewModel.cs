@@ -16,7 +16,7 @@ namespace BarryFileMan.ViewModels.Rename.Providers
 {
     public partial class TMDBMovieRenameProviderViewModel : BaseTMDBRenameProviderViewModel
     {
-        private readonly TMDBMovieRenameMatchProvider _tmdbMovieProvider = new();
+        private readonly TMDBMovieRenameMatchProvider _tmdbMovieProvider = new(true);
 
         public TMDBMovieRenameProviderViewModel() : this(new RenameViewModel()) { }
 
@@ -144,9 +144,9 @@ namespace BarryFileMan.ViewModels.Rename.Providers
                     new(
                         AppManager.UserConfig.Config.Tmdb.ApiKey ?? string.Empty, 
                         AppManager.UserConfig.Config.Tmdb.IncludeAdult,
-                        query.ToLower().Trim(), 
-                        year.ToLower().Trim(), 
-                        language.ToLower().Trim()
+                        query, 
+                        year, 
+                        language
                     ));
             }
             catch (Exception ex)

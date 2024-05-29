@@ -1,5 +1,6 @@
 ﻿using BarryFileMan.Rename.Enums;
 using BarryFileMan.Rename.Exceptions;
+using BarryFileMan.Rename.Extensions;
 using BarryFileMan.Rename.Interfaces;
 using BarryFileMan.Rename.Models.TMDB;
 using BarryFileMan.Rename.Repositories;
@@ -8,7 +9,13 @@ namespace BarryFileMan.Rename.Providers.TMDB
 {
     public class TMDBMovieRenameMatchProvider : BaseRenameMatchProvider<TMDBMovieTvRenameProviderMatchOptions>
     {
-        public TMDBMovieRenameMatchProvider() : base(RenameProviderTypes.TMDB_Movie) { }
+        private bool _useCaching;
+        private static Dictionary<int, TMDBSearchMovieTV?> _searchMovieCache = new();
+
+        public TMDBMovieRenameMatchProvider(bool useCaching = false) : base(RenameProviderTypes.TMDB_Movie) 
+        {
+            _useCaching = useCaching;
+        }
 
         public override IEnumerable<IRenameMatch>? Match(TMDBMovieTvRenameProviderMatchOptions? options)
         {
@@ -28,8 +35,8 @@ namespace BarryFileMan.Rename.Providers.TMDB
             }
 
             List<TMDBRenameMatch>? renameMatches = null;
-            var tmdbRepo = new TMDBRepository(options.APIKey);
-            var movieMatches = await tmdbRepo.SearchMovie(options.Query, options.IncludeAdult, options.Language, null, null, null, options.Year);
+            var movieMatches = await SearchMovie(options);
+
             if(movieMatches?.Results != null && movieMatches.Results.Any())
             {
                 renameMatches = new List<TMDBRenameMatch>();
@@ -60,6 +67,32 @@ namespace BarryFileMan.Rename.Providers.TMDB
             }
 
             return renameMatches;
+        }
+
+        private async Task<TMDBSearchMovieTV?> SearchMovie(TMDBMovieTvRenameProviderMatchOptions options)
+        {
+            TMDBSearchMovieTV? movieMatches = null;
+            var tmdbRepo = new TMDBRepository(options.APIKey);
+            var query = options.Query.ToLower().Trim();
+            var language = options.Language.ToLower().Trim();
+            var year = options.Year.ToLower().Trim();
+            var hash = _useCaching ? new[] { query, options.IncludeAdult.ToString(), language, year }.GetSequenceHashCode() : 0;
+
+            if (_useCaching && _searchMovieCache.ContainsKey(hash))
+            {
+                movieMatches = _searchMovieCache[hash];
+            }
+            else
+            {
+                movieMatches = await tmdbRepo.SearchMovie(options.Query, options.IncludeAdult, language, null, null, null, year);
+
+                if (_useCaching)
+                {
+                    _searchMovieCache.Add(hash, movieMatches);
+                }
+            }
+
+            return movieMatches;
         }
     }
 }
