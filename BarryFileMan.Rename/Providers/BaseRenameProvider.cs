@@ -20,7 +20,7 @@ namespace BarryFileMan.Rename.Providers
 
         public abstract Task<IEnumerable<IRenameMatch>?> MatchAsync(TMatchOptions? options);
 
-        public RenameResult Rename(IEnumerable<IRenameMatch> matches, string renamePattern, string? fallbackValue = null)
+        public RenameResult Rename(IEnumerable<IRenameMatch> matches, string renamePattern, string? defaultTagFallbackValue = null)
         {
             var output = renamePattern;
             var tags = new List<RenameTag>();
@@ -36,7 +36,7 @@ namespace BarryFileMan.Rename.Providers
             {
                 foreach (Match renameMatch in renamePatternMatches.Cast<Match>())
                 {
-                    var renameTag = new RenameTag(renameMatch.Value, renameMatch.Groups["tag"].Value, renameMatch.Index, renameMatch.Length);
+                    var renameTag = new RenameTag(renameMatch.Value, renameMatch.Groups["tag"].Value, renameMatch.Index, renameMatch.Length, defaultTagFallbackValue);
 
                     if (string.IsNullOrEmpty(renameTag.Error) && renameTag.Functions.All((function) => string.IsNullOrEmpty(function.Error)))
                     {
@@ -71,17 +71,21 @@ namespace BarryFileMan.Rename.Providers
                             }
                             else
                             {
-                                if (fallbackValue != null)
+                                if (renameTag.FallbackValue != null)
                                 {
-                                    output = output.Replace(renameTag.Tag, fallbackValue);
+                                    output = output.Replace(renameTag.Tag, renameTag.FallbackValue);
+                                }
+                                else
+                                {
+                                    errors.Add($"No match found for { renameTag.Tag }");
                                 }
                             }
                         }
                         else
                         {
-                            if (fallbackValue != null)
+                            if (renameTag.FallbackValue != null)
                             {
-                                output = output.Replace(renameTag.Tag, fallbackValue);
+                                output = output.Replace(renameTag.Tag, renameTag.FallbackValue);
                             }
                         }
                     }
@@ -121,7 +125,7 @@ namespace BarryFileMan.Rename.Providers
 
     public class RenameTag
     {
-        private static readonly string _renameInnerTagPattern = "\\G\\s*(?<tagName>(?:[a-zA-Z]|\\d)+)(?:{\\s*(?<matchIndex>-?\\d+)\\s*})?(?:\\[\\s*(?<groupIndex>-?\\d+)\\s*\\])?(?<function>.(?<functionName>(?:[a-zA-Z]|\\d)+)(?:\\((?<functionParams>.*?)\\)))*?\\s*$";
+        private static readonly string _renameInnerTagPattern = "\\G\\s*(?<tagName>(?:[a-zA-Z]|\\d)+)(?:{\\s*(?<matchIndex>-?\\d+)\\s*})?(?:\\[\\s*(?<groupIndex>-?\\d+)\\s*\\])?(?<function>.(?<functionName>(?:[a-zA-Z]|\\d)+)(?:\\((?<functionParams>.*?)\\)))*?(?:\\s*\\?\\?\\s*\'(?<fallbackValue>.*)\')?\\s*$";
 
         /// <summary>
         /// Entire tag value including angle brackets, tag name, and functions ex.. <tagName.functions()>
@@ -137,14 +141,16 @@ namespace BarryFileMan.Rename.Providers
         public int MatchIndex { get; private set; } = 0;
         public int GroupIndex { get; private set; } = 0;
         public IList<RenameTagFunction> Functions { get; } = new List<RenameTagFunction>();
+        public string? FallbackValue { get; set; }
         public string? Error { get; private set; }
 
-        public RenameTag(string tag, string innerTag, int index, int length)
+        public RenameTag(string tag, string innerTag, int index, int length, string? fallbackValue)
         {
             Tag = tag;
             InnerTag = innerTag;
             Index = index;
             Length = length;
+            FallbackValue = fallbackValue;
 
             ParseInnerTag(innerTag);
         }
@@ -156,19 +162,19 @@ namespace BarryFileMan.Rename.Providers
             if(match?.Success == true)
             {
                 Group? group = match.Groups["tagName"];
-                if (group != null)
+                if (group != null && group.Captures.Any())
                 {
                     TagName = group.Value;
                 }
 
                 group = match.Groups["matchIndex"];
-                if (group != null && int.TryParse(group.Value, out int matchIndex))
+                if (group != null && group.Captures.Any() && int.TryParse(group.Value, out int matchIndex))
                 {
                     MatchIndex = matchIndex;
                 }
 
                 group = match.Groups["groupIndex"];
-                if (group != null && int.TryParse(group.Value, out int groupIndex))
+                if (group != null && group.Captures.Any() && int.TryParse(group.Value, out int groupIndex))
                 {
                     GroupIndex = groupIndex;
                 }
@@ -186,6 +192,12 @@ namespace BarryFileMan.Rename.Providers
                             functionParams[i].Value, functionParams[i].Index, functionParams[i].Length,
                             functions[i].Index, functions[i].Length));
                     }
+                }
+
+                group = match.Groups["fallbackValue"];
+                if (group != null && group.Captures.Any())
+                {
+                    FallbackValue = group.Value;
                 }
             }
             else

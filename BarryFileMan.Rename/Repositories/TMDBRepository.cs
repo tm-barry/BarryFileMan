@@ -84,7 +84,7 @@ namespace BarryFileMan.Rename.Repositories
         }
 
         public Task<TMDBSearchMovieTV?> SearchMovie(string query, bool? includeAdult = null, string? language = null, 
-            string? primaryReleaseYear = null, int? page = null, string? region = null)
+            string? primaryReleaseYear = null, int? page = null, string? region = null, string? year = null)
         {
             var queryParams = new List<Parameter>();
             if (!string.IsNullOrWhiteSpace(query))
@@ -99,12 +99,14 @@ namespace BarryFileMan.Rename.Repositories
                 queryParams.Add(new QueryParameter("page", page.Value.ToString()));
             if (!string.IsNullOrWhiteSpace(region))
                 queryParams.Add(new QueryParameter("region", region));
+            if (year != null)
+                queryParams.Add(new QueryParameter("year", year));
 
             return GetAsync<TMDBSearchMovieTV?>("https://api.themoviedb.org/3/search/movie", queryParams);
         }
 
         public Task<TMDBSearchMovieTV?> SearchTv(string query, int? firstAirDateYear = null, bool? includeAdult = null, string ? language = null,
-            int? page = null, int? year = null)
+            int? page = null, string? year = null)
         {
             var queryParams = new List<Parameter>();
             if (!string.IsNullOrWhiteSpace(query))
@@ -118,7 +120,7 @@ namespace BarryFileMan.Rename.Repositories
             if (page != null)
                 queryParams.Add(new QueryParameter("page", page.Value.ToString()));
             if (year != null)
-                queryParams.Add(new QueryParameter("year", year.Value.ToString()));
+                queryParams.Add(new QueryParameter("year", year));
 
             return GetAsync<TMDBSearchMovieTV?>("https://api.themoviedb.org/3/search/tv", queryParams);
         }

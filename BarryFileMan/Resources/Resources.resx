@@ -234,6 +234,9 @@
   <data name="FilesRenamedSuccessMessage" xml:space="preserve">
     <value>Files successfully renamed!</value>
   </data>
+  <data name="FindMatch" xml:space="preserve">
+    <value>Find Match</value>
+  </data>
   <data name="Flatten" xml:space="preserve">
     <value>Flatten</value>
   </data>
@@ -476,6 +479,9 @@ Full Path - Match the full path of the file/directory</value>
   <data name="Season" xml:space="preserve">
     <value>Season</value>
   </data>
+  <data name="SelectCorrectMatchLabel" xml:space="preserve">
+    <value>Select the correct match:</value>
+  </data>
   <data name="Settings" xml:space="preserve">
     <value>Settings</value>
   </data>
@@ -526,6 +532,9 @@ Full Path - Match the full path of the file/directory</value>
   </data>
   <data name="TMDBAttribution" xml:space="preserve">
     <value>This application uses TMDB and the TMDB APIs but is not endorsed, certified, or otherwise approved by TMDB.</value>
+  </data>
+  <data name="TMDBMatchSelect" xml:space="preserve">
+    <value>TMDB Match Select</value>
   </data>
   <data name="TV" xml:space="preserve">
     <value>TV</value>

@@ -84,52 +84,13 @@ namespace BarryFileMan.ViewModels.Rename.Providers
         partial void OnInputMatchesChanged(IEnumerable<IRenameMatch>? value)
         {
             OnInputMatchesChangedBefore(value);
-
-            InputMatchNodes.Clear();
-            if (value != null && value.Any())
-            {
-                Dictionary<string, int> groupKeys = new();
-                int currentGroupKey = 0;
-                for (int i = 0; i < value.Count(); i++)
-                {
-                    var renameMatch = value.ElementAtOrDefault(i);
-                    if (renameMatch != null)
-                    {
-                        ObservableCollection<RenameMatchNodeViewModel> subNodes = new();
-                        foreach (var groupName in renameMatch.Groups.Keys)
-                        {
-                            if (!groupKeys.ContainsKey(groupName))
-                            {
-                                groupKeys.Add(groupName, currentGroupKey);
-                                currentGroupKey++;
-                            }
-
-                            var groupValues = renameMatch.Groups[groupName];
-                            for (int j = 0; j < groupValues.Count; j++)
-                            {
-                                subNodes.Add(new(RenameMatchNodeType.Tag, i, null, j, groupValues[j].Value, groupName, groupKeys[groupName]));
-                            }
-                        }
-
-                        InputMatchNodes.Add(new RenameMatchNodeViewModel(RenameMatchNodeType.Match, i, subNodes, isExpanded: i == 0));
-                    }
-                }
-            }
+            PopulateMatchNodes(value, InputMatchNodes);
         }
 
         [ObservableProperty]
         private ObservableCollection<RenameMatchNodeViewModel> _inputMatchNodes = new();
 
-        public HierarchicalTreeDataGridSource<RenameMatchNodeViewModel> InputMatchNodeColumns => new(InputMatchNodes)
-        {
-            Columns =
-            {
-                new HierarchicalExpanderColumn<RenameMatchNodeViewModel>(
-                    new TemplateColumn<RenameMatchNodeViewModel>(Resources.Resources.Name, "MatchNameCell"),
-                    x => x.SubNodes, x => x.HasSubNodes, x=> x.IsExpanded),
-                new TextColumn<RenameMatchNodeViewModel, string>(Resources.Resources.Value, x => x.Value),
-            }
-        };
+        public HierarchicalTreeDataGridSource<RenameMatchNodeViewModel> InputMatchNodeColumns => CreateMatchNodeColumns(InputMatchNodes);
 
         public bool HasInputMatches => InputMatches != null && InputMatches.Any();
 
@@ -150,7 +111,7 @@ namespace BarryFileMan.ViewModels.Rename.Providers
             foreach (var file in ViewModel.Files)
             {
                 file.Matches = RegexFindMatches(GetFileMatchInput(file), MatchPattern, out _);
-                var renamedFileName = RegexRenameMatches(file.Matches, RenamePattern, file.FileNameWithoutExtension, out var renameError);
+                var renamedFileName = RegexRenameMatches(file.Matches, RenamePattern, out var renameError);
                 file.RenameError = renameError;
                 file.RenamedFileName = string.IsNullOrEmpty(renameError) ? renamedFileName : null;
             }
@@ -208,25 +169,70 @@ namespace BarryFileMan.ViewModels.Rename.Providers
             return matches;
         }
 
-        protected string RegexRenameMatches(IEnumerable<IRenameMatch>? matches, string? renamePattern, string? fallbackValue, out string? error)
+        protected string RegexRenameMatches(IEnumerable<IRenameMatch>? matches, string? renamePattern, out string? error, 
+            string? defaultTagFallbackValue = null)
         {
-            string output = fallbackValue ?? string.Empty;
             error = null;
-            if (!string.IsNullOrWhiteSpace(renamePattern))
+            matches ??= Enumerable.Empty<IRenameMatch>();
+            RenameResult renameResult = _regexProvider.Rename(matches, renamePattern ?? string.Empty, defaultTagFallbackValue);
+            if (renameResult.Errors?.Any() == true)
             {
-                matches ??= Enumerable.Empty<IRenameMatch>();
-                RenameResult renameResult = _regexProvider.Rename(matches, renamePattern);
-                if (renameResult.Errors?.Any() == true)
-                {
-                    error = string.Join('\n', renameResult.Errors);
-                }
-                else
-                {
-                    output = renameResult.Value;
-                }
+                error = string.Join('\n', renameResult.Errors);
             }
 
-            return output;
+            return renameResult.Value;
+        }
+
+        protected void PopulateMatchNodes(IEnumerable<IRenameMatch>? value, ObservableCollection<RenameMatchNodeViewModel> matchNodes, 
+            IEnumerable<string>? excludedGroups = null)
+        {
+            matchNodes.Clear();
+            if (value != null && value.Any())
+            {
+                Dictionary<string, int> groupKeys = new();
+                int currentGroupKey = 0;
+                for (int i = 0; i < value.Count(); i++)
+                {
+                    var renameMatch = value.ElementAtOrDefault(i);
+                    if (renameMatch != null)
+                    {
+                        ObservableCollection<RenameMatchNodeViewModel> subNodes = new();
+                        foreach (var groupName in renameMatch.Groups.Keys)
+                        {
+                            if (!groupKeys.ContainsKey(groupName))
+                            {
+                                groupKeys.Add(groupName, currentGroupKey);
+                                currentGroupKey++;
+                            }
+
+                            var groupValues = renameMatch.Groups[groupName];
+                            for (int j = 0; j < groupValues.Count; j++)
+                            {
+                                if (excludedGroups == null || !excludedGroups.Contains(groupName))
+                                {
+                                    subNodes.Add(new(RenameMatchNodeType.Tag, i, null, j, groupValues[j].Value, groupName, groupKeys[groupName]));
+                                }
+                            }
+                        }
+
+                        matchNodes.Add(new RenameMatchNodeViewModel(RenameMatchNodeType.Match, i, subNodes, isExpanded: i == 0));
+                    }
+                }
+            }
+        }
+
+        protected HierarchicalTreeDataGridSource<RenameMatchNodeViewModel> CreateMatchNodeColumns(ObservableCollection<RenameMatchNodeViewModel> matchNodes)
+        {
+            return new(matchNodes)
+            {
+                Columns =
+                {
+                    new HierarchicalExpanderColumn<RenameMatchNodeViewModel>(
+                        new TemplateColumn<RenameMatchNodeViewModel>(Resources.Resources.Name, "MatchNameCell"),
+                        x => x.SubNodes, x => x.HasSubNodes, x=> x.IsExpanded),
+                    new TextColumn<RenameMatchNodeViewModel, string>(Resources.Resources.Value, x => x.Value),
+                }
+            };
         }
     }
 }

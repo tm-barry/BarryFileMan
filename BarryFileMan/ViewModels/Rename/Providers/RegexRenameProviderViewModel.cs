@@ -15,24 +15,24 @@ namespace BarryFileMan.ViewModels.Rename.Providers
         {
             // TODO - load from preset
             MatchPattern = "(?<show>[^(?:\\\\|/)]+)\\W(?:s|S)(?<season>\\d+)(?:e|E)(?<episode>\\d+)";
-            RenamePattern = "<show{-1}.replace(\'.\',\' \')>- S<season{-1}.pad(left,\'0\',2)>E<episode{-1}.pad(left,\'0\',2)>";
+            RenamePattern = "<show{-1}.replace(\'.\',\' \').append(' - ')>S<season{-1}.pad(left,\'0\',2)>E<episode{-1}.pad(left,\'0\',2)>";
             Input = "\\ParentFolder\\Show.Name.S01E01";
             SelectedMatchTypeIndex = 1;
         }
 
         protected override void OnInputMatchesChangedBefore(IEnumerable<IRenameMatch>? value)
         {
-            HandleOutputRename(value, RenamePattern, Input);
+            HandleOutputRename(value, RenamePattern);
         }
 
         protected override void OnRenamePatternChangedBefore(string value)
         {
-            HandleOutputRename(InputMatches, value, Input);
+            HandleOutputRename(InputMatches, value);
         }
 
-        private void HandleOutputRename(IEnumerable<IRenameMatch>? matches, string? renamePattern, string? fallbackValue)
+        private void HandleOutputRename(IEnumerable<IRenameMatch>? matches, string? renamePattern)
         {
-            Output = RegexRenameMatches(matches, renamePattern, fallbackValue, out var error);
+            Output = RegexRenameMatches(matches, renamePattern, out var error);
             RenamePatternError = error;
         }
     }

@@ -400,6 +400,15 @@ namespace BarryFileMan.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Find Match.
+        /// </summary>
+        public static string FindMatch {
+            get {
+                return ResourceManager.GetString("FindMatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Flatten.
         /// </summary>
         public static string Flatten {
@@ -1080,6 +1089,15 @@ namespace BarryFileMan.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select the correct match:.
+        /// </summary>
+        public static string SelectCorrectMatchLabel {
+            get {
+                return ResourceManager.GetString("SelectCorrectMatchLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Settings.
         /// </summary>
         public static string Settings {
@@ -1229,6 +1247,15 @@ namespace BarryFileMan.Resources {
         public static string TMDBAttribution {
             get {
                 return ResourceManager.GetString("TMDBAttribution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TMDB Match Select.
+        /// </summary>
+        public static string TMDBMatchSelect {
+            get {
+                return ResourceManager.GetString("TMDBMatchSelect", resourceCulture);
             }
         }
         

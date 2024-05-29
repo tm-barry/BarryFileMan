@@ -45,19 +45,30 @@
 				<TabControl Padding="0" MaxHeight="250">
 					<!--TMDB Settings-->
 					<TabItem Header="{x:Static lang:Resources.TMDB}">
-						<ScrollViewer>
-							<StackPanel Margin="10">
-								<StackPanel Orientation="Horizontal">
-									<TextBlock FontWeight="Bold"
-											   Text="{x:Static lang:Resources.RenamePattern}"/>
-									<vh:HelpButton Margin="5,0,0,0" Height="16" Width="16"
-												   Section="{x:Static he:HelpSections.Rename}"/>
+						<Grid RowDefinitions="*,Auto">
+							<ScrollViewer Grid.Row="0">
+								<StackPanel Margin="10">
+									<StackPanel Orientation="Horizontal">
+										<TextBlock FontWeight="Bold"
+												   Text="{x:Static lang:Resources.RenamePattern}"/>
+										<vh:HelpButton Margin="5,0,0,0" Height="16" Width="16"
+													   Section="{x:Static he:HelpSections.Rename}"/>
+									</StackPanel>
+									<TextBox Text="{Binding RenamePattern}"
+											 TextWrapping="Wrap"
+											 MaxHeight="75"/>
 								</StackPanel>
-								<TextBox Text="{Binding RenamePattern}"
-										 TextWrapping="Wrap"
-										 MaxHeight="75"/>
-							</StackPanel>
-						</ScrollViewer>
+							</ScrollViewer>
+							<Button Grid.Row="1" Margin="10,5"
+									HorizontalAlignment="Right"
+									BorderBrush="{DynamicResource SystemBaseMediumColor}"
+									Content="{x:Static lang:Resources.FindMatch}" Height="32">
+								<Grid ColumnDefinitions="Auto,*">
+									<materialIcons:MaterialIcon Grid.Column="0" Kind="Magnify"/>
+									<TextBlock Grid.Column="1" Margin="5,0,0,0" VerticalAlignment="Center" Text="{x:Static lang:Resources.FindMatch}"/>
+								</Grid>
+							</Button>
+						</Grid>
 					</TabItem>
 					<!--Regex Settings-->
 					<TabItem Header="{x:Static lang:Resources.Regex}">

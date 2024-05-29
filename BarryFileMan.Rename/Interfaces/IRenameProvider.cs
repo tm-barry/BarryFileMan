@@ -9,6 +9,6 @@ namespace BarryFileMan.Rename.Interfaces
 
         IEnumerable<IRenameMatch>? Match(TMatchOptions? options);
         Task<IEnumerable<IRenameMatch>?> MatchAsync(TMatchOptions? options);
-        RenameResult Rename(IEnumerable<IRenameMatch> matches, string renamePattern, string? fallbackValue = null);
+        RenameResult Rename(IEnumerable<IRenameMatch> matches, string renamePattern, string? defaultTagFallbackValue = null);
     }
 }

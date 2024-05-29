@@ -4,16 +4,16 @@ using BarryFileMan.Rename.Models.TMDB;
 
 namespace BarryFileMan.Rename.Providers.TMDB
 {
-    public class TMDBTvRenameProvider : BaseRenameProvider<TMDBRenameProviderMatchOptions>
+    public class TMDBTvRenameProvider : BaseRenameProvider<TMDBTvRenameProviderMatchOptions>
     {
         public TMDBTvRenameProvider() : base(RenameProviderTypes.TMDB_TV) { }
 
-        public override IEnumerable<IRenameMatch>? Match(TMDBRenameProviderMatchOptions? options)
+        public override IEnumerable<IRenameMatch>? Match(TMDBTvRenameProviderMatchOptions? options)
         {
             throw new NotImplementedException();
         }
 
-        public override Task<IEnumerable<IRenameMatch>?> MatchAsync(TMDBRenameProviderMatchOptions? options)
+        public override Task<IEnumerable<IRenameMatch>?> MatchAsync(TMDBTvRenameProviderMatchOptions? options)
         {
             throw new NotImplementedException();
         }

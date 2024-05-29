@@ -1,0 +1,71 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:asyncImageLoader="clr-namespace:AsyncImageLoader;assembly=AsyncImageLoader.Avalonia"
+        xmlns:lang="using:BarryFileMan.Resources"
+		xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+		xmlns:vm="using:BarryFileMan.ViewModels.Rename.Providers"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="BarryFileMan.Views.Rename.Providers.TMDBMatchSelect"
+		x:Name="tmdbMatchSelectWindow"
+		x:DataType="vm:TMDBMatchSelectViewModel"
+		Icon="/Assets/barry-file-man-logo.ico"
+        Title="{x:Static lang:Resources.TMDBMatchSelect}"
+		MinWidth="400" MaxWidth="800"
+		MinHeight="400" MaxHeight="800"
+		SizeToContent="WidthAndHeight">
+	<Grid Margin="10" RowDefinitions="Auto,*,Auto">
+		<TextBlock Grid.Row="0" Margin="0,5"
+				   FontWeight="Bold"
+				   Text="{x:Static lang:Resources.SelectCorrectMatchLabel}"/>
+		
+		<ListBox Grid.Row="1"
+				 ItemsSource="{Binding Matches}"
+				 SelectedValue="{Binding SelectedMatch}">
+			<ListBox.ItemTemplate>
+				<DataTemplate x:DataType="vm:TMDBMatch">
+					<Grid ColumnDefinitions="Auto,*" Margin="10">
+						<Image Grid.Column="0" Width="154" Margin="0,0,5,0"
+							   VerticalAlignment="Top"
+							   asyncImageLoader:ImageLoader.Source="{Binding PosterUrl}"/>
+
+						<StackPanel Grid.Column="1" Margin="5,0,0,0"
+									VerticalAlignment="Top">
+							<TextBlock FontSize="18" FontWeight="Bold"
+									   Text="{Binding Name}"/>
+							<TextBlock FontSize="12"
+									   Text="{Binding ReleaseDate}"/>
+							<TextBlock Text="{Binding Overview}" 
+									   TextWrapping="WrapWithOverflow"/>
+						</StackPanel>
+					</Grid>
+				</DataTemplate>
+			</ListBox.ItemTemplate>
+		</ListBox>
+
+		<Grid Grid.Row="2" Margin="0,10,0,5"
+			  ColumnDefinitions="*,*">
+			<Button Grid.Column="0" Height="32"
+					HorizontalAlignment="Left"
+					Content="{x:Static lang:Resources.Cancel}"
+					Command="{Binding CancelCommand}"
+					CommandParameter="{Binding #tmdbMatchSelectWindow}">
+				<Grid ColumnDefinitions="Auto,*">
+					<materialIcons:MaterialIcon Grid.Column="0" Kind="CloseBox"/>
+					<TextBlock Grid.Column="1" Margin="5,0,0,0" VerticalAlignment="Center" Text="{x:Static lang:Resources.Cancel}"/>
+				</Grid>
+			</Button>
+			<Button Grid.Column="1" Height="32"
+					HorizontalAlignment="Right"
+					Content="{x:Static lang:Resources.Apply}"
+					Command="{Binding ApplyCommand}"
+					CommandParameter="{Binding #tmdbMatchSelectWindow}">
+				<Grid ColumnDefinitions="Auto,*">
+					<materialIcons:MaterialIcon Grid.Column="0" Kind="Rename"/>
+					<TextBlock Grid.Column="1" Margin="5,0,0,0" VerticalAlignment="Center" Text="{x:Static lang:Resources.Apply}"/>
+				</Grid>
+			</Button>
+		</Grid>
+	</Grid>
+</Window>

@@ -6,6 +6,14 @@ namespace BarryFileMan.ViewModels.Rename.Providers
 {
     public abstract partial class BaseRenameProviderViewModel : ObservableValidator
     {
+        [ObservableProperty]
+        public bool _isBusy;
+        protected virtual void OnIsBusyChangedBefore(bool value) { }
+        partial void OnIsBusyChanged(bool value)
+        {
+            OnIsBusyChangedBefore(value);
+        }
+
         public RenameViewModel ViewModel { get; private set; }
 
         public BaseRenameProviderViewModel(RenameViewModel viewModel)

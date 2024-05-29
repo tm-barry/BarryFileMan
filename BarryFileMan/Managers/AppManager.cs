@@ -4,6 +4,8 @@ using BarryFileMan.Enums.Help;
 using BarryFileMan.Helpers;
 using BarryFileMan.Managers.Config;
 using BarryFileMan.Models.Config;
+using BarryFileMan.Rename.Models.TMDB;
+using BarryFileMan.Rename.Repositories;
 using BarryFileMan.Views;
 using BarryFileMan.Views.Common;
 using System;
@@ -23,6 +25,8 @@ namespace BarryFileMan.Managers
 
         public static MainWindow? MainWindow { get; private set; }
         public static IConfigManager<UserConfig> UserConfig { get; private set; } = new JsonUserConfigManager();
+
+        public static TMDBConfiguration? TMDBConfig { get; private set; }
 
         static AppManager()
         {
@@ -44,6 +48,18 @@ namespace BarryFileMan.Managers
             if (MainWindow != null)
             {
                 await MainWindow.ClipboardSetTextAsync(text);
+            }
+        }
+
+        public static async Task GetTMDBConfig()
+        {
+            if(TMDBConfig == null && !string.IsNullOrWhiteSpace(UserConfig.Config.Tmdb.ApiKey))
+            {
+                try
+                {
+                    TMDBConfig = await new TMDBRepository(UserConfig.Config.Tmdb.ApiKey).GetConfigurationAsync();
+                }
+                catch { }
             }
         }
 

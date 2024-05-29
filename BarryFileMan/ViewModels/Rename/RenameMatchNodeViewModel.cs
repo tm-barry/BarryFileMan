@@ -51,8 +51,11 @@ namespace BarryFileMan.ViewModels.Rename.Providers
         [ObservableProperty]
         private bool _isExpanded;
 
+        [ObservableProperty]
+        private bool _isVisible;
+
         public RenameMatchNodeViewModel(RenameMatchNodeType type, int matchIndex, ObservableCollection<RenameMatchNodeViewModel>? subNodes = null, 
-            int? groupIndex = null, string? value = null, string? name = null, int? groupKey = null, bool isExpanded = false)
+            int? groupIndex = null, string? value = null, string? name = null, int? groupKey = null, bool isExpanded = false, bool isVisible = true)
         {
             Type = type;
             MatchIndex = matchIndex;
@@ -62,6 +65,7 @@ namespace BarryFileMan.ViewModels.Rename.Providers
             Value = value;
             GroupKey = groupKey;
             IsExpanded = isExpanded;
+            IsVisible = isVisible;
         }
     }
 
