@@ -72,7 +72,7 @@ namespace BarryFileMan.ViewModels.Rename.Providers
             SeasonRenamePattern = "<season>";
             EpisodeRenamePattern = "<episode>";
             LanguageRenamePattern = string.Empty;
-            RenamePattern = "";
+            RenamePattern = "<tmdbName> - S<season.pad(left, '0', 2)>E<episode.pad(left, '0', 2)><tmdbTitle.prepend(' - ') ?? ''>";
             Input = "\\ParentFolder\\Show.Name.S01E01";
             SelectedMatchTypeIndex = 1;
         }
