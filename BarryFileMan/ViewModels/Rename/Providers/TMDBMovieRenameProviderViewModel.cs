@@ -1,7 +1,5 @@
 ﻿using BarryFileMan.Managers;
 using BarryFileMan.Rename.Interfaces;
-using BarryFileMan.Rename.Models;
-using BarryFileMan.Rename.Models.Regex;
 using BarryFileMan.Rename.Providers.TMDB;
 using BarryFileMan.Views.Common;
 using BarryFileMan.Views.Rename.Providers;
@@ -9,7 +7,6 @@ using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace BarryFileMan.ViewModels.Rename.Providers
@@ -35,7 +32,6 @@ namespace BarryFileMan.ViewModels.Rename.Providers
         protected override void OnIsBusyChangedBefore(bool value)
         {
             FindInputMatchesCommand.NotifyCanExecuteChanged();
-
             base.OnIsBusyChangedBefore(value);
         }
 
@@ -60,21 +56,18 @@ namespace BarryFileMan.ViewModels.Rename.Providers
         protected override void OnInputMatchesChangedBefore(IEnumerable<IRenameMatch>? value)
         {
             HandleOutputRename(value, TmdbMatches, RenamePattern);
-
             base.OnInputMatchesChangedBefore(value);
         }
 
         protected override void OnTmdbMatchesChangedBefore(IEnumerable<IRenameMatch>? value)
         {
             HandleOutputRename(InputMatches, value, RenamePattern);
-
             base.OnTmdbMatchesChangedBefore(value);
         }
 
         protected override void OnRenamePatternChangedBefore(string value)
         {
             HandleOutputRename(InputMatches, TmdbMatches, value);
-
             base.OnRenamePatternChangedBefore(value);
         }
 
@@ -93,7 +86,7 @@ namespace BarryFileMan.ViewModels.Rename.Providers
                 IsBusy = true;
 
                 TmdbMatches = null;
-                var (matches, error) = await TMDBMovieFindMatches(QueryOutput.ToLower().Trim(), YearOutput.ToLower().Trim(), LanguageOutput.ToLower().Trim());
+                var (matches, error) = await TMDBMovieFindMatches(QueryOutput, YearOutput, LanguageOutput);
                 if (string.IsNullOrEmpty(error))
                 {
                     if (matches != null && matches.Any())
