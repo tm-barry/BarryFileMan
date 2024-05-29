@@ -87,13 +87,13 @@ namespace BarryFileMan.ViewModels.Rename.Providers
 
         private void Populate(IRenameMatch match)
         {
-            Name = match.Groups["tmdb-name"].FirstOrDefault()?.Value ?? string.Empty;
-            OriginalName = match.Groups["tmdb-original-name"].FirstOrDefault()?.Value ?? string.Empty;
-            OriginalLanguage = match.Groups["tmdb-original-language"].FirstOrDefault()?.Value ?? string.Empty;
-            ReleaseDate = match.Groups["tmdb-release-date"].FirstOrDefault()?.Value ?? string.Empty;
-            Overview = match.Groups["tmdb-overview"].FirstOrDefault()?.Value ?? string.Empty;
+            Name = match.Groups["tmdbName"].FirstOrDefault()?.Value ?? string.Empty;
+            OriginalName = match.Groups["tmdbOriginalName"].FirstOrDefault()?.Value ?? string.Empty;
+            OriginalLanguage = match.Groups["tmdbOriginalLanguage"].FirstOrDefault()?.Value ?? string.Empty;
+            ReleaseDate = match.Groups["tmdbReleaseDate"].FirstOrDefault()?.Value ?? string.Empty;
+            Overview = match.Groups["tmdbOverview"].FirstOrDefault()?.Value ?? string.Empty;
 
-            var posterPath = match.Groups["tmdb-poster-path"].FirstOrDefault()?.Value;
+            var posterPath = match.Groups["tmdbPosterPath"].FirstOrDefault()?.Value;
             if (!string.IsNullOrWhiteSpace(posterPath))
             {
                 var baseUrl = !string.IsNullOrWhiteSpace(AppManager.TMDBConfig?.Images?.SecureBaseUrl)

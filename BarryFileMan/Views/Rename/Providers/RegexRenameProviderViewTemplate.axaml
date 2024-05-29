@@ -144,6 +144,17 @@
 					</Grid>
 				</Border>
 			</Grid>
+
+			<!-- Busy Indicator -->
+			<Grid Grid.RowSpan="2"
+				  Grid.ColumnSpan="2"
+				  Background="Black"
+				  Opacity="0.5"
+				  IsVisible="{Binding IsBusy}">
+				<ProgressBar IsIndeterminate="True"
+							 HorizontalAlignment="Center"
+							 VerticalAlignment="Center"/>
+			</Grid>
 		</Grid>
 	</DataTemplate>
 </ResourceDictionary>

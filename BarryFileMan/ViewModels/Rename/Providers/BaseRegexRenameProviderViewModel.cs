@@ -10,12 +10,13 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace BarryFileMan.ViewModels.Rename.Providers
 {
     public partial class BaseRegexRenameProviderViewModel : BaseRenameProviderViewModel
     {
-        protected readonly RegexRenameProvider _regexProvider = new();
+        protected readonly RegexRenameMatchProvider _regexProvider = new();
 
         [ObservableProperty]
         [HasErrorProperty(nameof(MatchPatternError))]
@@ -71,8 +72,10 @@ namespace BarryFileMan.ViewModels.Rename.Providers
 
         [ObservableProperty]
         private string _input = string.Empty;
+        protected virtual void OnInputChangedBefore(string value) { }
         partial void OnInputChanged(string value)
         {
+            OnInputChangedBefore(value);
             InputMatches = RegexFindMatches(value, MatchPattern, out var error) ?? new List<IRenameMatch>();
             MatchPatternError = error;
         }
@@ -106,17 +109,17 @@ namespace BarryFileMan.ViewModels.Rename.Providers
             ViewModel.PropertyChanged -= ViewModel_PropertyChanged;
         }
 
-        public override void ApplyFileRenames()
+        public override async Task ApplyFileRenames()
         {
             foreach (var file in ViewModel.Files)
             {
-                file.Matches = RegexFindMatches(GetFileMatchInput(file), MatchPattern, out _);
-                var renamedFileName = RegexRenameMatches(file.Matches, RenamePattern, out var renameError);
+                var matches = RegexFindMatches(GetFileMatchInput(file), MatchPattern, out _);
+                var renamedFileName = RenameMatches(_regexProvider, matches, RenamePattern, out var renameError);
                 file.RenameError = renameError;
                 file.RenamedFileName = string.IsNullOrEmpty(renameError) ? renamedFileName : null;
             }
 
-            base.ApplyFileRenames();
+            await base.ApplyFileRenames();
         }
 
         private void ViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -130,7 +133,7 @@ namespace BarryFileMan.ViewModels.Rename.Providers
             }
         }
 
-        private string GetFileMatchInput(RenameFileViewModel? file)
+        protected string GetFileMatchInput(RenameFileViewModel? file)
         {
             string? input = null;
             switch(SelectedMatchType)
@@ -149,7 +152,7 @@ namespace BarryFileMan.ViewModels.Rename.Providers
             return input ?? string.Empty;
         }
 
-        private IEnumerable<IRenameMatch>? RegexFindMatches(string? input, string? regexPattern, out string? error)
+        protected IEnumerable<IRenameMatch>? RegexFindMatches(string? input, string? regexPattern, out string? error)
         {
             IEnumerable<IRenameMatch>? matches = null;
             error = null;
@@ -167,72 +170,6 @@ namespace BarryFileMan.ViewModels.Rename.Providers
             }
 
             return matches;
-        }
-
-        protected string RegexRenameMatches(IEnumerable<IRenameMatch>? matches, string? renamePattern, out string? error, 
-            string? defaultTagFallbackValue = null)
-        {
-            error = null;
-            matches ??= Enumerable.Empty<IRenameMatch>();
-            RenameResult renameResult = _regexProvider.Rename(matches, renamePattern ?? string.Empty, defaultTagFallbackValue);
-            if (renameResult.Errors?.Any() == true)
-            {
-                error = string.Join('\n', renameResult.Errors);
-            }
-
-            return renameResult.Value;
-        }
-
-        protected void PopulateMatchNodes(IEnumerable<IRenameMatch>? value, ObservableCollection<RenameMatchNodeViewModel> matchNodes, 
-            IEnumerable<string>? excludedGroups = null)
-        {
-            matchNodes.Clear();
-            if (value != null && value.Any())
-            {
-                Dictionary<string, int> groupKeys = new();
-                int currentGroupKey = 0;
-                for (int i = 0; i < value.Count(); i++)
-                {
-                    var renameMatch = value.ElementAtOrDefault(i);
-                    if (renameMatch != null)
-                    {
-                        ObservableCollection<RenameMatchNodeViewModel> subNodes = new();
-                        foreach (var groupName in renameMatch.Groups.Keys)
-                        {
-                            if (!groupKeys.ContainsKey(groupName))
-                            {
-                                groupKeys.Add(groupName, currentGroupKey);
-                                currentGroupKey++;
-                            }
-
-                            var groupValues = renameMatch.Groups[groupName];
-                            for (int j = 0; j < groupValues.Count; j++)
-                            {
-                                if (excludedGroups == null || !excludedGroups.Contains(groupName))
-                                {
-                                    subNodes.Add(new(RenameMatchNodeType.Tag, i, null, j, groupValues[j].Value, groupName, groupKeys[groupName]));
-                                }
-                            }
-                        }
-
-                        matchNodes.Add(new RenameMatchNodeViewModel(RenameMatchNodeType.Match, i, subNodes, isExpanded: i == 0));
-                    }
-                }
-            }
-        }
-
-        protected HierarchicalTreeDataGridSource<RenameMatchNodeViewModel> CreateMatchNodeColumns(ObservableCollection<RenameMatchNodeViewModel> matchNodes)
-        {
-            return new(matchNodes)
-            {
-                Columns =
-                {
-                    new HierarchicalExpanderColumn<RenameMatchNodeViewModel>(
-                        new TemplateColumn<RenameMatchNodeViewModel>(Resources.Resources.Name, "MatchNameCell"),
-                        x => x.SubNodes, x => x.HasSubNodes, x=> x.IsExpanded),
-                    new TextColumn<RenameMatchNodeViewModel, string>(Resources.Resources.Value, x => x.Value),
-                }
-            };
         }
     }
 }

@@ -7,9 +7,9 @@ using System.Text.RegularExpressions;
 
 namespace BarryFileMan.Rename.Providers.Regex
 {
-    public class RegexRenameProvider : BaseRenameProvider<RegexRenameProviderMatchOptions>
+    public class RegexRenameMatchProvider : BaseRenameMatchProvider<RegexRenameProviderMatchOptions>
     {
-        public RegexRenameProvider() : base(RenameProviderTypes.Regex) { }
+        public RegexRenameMatchProvider() : base(RenameProviderTypes.Regex) { }
 
         public override IEnumerable<IRenameMatch>? Match(RegexRenameProviderMatchOptions? options)
         {

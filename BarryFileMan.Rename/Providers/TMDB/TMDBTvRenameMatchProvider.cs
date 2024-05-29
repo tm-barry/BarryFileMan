@@ -4,9 +4,9 @@ using BarryFileMan.Rename.Models.TMDB;
 
 namespace BarryFileMan.Rename.Providers.TMDB
 {
-    public class TMDBTvRenameProvider : BaseRenameProvider<TMDBTvRenameProviderMatchOptions>
+    public class TMDBTvRenameMatchProvider : BaseRenameMatchProvider<TMDBTvRenameProviderMatchOptions>
     {
-        public TMDBTvRenameProvider() : base(RenameProviderTypes.TMDB_TV) { }
+        public TMDBTvRenameMatchProvider() : base(RenameProviderTypes.TMDB_TV) { }
 
         public override IEnumerable<IRenameMatch>? Match(TMDBTvRenameProviderMatchOptions? options)
         {

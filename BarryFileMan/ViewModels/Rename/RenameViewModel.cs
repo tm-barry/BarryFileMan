@@ -18,6 +18,9 @@ namespace BarryFileMan.ViewModels.Rename
 {
     public partial class RenameViewModel : ObservableObject
     {
+        [ObservableProperty]
+        public bool _isBusy;
+
         public static ReadOnlyCollection<RenameProviderTypeItemViewModel> AllProviderTypes => new List<RenameProviderTypeItemViewModel>()
         {
             new(RenameProviderTypes.Regex, Resources.Resources.Regex, "regex", 24, 24),
@@ -171,9 +174,24 @@ namespace BarryFileMan.ViewModels.Rename
         }
 
         [RelayCommand(CanExecute = nameof(CanApplyFileRenames))]
-        private void ApplyFileRenames()
+        private async Task ApplyFileRenames()
         {
-            RenameProvider?.ApplyFileRenames();
+            if (RenameProvider != null)
+            {
+                IsBusy = true;
+
+                try
+                {
+                    await RenameProvider.ApplyFileRenames();
+                }
+                catch (Exception ex) 
+                {
+                    await AppManager.MsgBoxShowWindowDialogAsync(
+                        Resources.Resources.Error, $"{ex.Message}\n{ex.InnerException?.Message}", MsgBoxButtons.Ok, MsgBoxIcons.Error);
+                }
+
+                IsBusy = false;
+            }
         }
 
         private bool CanApplyFileRenames()

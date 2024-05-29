@@ -5,13 +5,13 @@ using System.Text.RegularExpressions;
 
 namespace BarryFileMan.Rename.Providers
 {
-    public abstract class BaseRenameProvider<TMatchOptions> : IRenameProvider<TMatchOptions> where TMatchOptions : class
+    public abstract class BaseRenameMatchProvider<TMatchOptions> : IRenameMatchProvider<TMatchOptions> where TMatchOptions : class
     {
         private static readonly string _renameTagPattern = "(?:<(?<=<)(?<tag>.*?)(?=>)>)";
 
         public RenameProviderTypes ProviderType { get; }
 
-        public BaseRenameProvider(RenameProviderTypes providerType)
+        public BaseRenameMatchProvider(RenameProviderTypes providerType)
         {
             ProviderType = providerType;
         }
@@ -61,7 +61,7 @@ namespace BarryFileMan.Rename.Providers
                             {
                                 try
                                 {
-                                    var renamedTagStr = BaseRenameProvider<TMatchOptions>.CalculateRenamedTag(groupValue, renameTag);
+                                    var renamedTagStr = BaseRenameMatchProvider<TMatchOptions>.CalculateRenamedTag(groupValue, renameTag);
                                     output = output.Replace(renameTag.Tag, renamedTagStr);
                                 }
                                 catch (Exception ex)

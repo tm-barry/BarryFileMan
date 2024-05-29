@@ -303,6 +303,16 @@
 					</Button>
 				</StackPanel>
 			</Grid>
+
+			<!-- Busy Indicator -->
+			<Grid Grid.RowSpan="5"
+				  Background="Black"
+				  Opacity="0.5"
+				  IsVisible="{Binding IsBusy}">
+				<ProgressBar IsIndeterminate="True"
+							 HorizontalAlignment="Center"
+							 VerticalAlignment="Center"/>
+			</Grid>
 		</Grid>
 	</DataTemplate>
 </ResourceDictionary>

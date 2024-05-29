@@ -6,9 +6,9 @@ using BarryFileMan.Rename.Repositories;
 
 namespace BarryFileMan.Rename.Providers.TMDB
 {
-    public class TMDBMovieRenameProvider : BaseRenameProvider<TMDBMovieTvRenameProviderMatchOptions>
+    public class TMDBMovieRenameMatchProvider : BaseRenameMatchProvider<TMDBMovieTvRenameProviderMatchOptions>
     {
-        public TMDBMovieRenameProvider() : base(RenameProviderTypes.TMDB_Movie) { }
+        public TMDBMovieRenameMatchProvider() : base(RenameProviderTypes.TMDB_Movie) { }
 
         public override IEnumerable<IRenameMatch>? Match(TMDBMovieTvRenameProviderMatchOptions? options)
         {
@@ -37,22 +37,22 @@ namespace BarryFileMan.Rename.Providers.TMDB
                 {
                     var renameMatch = new TMDBRenameMatch();
 
-                    renameMatch.Groups.Add("tmdb-name", 
+                    renameMatch.Groups.Add("tmdbName", 
                         new List<IRenameMatchGroupValue>() { new TMDBRenameMatchGroupValue(movieMatch.Name) });
-                    renameMatch.Groups.Add("tmdb-original-name",
+                    renameMatch.Groups.Add("tmdbOriginalName",
                         new List<IRenameMatchGroupValue>() { new TMDBRenameMatchGroupValue(movieMatch.OriginalName) });
-                    renameMatch.Groups.Add("tmdb-original-language",
+                    renameMatch.Groups.Add("tmdbOriginalLanguage",
                         new List<IRenameMatchGroupValue>() { new TMDBRenameMatchGroupValue(movieMatch.OriginalLanguage) });
-                    renameMatch.Groups.Add("tmdb-release-date",
+                    renameMatch.Groups.Add("tmdbReleaseDate",
                             new List<IRenameMatchGroupValue>() { new TMDBRenameMatchGroupValue(movieMatch.ReleaseDate) });
                     if (DateTime.TryParse(movieMatch.ReleaseDate, out var releaseDate))
                     {
-                        renameMatch.Groups.Add("tmdb-release-year",
+                        renameMatch.Groups.Add("tmdbReleaseYear",
                             new List<IRenameMatchGroupValue>() { new TMDBRenameMatchGroupValue(releaseDate.Year.ToString()) });
                     }
-                    renameMatch.Groups.Add("tmdb-overview",
+                    renameMatch.Groups.Add("tmdbOverview",
                         new List<IRenameMatchGroupValue>() { new TMDBRenameMatchGroupValue(movieMatch.Overview) });
-                    renameMatch.Groups.Add("tmdb-poster-path",
+                    renameMatch.Groups.Add("tmdbPosterPath",
                         new List<IRenameMatchGroupValue>() { new TMDBRenameMatchGroupValue(movieMatch.PosterPath) });
 
                     renameMatches.Add(renameMatch);

@@ -69,13 +69,13 @@ namespace BarryFileMan.ViewModels.Rename.Providers
 
         private void HandleSeasonRenamePatternChanged(string value, IEnumerable<IRenameMatch>? inputMatches)
         {
-            SeasonOutput = RegexRenameMatches(inputMatches, value, out var error);
+            SeasonOutput = RenameMatches(_regexProvider, inputMatches, value, out var error);
             SeasonRenamePatternError = error;
         }
 
         private void HandleEpisodeRenamePatternChanged(string renamePattern, IEnumerable<IRenameMatch>? inputMatches)
         {
-            EpisodeOutput = RegexRenameMatches(inputMatches, renamePattern, out var error);
+            EpisodeOutput = RenameMatches(_regexProvider, inputMatches, renamePattern, out var error);
             EpisodeRenamePatternError = error;
         }
     }

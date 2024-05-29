@@ -28,6 +28,11 @@ namespace BarryFileMan.ViewModels.Rename.Providers
 
         [ObservableProperty]
         private string _queryOutput = string.Empty;
+        protected virtual void OnQueryOutputChangedBefore(string value) { }
+        partial void OnQueryOutputChanged(string value)
+        {
+            OnQueryOutputChangedBefore(value);
+        }
 
         [ObservableProperty]
         [HasErrorProperty(nameof(YearRenamePatternError))]
@@ -46,6 +51,11 @@ namespace BarryFileMan.ViewModels.Rename.Providers
 
         [ObservableProperty]
         private string _yearOutput = string.Empty;
+        protected virtual void OnYearOutputChangedBefore(string value) { }
+        partial void OnYearOutputChanged(string value)
+        {
+            OnYearOutputChangedBefore(value);
+        }
 
         [ObservableProperty]
         [HasErrorProperty(nameof(LanguageRenamePatternError))]
@@ -64,6 +74,11 @@ namespace BarryFileMan.ViewModels.Rename.Providers
 
         [ObservableProperty]
         private string _languageOutput = string.Empty;
+        protected virtual void OnLanguageOutputChangedBefore(string value) { }
+        partial void OnLanguageOutputChanged(string value)
+        {
+            OnLanguageOutputChangedBefore(value);
+        }
 
         [ObservableProperty]
         private int _settingsTabIndex;
@@ -82,7 +97,7 @@ namespace BarryFileMan.ViewModels.Rename.Providers
         partial void OnTmdbMatchesChanged(IEnumerable<IRenameMatch>? value)
         {
             OnTmdbMatchesChangedBefore(value);
-            PopulateMatchNodes(value, TmdbMatchNodes, new List<string>() { "tmdb-overview", "tmdb-poster-path" });
+            PopulateMatchNodes(value, TmdbMatchNodes, new List<string>() { "tmdbOverview", "tmdbPosterPath" });
         }
 
         [ObservableProperty]
@@ -119,19 +134,19 @@ namespace BarryFileMan.ViewModels.Rename.Providers
 
         private void HandleQueryRenamePatternChanged(string renamePattern, IEnumerable<IRenameMatch>? inputMatches)
         {
-            QueryOutput = RegexRenameMatches(inputMatches, renamePattern, out var error);
+            QueryOutput = RenameMatches(_regexProvider, inputMatches, renamePattern, out var error);
             QueryRenamePatternError = error;
         }
 
         private void HandleYearRenamePatternChanged(string renamePattern, IEnumerable<IRenameMatch>? inputMatches)
         {
-            YearOutput = RegexRenameMatches(inputMatches, renamePattern, out var error);
+            YearOutput = RenameMatches(_regexProvider, inputMatches, renamePattern, out var error);
             YearRenamePatternError = error;
         }
 
         private void HandleLanguageRenamePatternChanged(string renamePattern, IEnumerable<IRenameMatch>? inputMatches)
         {
-            LanguageOutput = RegexRenameMatches(inputMatches, renamePattern, out var error);
+            LanguageOutput = RenameMatches(_regexProvider, inputMatches, renamePattern, out var error);
             LanguageRenamePatternError = error;
         }
     }

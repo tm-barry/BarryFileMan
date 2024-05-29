@@ -32,7 +32,7 @@ namespace BarryFileMan.ViewModels.Rename.Providers
 
         private void HandleOutputRename(IEnumerable<IRenameMatch>? matches, string? renamePattern)
         {
-            Output = RegexRenameMatches(matches, renamePattern, out var error);
+            Output = RenameMatches(_regexProvider, matches, renamePattern, out var error);
             RenamePatternError = error;
         }
     }

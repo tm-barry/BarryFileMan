@@ -29,9 +29,6 @@ namespace BarryFileMan.ViewModels.Rename
         public string? Extension => System.IO.Path.GetExtension(File.Name);
 
         [ObservableProperty]
-        public IEnumerable<IRenameMatch>? _matches;
-
-        [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(InvalidRenamedCharacters))]
         [NotifyPropertyChangedFor(nameof(HasInvalidRenamedCharacters))]
         [NotifyPropertyChangedFor(nameof(InvalidRenamedCharactersStr))]
