@@ -14,7 +14,7 @@ namespace BarryFileMan.ViewModels.Rename.Providers
         public RegexRenameProviderViewModel(RenameViewModel viewModel) : base(viewModel)
         {
             // TODO - load from preset
-            MatchPattern = "(?<show>[^(?:\\\\|/)]+)\\W(?:s|S)(?<season>\\d+)(?:e|E)(?<episode>\\d+)";
+            MatchPattern = "(?<show>[^\\\\/]+)\\W(?:s|S)(?<season>\\d+)(?:e|E)(?<episode>\\d+)";
             RenamePattern = "<show{-1}.replace(\'.\',\' \').append(' - ')>S<season{-1}.pad(left,\'0\',2)>E<episode{-1}.pad(left,\'0\',2)>";
             Input = "\\ParentFolder\\Show.Name.S01E01";
             SelectedMatchTypeIndex = 1;

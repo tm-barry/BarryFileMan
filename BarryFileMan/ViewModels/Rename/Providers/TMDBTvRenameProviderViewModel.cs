@@ -67,7 +67,7 @@ namespace BarryFileMan.ViewModels.Rename.Providers
         public TMDBTvRenameProviderViewModel(RenameViewModel viewModel) : base(viewModel)
         {
             // TODO - load from preset
-            MatchPattern = "(?<show>[^(?:\\\\|/)]+)\\W(?:s|S)(?<season>\\d+)(?:e|E)(?<episode>\\d+)";
+            MatchPattern = "(?<show>[^\\\\/]+)\\W(?:s|S)(?<season>\\d+)(?:e|E)(?<episode>\\d+)";
             QueryRenamePattern = "<show.replace('.',' ')>";
             YearRenamePattern = string.Empty;
             SeasonRenamePattern = "<season>";
