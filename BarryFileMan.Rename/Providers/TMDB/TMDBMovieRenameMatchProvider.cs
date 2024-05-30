@@ -43,7 +43,8 @@ namespace BarryFileMan.Rename.Providers.TMDB
                 foreach(var movieMatch in movieMatches.Results)
                 {
                     var renameMatch = new TMDBRenameMatch();
-
+                    renameMatch.Groups.Add("tmdbId",
+                        new List<IRenameMatchGroupValue>() { new TMDBRenameMatchGroupValue(movieMatch.Id.ToString()) });
                     renameMatch.Groups.Add("tmdbName", 
                         new List<IRenameMatchGroupValue>() { new TMDBRenameMatchGroupValue(movieMatch.Name) });
                     renameMatch.Groups.Add("tmdbOriginalName",

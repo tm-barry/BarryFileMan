@@ -45,6 +45,8 @@ namespace BarryFileMan.Rename.Providers.TMDB
                 {
                     var renameMatch = new TMDBRenameMatch();
 
+                    renameMatch.Groups.Add("tmdbId",
+                        new List<IRenameMatchGroupValue>() { new TMDBRenameMatchGroupValue(tvMatch.Id.ToString()) });
                     renameMatch.Groups.Add("tmdbName",
                         new List<IRenameMatchGroupValue>() { new TMDBRenameMatchGroupValue(tvMatch.Name) });
                     renameMatch.Groups.Add("tmdbOriginalName",

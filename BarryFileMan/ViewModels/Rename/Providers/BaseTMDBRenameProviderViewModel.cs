@@ -97,7 +97,7 @@ namespace BarryFileMan.ViewModels.Rename.Providers
         partial void OnTmdbMatchesChanged(IEnumerable<IRenameMatch>? value)
         {
             OnTmdbMatchesChangedBefore(value);
-            PopulateMatchNodes(value, TmdbMatchNodes, new List<string>() { "tmdbOverview", "tmdbPosterPath" });
+            PopulateMatchNodes(value, TmdbMatchNodes, new List<string>() { "tmdbId", "tmdbOverview", "tmdbPosterPath" });
         }
 
         [ObservableProperty]

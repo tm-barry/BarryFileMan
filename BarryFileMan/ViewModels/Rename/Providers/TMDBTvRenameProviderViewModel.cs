@@ -1,5 +1,6 @@
 ﻿using BarryFileMan.Attributes.Validation;
 using BarryFileMan.Managers;
+using BarryFileMan.Rename.Extensions;
 using BarryFileMan.Rename.Interfaces;
 using BarryFileMan.Rename.Providers.TMDB;
 using BarryFileMan.Views.Common;
@@ -241,6 +242,7 @@ namespace BarryFileMan.ViewModels.Rename.Providers
 
         public override async Task ApplyFileRenames()
         {
+            Dictionary<int, string> matchSelectCache = new();
             foreach (var file in ViewModel.Files)
             {
                 try
@@ -274,9 +276,32 @@ namespace BarryFileMan.ViewModels.Rename.Providers
 
                     if (tmdbMatches != null && tmdbMatches.Count() > 1)
                     {
-                        var match = await TMDBMatchSelect.ShowAsync(tmdbMatches, AppManager.MainWindow);
+                        IRenameMatch? match = null;
+                        var hashKey = new[] 
+                        { 
+                            queryOutput?.ToLower().Trim() ?? string.Empty,
+                            yearOutput?.ToLower().Trim() ?? string.Empty,
+                            languageOutput?.ToLower().Trim() ?? string.Empty
+                        }.GetSequenceHashCode();
+
+                        if (matchSelectCache.ContainsKey(hashKey))
+                        {
+                            var seriesId = matchSelectCache[hashKey];
+                            match = tmdbMatches.FirstOrDefault(tm => tm.Groups["tmdbId"]?.FirstOrDefault()?.Value == seriesId);
+                        }
+                        
+                        if (match == null)
+                        {
+                            match = await TMDBMatchSelect.ShowAsync(tmdbMatches, AppManager.MainWindow);
+                        }
+
                         if (match != null)
                         {
+                            if (!matchSelectCache.ContainsKey(hashKey))
+                            {
+                                matchSelectCache.Add(hashKey, match.Groups["tmdbId"]?.FirstOrDefault()?.Value ?? string.Empty);
+                            }
+
                             tmdbMatches = new List<IRenameMatch>() { match };
                         }
                     }
