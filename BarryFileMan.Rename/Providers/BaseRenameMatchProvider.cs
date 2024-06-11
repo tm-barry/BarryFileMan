@@ -210,9 +210,9 @@ namespace BarryFileMan.Rename.Providers
     public class RenameTagFunction
     {
         private static readonly string _renameFunctionAppendPrependParamPattern = "\\G\\s*'(?<value>.*)'\\s*$";
-        private static readonly string _renameFunctionPadParamPattern = "\\G\\s*(?<type>right|left)\\s*,\\s*\'(?<char>.)\'\\s*,\\s*(?<length>\\d+)\\s*$";
+        private static readonly string _renameFunctionPadParamPattern = "\\G\\s*(?<type>left|l|right|r)\\s*,\\s*\'(?<char>.)\'\\s*,\\s*(?<length>\\d+)\\s*$";
         private static readonly string _renameFunctionReplaceParamPattern = "\\G\\s*\'(?<input>.*)\'\\s*,\\s*\'(?<replace>.*)\'\\s*$";
-        private static readonly string _renameFunctionTrimParamPattern = "\\G\\s*(?<type>left|right|both)\\s*$";
+        private static readonly string _renameFunctionTrimParamPattern = "\\G\\s*(?<type>left|l|right|r|both|b)?\\s*$";
 
         public string Name { get; }
         public int NameIndex { get; }
@@ -247,18 +247,23 @@ namespace BarryFileMan.Rename.Providers
             switch(name.ToLower())
             {
                 case "append":
+                case "ap":
                     SetAppendPrependFunction(@params, true);
                     break;
                 case "pad":
+                case "pd":
                     SetPadFunction(@params);
                     break;
                 case "prepend":
+                case "pp":
                     SetAppendPrependFunction(@params, false);
                     break;
                 case "replace":
+                case "rp":
                     SetReplaceFunction(@params);
                     break;
                 case "trim":
+                case "tm":
                     SetTrimFunction(@params);
                     break;
                 default:
@@ -301,8 +306,8 @@ namespace BarryFileMan.Rename.Providers
                 {
                     return padType switch
                     {
-                        "right" => str.PadRight(padLength, padChar[0]),
-                        "left" => str.PadLeft(padLength, padChar[0]),
+                        "left" or "l" => str.PadLeft(padLength, padChar[0]),
+                        "right" or "r" => str.PadRight(padLength, padChar[0]),
                         _ => str,
                     };
                 };
@@ -344,8 +349,8 @@ namespace BarryFileMan.Rename.Providers
                 {
                     return trimType switch
                     {
-                        "left" => str.TrimStart(),
-                        "right" => str.TrimEnd(),
+                        "left" or "l" => str.TrimStart(),
+                        "right" or "r" => str.TrimEnd(),
                         _ => str.Trim(),
                     };
                 };

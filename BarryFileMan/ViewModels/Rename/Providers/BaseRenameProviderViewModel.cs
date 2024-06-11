@@ -7,17 +7,49 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using BarryFileMan.Interfaces;
+using BarryFileMan.Managers;
+using BarryFileMan.Models.Presets;
+using System;
+using CommunityToolkit.Mvvm.Input;
 
 namespace BarryFileMan.ViewModels.Rename.Providers
 {
     public abstract partial class BaseRenameProviderViewModel : ObservableValidator
     {
         [ObservableProperty]
-        public bool _isBusy;
+        [NotifyCanExecuteChangedFor(nameof(SavePresetCommand))]
+        [NotifyCanExecuteChangedFor(nameof(RenamePresetCommand))]
+        [NotifyCanExecuteChangedFor(nameof(SaveNewPresetCommand))]
+        [NotifyCanExecuteChangedFor(nameof(DeletePresetCommand))]
+        private bool _isBusy;
         protected virtual void OnIsBusyChangedBefore(bool value) { }
         partial void OnIsBusyChanged(bool value)
         {
             OnIsBusyChangedBefore(value);
+        }
+
+        [ObservableProperty]
+        private IList<IPresetViewModel> _presets = new List<IPresetViewModel>();
+
+        private IPresetViewModel? _selectedPreset;
+        protected virtual void OnSelectedPresetChanged(IPresetViewModel? value) { }
+        public IPresetViewModel? SelectedPreset
+        {
+            get => _selectedPreset;
+            set
+            {
+                if (_selectedPreset != value && value != null)
+                {
+                    _selectedPreset = value;
+                    OnPropertyChanged(nameof(SelectedPreset));
+                    SavePresetCommand.NotifyCanExecuteChanged();
+                    RenamePresetCommand.NotifyCanExecuteChanged();
+                    SaveNewPresetCommand.NotifyCanExecuteChanged();
+                    DeletePresetCommand.NotifyCanExecuteChanged();
+                    OnSelectedPresetChanged(value);
+                }
+            }
         }
 
         public RenameViewModel ViewModel { get; private set; }
@@ -25,12 +57,15 @@ namespace BarryFileMan.ViewModels.Rename.Providers
         public BaseRenameProviderViewModel(RenameViewModel viewModel)
         {
             ViewModel = viewModel;
+            AppManager.PresetsConfig.ConfigObservable.Subscribe(OnPresetsConfigChanged);
         }
 
         public virtual async Task ApplyFileRenames()
         {
             HandleDuplicateFilenames();
         }
+
+        protected virtual void OnPresetsConfigChanged((Presets presets, string? key) value) { }
 
         protected string RenameMatches(IRenameProvider provider, IEnumerable<IRenameMatch>? matches, string? renamePattern, out string? error,
             string? defaultTagFallbackValue = null)
@@ -131,5 +166,25 @@ namespace BarryFileMan.ViewModels.Rename.Providers
 
             return alternateFilename;
         }
+
+        private bool CanSavePreset() => !IsBusy && SelectedPreset != null && !SelectedPreset.IsSystem;
+
+        [RelayCommand(CanExecute = nameof(CanSavePreset))]
+        protected virtual async Task SavePreset() { }
+
+        private bool CanRenamePreset() => !IsBusy && SelectedPreset != null && !SelectedPreset.IsSystem;
+
+        [RelayCommand(CanExecute = nameof(CanRenamePreset))]
+        protected virtual async Task RenamePreset() { }
+
+        private bool CanSaveNewPreset() => !IsBusy;
+
+        [RelayCommand(CanExecute = nameof(CanSaveNewPreset))]
+        protected virtual async Task SaveNewPreset() { }
+
+        private bool CanDeletePreset() => !IsBusy && SelectedPreset != null && !SelectedPreset.IsSystem;
+
+        [RelayCommand(CanExecute = nameof(CanDeletePreset))]
+        protected virtual async Task DeletePreset() { }
     }
 }

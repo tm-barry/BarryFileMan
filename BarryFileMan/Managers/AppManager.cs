@@ -4,6 +4,7 @@ using BarryFileMan.Enums.Help;
 using BarryFileMan.Helpers;
 using BarryFileMan.Managers.Config;
 using BarryFileMan.Models.Config;
+using BarryFileMan.Models.Presets;
 using BarryFileMan.Rename.Models.TMDB;
 using BarryFileMan.Rename.Repositories;
 using BarryFileMan.Views;
@@ -25,6 +26,7 @@ namespace BarryFileMan.Managers
 
         public static MainWindow? MainWindow { get; private set; }
         public static IConfigManager<UserConfig> UserConfig { get; private set; } = new JsonUserConfigManager();
+        public static IConfigManager<Presets> PresetsConfig { get; private set; } = new JsonPresetsConfigManager();
 
         public static TMDBConfiguration? TMDBConfig { get; private set; }
 
@@ -33,9 +35,9 @@ namespace BarryFileMan.Managers
             UserConfig.ConfigObservable.Subscribe(OnUserConfigChanged);
         }
 
-        private static void OnUserConfigChanged(UserConfig userConfig)
+        private static void OnUserConfigChanged((UserConfig config, string? key) value)
         {
-            ThemeHelper.ChangeTheme(userConfig.General.Theme);
+            ThemeHelper.ChangeTheme(value.config.General.Theme);
         }
 
         public static void Init(MainWindow mainWindow)
@@ -73,10 +75,11 @@ namespace BarryFileMan.Managers
             return MainWindow != null ? await MainWindow.OpenFolderPickerAsync(options) : null;
         }
 
-        public static Task<MsgBoxResult> MsgBoxShowWindowDialogAsync(string title, string message, 
-            MsgBoxButtons buttons, MsgBoxIcons? icon = null, WindowStartupLocation windowStartupLocation = WindowStartupLocation.CenterScreen)
+        public static Task<(MsgBoxResult result, string? input)> MsgBoxShowWindowDialogAsync(string title, string message, 
+            MsgBoxButtons buttons, MsgBoxIcons? icon = null, bool hasInput = false, string? defaultInputValue = null, int? maxInputLength = null,
+             WindowStartupLocation windowStartupLocation = WindowStartupLocation.CenterScreen)
         {
-            return MessageBox.ShowAsync(MainWindow, title, message, buttons, icon, windowStartupLocation);
+            return MessageBox.ShowAsync(MainWindow, title, message, buttons, icon, hasInput, defaultInputValue, maxInputLength, windowStartupLocation);
         }
 
         public static Task HelpWindowShowAsync(HelpSections section = HelpSections.Help, bool isDialog = false, 

@@ -1,5 +1,8 @@
 ﻿using BarryFileMan.Attributes.Validation;
+using BarryFileMan.Enums.Rename;
+using BarryFileMan.Interfaces;
 using BarryFileMan.Managers;
+using BarryFileMan.Models.Presets;
 using BarryFileMan.Rename.Extensions;
 using BarryFileMan.Rename.Interfaces;
 using BarryFileMan.Rename.Providers.TMDB;
@@ -16,6 +19,7 @@ namespace BarryFileMan.ViewModels.Rename.Providers
 {
     public partial class TMDBTvRenameProviderViewModel : BaseTMDBRenameProviderViewModel
     {
+        private static readonly string _presetKey = "rename-tmdb-tv";
         private readonly TMDBTvRenameMatchProvider _tmdbTvProvider = new(true);
 
         [ObservableProperty]
@@ -64,18 +68,124 @@ namespace BarryFileMan.ViewModels.Rename.Providers
 
         public TMDBTvRenameProviderViewModel() : this(new RenameViewModel()) { }
 
-        public TMDBTvRenameProviderViewModel(RenameViewModel viewModel) : base(viewModel)
+        public TMDBTvRenameProviderViewModel(RenameViewModel viewModel) : base(viewModel) { }
+
+        public override async Task ApplyFileRenames()
         {
-            // TODO - load from preset
-            MatchPattern = "(?<show>[^\\\\/]+)\\W(?:s|S)(?<season>\\d+)(?:e|E)(?<episode>\\d+)";
-            QueryRenamePattern = "<show.replace('.',' ')>";
-            YearRenamePattern = string.Empty;
-            SeasonRenamePattern = "<season>";
-            EpisodeRenamePattern = "<episode>";
-            LanguageRenamePattern = string.Empty;
-            RenamePattern = "<tmdbName> - S<season.pad(left, '0', 2)>E<episode.pad(left, '0', 2)><tmdbTitle.prepend(' - ') ?? ''>";
-            Input = "\\ParentFolder\\Show.Name.S01E01";
-            SelectedMatchTypeIndex = 1;
+            Dictionary<int, string> matchSelectCache = new();
+            foreach (var file in ViewModel.Files)
+            {
+                try
+                {
+                    string? error;
+                    var regexMatches = RegexFindMatches(GetFileMatchInput(file), MatchPattern, out error);
+                    if (!string.IsNullOrWhiteSpace(error))
+                        throw new Exception(error);
+
+                    var queryOutput = RenameMatches(_regexProvider, regexMatches, QueryRenamePattern, out error);
+                    if (!string.IsNullOrWhiteSpace(error))
+                        throw new Exception(error);
+
+                    var yearOutput = RenameMatches(_regexProvider, regexMatches, YearRenamePattern, out error);
+                    if (!string.IsNullOrWhiteSpace(error))
+                        throw new Exception(error);
+
+                    var seasonOutput = RenameMatches(_regexProvider, regexMatches, SeasonRenamePattern, out error);
+                    if (!string.IsNullOrWhiteSpace(error))
+                        throw new Exception(error);
+
+                    var episodeOutput = RenameMatches(_regexProvider, regexMatches, EpisodeRenamePattern, out error);
+                    if (!string.IsNullOrWhiteSpace(error))
+                        throw new Exception(error);
+
+                    var languageOutput = RenameMatches(_regexProvider, regexMatches, LanguageRenamePattern, out error);
+                    if (!string.IsNullOrWhiteSpace(error))
+                        throw new Exception(error);
+
+                    var (tmdbMatches, tmdbMatchError) = await TMDBTvFindMatches(queryOutput, yearOutput, seasonOutput, episodeOutput, languageOutput);
+
+                    if (tmdbMatches != null && tmdbMatches.Count() > 1)
+                    {
+                        IRenameMatch? match = null;
+                        var hashKey = new[]
+                        {
+                            queryOutput?.ToLower().Trim() ?? string.Empty,
+                            yearOutput?.ToLower().Trim() ?? string.Empty,
+                            languageOutput?.ToLower().Trim() ?? string.Empty
+                        }.GetSequenceHashCode();
+
+                        if (matchSelectCache.ContainsKey(hashKey))
+                        {
+                            var seriesId = matchSelectCache[hashKey];
+                            match = tmdbMatches.FirstOrDefault(tm => tm.Groups["tmdbId"]?.FirstOrDefault()?.Value == seriesId);
+                        }
+
+                        match ??= await TMDBMatchSelect.ShowAsync(tmdbMatches, AppManager.MainWindow);
+
+                        if (match != null)
+                        {
+                            if (!matchSelectCache.ContainsKey(hashKey))
+                            {
+                                matchSelectCache.Add(hashKey, match.Groups["tmdbId"]?.FirstOrDefault()?.Value ?? string.Empty);
+                            }
+
+                            tmdbMatches = new List<IRenameMatch>() { match };
+                        }
+                    }
+
+                    var (renamedFileName, renameError) = GetRenameFromMatches(regexMatches, tmdbMatches, RenamePattern);
+                    file.RenameError = renameError;
+                    file.RenamedFileName = string.IsNullOrEmpty(renameError) ? renamedFileName : null;
+                }
+                catch (Exception e)
+                {
+                    file.RenameError = $"{e.Message}";
+                    file.RenamedFileName = null;
+                }
+            }
+        }
+
+        protected override void OnPresetsConfigChanged((Presets presets, string? key) value)
+        {
+            if (value.key == null || value.key == _presetKey)
+            {
+                // Add system defaults
+                var newPresets = new List<IPresetViewModel>()
+                {
+                    new PresetViewModel<RenameTMDBTvPreset>($"-- { Resources.Resources.TV } --", true, new()
+                    {
+                        MatchPattern = "(?<show>[^\\\\/]+)\\W(?:s|S)(?<season>\\d+)(?:e|E)(?<episode>\\d+)",
+                        QueryRenamePattern = "<show.replace('.',' ')>",
+                        YearRenamePattern = string.Empty,
+                        SeasonRenamePattern = "<season>",
+                        EpisodeRenamePattern = "<episode>",
+                        LanguageRenamePattern = string.Empty,
+                        RenamePattern = "<tmdbName> - S<season.pad(left, '0', 2)>E<episode.pad(left, '0', 2)><tmdbTitle.prepend(' - ') ?? ''>",
+                        Input = "\\ParentFolder\\Show.Name.S01E01",
+                        SelectedMatchTypeIndex = 1
+                    })
+                };
+
+                var selectedPresetName = SelectedPreset?.Name;
+                var regexPresets = value.presets.Rename.TmdbTvPresets;
+
+                if (regexPresets != null)
+                {
+                    foreach (var presetKey in regexPresets.Keys)
+                    {
+                        newPresets.Add(new PresetViewModel<RenameTMDBTvPreset>(presetKey, false, regexPresets[presetKey]));
+                    }
+                }
+
+                Presets = newPresets.OrderBy((preset) => preset.Name).ToList();
+                SelectedPreset = Presets.FirstOrDefault((preset) => preset.Name == selectedPresetName) ?? Presets.FirstOrDefault();
+            }
+        }
+
+        protected override void OnSelectedPresetChanged(IPresetViewModel? value)
+        {
+            OnSelectedPresetChanged(value as PresetViewModel<RenameTMDBTvPreset>);
+            base.OnSelectedPresetChanged(value);
         }
 
         protected override void OnInputMatchesChangedBefore(IEnumerable<IRenameMatch>? value)
@@ -85,18 +195,6 @@ namespace BarryFileMan.ViewModels.Rename.Providers
             HandleOutputRename(value, TmdbMatches, RenamePattern);
 
             base.OnInputMatchesChangedBefore(value);
-        }
-
-        private void HandleSeasonRenamePatternChanged(string value, IEnumerable<IRenameMatch>? inputMatches)
-        {
-            SeasonOutput = RenameMatches(_regexProvider, inputMatches, value, out var error);
-            SeasonRenamePatternError = error;
-        }
-
-        private void HandleEpisodeRenamePatternChanged(string renamePattern, IEnumerable<IRenameMatch>? inputMatches)
-        {
-            EpisodeOutput = RenameMatches(_regexProvider, inputMatches, renamePattern, out var error);
-            EpisodeRenamePatternError = error;
         }
 
         protected override void OnIsBusyChangedBefore(bool value)
@@ -133,6 +231,191 @@ namespace BarryFileMan.ViewModels.Rename.Providers
         {
             HandleOutputRename(InputMatches, TmdbMatches, value);
             base.OnRenamePatternChangedBefore(value);
+        }
+
+        protected override async Task SavePreset()
+        {
+            await ChangePreset(RenamePresetChangeType.Save);
+        }
+
+        protected override async Task SaveNewPreset()
+        {
+            await ChangePreset(RenamePresetChangeType.SaveNew);
+        }
+
+        protected override async Task RenamePreset()
+        {
+            await ChangePreset(RenamePresetChangeType.Rename);
+        }
+
+        protected override async Task DeletePreset()
+        {
+            await ChangePreset(RenamePresetChangeType.Delete);
+        }
+
+        private async Task ChangePreset(RenamePresetChangeType changeType)
+        {
+            IsBusy = true;
+
+            try
+            {
+                var seletedPresetName = SelectedPreset?.Name ?? string.Empty;
+                var presets = AppManager.PresetsConfig.Config;
+                if (presets != null)
+                {
+                    if (presets.Rename.TmdbTvPresets == null)
+                    {
+                        presets.Rename.TmdbTvPresets = new();
+                    }
+
+                    bool save = true;
+                    presets.Rename.TmdbTvPresets.TryGetValue(seletedPresetName, out var preset);
+                    switch (changeType)
+                    {
+                        case RenamePresetChangeType.Save:
+                            UpdatePreset(preset);
+                            break;
+                        case RenamePresetChangeType.Delete:
+                            var deletePromptResult = await AppManager.MsgBoxShowWindowDialogAsync(
+                                Resources.Resources.DeletePreset, Resources.Resources.DeletePresetPrompt, MsgBoxButtons.YesNo, MsgBoxIcons.Question);
+                            if (deletePromptResult.result == MsgBoxResult.Yes)
+                            {
+                                presets.Rename.TmdbTvPresets.Remove(seletedPresetName);
+                            }
+                            else
+                            {
+                                save = false;
+                            }
+                            break;
+                        case RenamePresetChangeType.Rename:
+                            var renameResult = await GetPresetName(seletedPresetName, presets.Rename.TmdbTvPresets);
+                            if (renameResult.success && preset != null)
+                            {
+                                presets.Rename.TmdbTvPresets.Remove(seletedPresetName);
+                                presets.Rename.TmdbTvPresets.Add(renameResult.name, preset);
+
+                                if (SelectedPreset != null)
+                                    SelectedPreset.Name = renameResult.name;
+                            }
+                            else
+                            {
+                                save = false;
+                            }
+                            break;
+                        case RenamePresetChangeType.SaveNew:
+                            var newNameResult = await GetPresetName(string.Empty, presets.Rename.TmdbTvPresets);
+                            if (newNameResult.success)
+                            {
+                                var newPreset = new RenameTMDBTvPreset();
+                                UpdatePreset(newPreset);
+                                presets.Rename.TmdbTvPresets.Add(newNameResult.name, newPreset);
+
+                                if (SelectedPreset != null)
+                                    SelectedPreset.Name = newNameResult.name;
+                            }
+                            else
+                            {
+                                save = false;
+                            }
+                            break;
+                        default:
+                            throw new NotImplementedException(changeType.ToString());
+                    }
+
+                    if (save)
+                    {
+                        await AppManager.PresetsConfig.SetConfigAsync(presets, _presetKey);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                await AppManager.MsgBoxShowWindowDialogAsync(
+                    Resources.Resources.Error, $"{ex.Message}\n{ex.InnerException?.Message}", MsgBoxButtons.Ok, MsgBoxIcons.Error);
+            }
+
+            IsBusy = false;
+        }
+
+        private void UpdatePreset(RenameTMDBTvPreset? preset)
+        {
+            if (preset != null)
+            {
+                preset.MatchPattern = MatchPattern;
+                preset.QueryRenamePattern = QueryRenamePattern;
+                preset.YearRenamePattern = YearRenamePattern;
+                preset.SeasonRenamePattern = SeasonRenamePattern;
+                preset.EpisodeRenamePattern = EpisodeRenamePattern;
+                preset.LanguageRenamePattern = LanguageRenamePattern;
+                preset.RenamePattern = RenamePattern;
+                preset.Input = Input;
+                preset.SelectedMatchTypeIndex = SelectedMatchTypeIndex;
+            }
+        }
+
+        private async Task<(string name, bool success)> GetPresetName(string name, Dictionary<string, RenameTMDBTvPreset> existingPresets)
+        {
+            var success = false;
+            string presetName = string.Empty;
+            var done = false;
+            while (!done)
+            {
+                var msgResult = await AppManager.MsgBoxShowWindowDialogAsync(Resources.Resources.PresetName, Resources.Resources.PresetNamePrompt,
+                        MsgBoxButtons.OkCancel, null, true, name, 100);
+
+                if (msgResult.result == MsgBoxResult.Ok)
+                {
+                    if (!string.IsNullOrWhiteSpace(msgResult.input))
+                    {
+                        if (!existingPresets.ContainsKey(msgResult.input))
+                        {
+                            presetName = msgResult.input;
+                            success = true;
+                            done = true;
+                        }
+                        else
+                        {
+                            await AppManager.MsgBoxShowWindowDialogAsync(Resources.Resources.Error, Resources.Resources.PresetNameAlreadyExistsError,
+                                MsgBoxButtons.Ok, MsgBoxIcons.Error);
+                        }
+                    }
+                    else
+                    {
+                        await AppManager.MsgBoxShowWindowDialogAsync(Resources.Resources.Error, Resources.Resources.PresetNameEmptyError,
+                            MsgBoxButtons.Ok, MsgBoxIcons.Error);
+                    }
+                }
+                else
+                {
+                    done = true;
+                }
+            }
+            return (presetName, success);
+        }
+
+        private void OnSelectedPresetChanged(PresetViewModel<RenameTMDBTvPreset>? preset)
+        {
+            MatchPattern = preset?.Preset.MatchPattern ?? string.Empty;
+            QueryRenamePattern = preset?.Preset.QueryRenamePattern ?? string.Empty;
+            YearRenamePattern = preset?.Preset.YearRenamePattern ?? string.Empty;
+            SeasonRenamePattern = preset?.Preset.SeasonRenamePattern ?? string.Empty;
+            EpisodeRenamePattern = preset?.Preset.EpisodeRenamePattern ?? string.Empty;
+            LanguageRenamePattern = preset?.Preset.LanguageRenamePattern ?? string.Empty;
+            RenamePattern = preset?.Preset.RenamePattern ?? string.Empty;
+            Input = preset?.Preset.Input ?? string.Empty;
+            SelectedMatchTypeIndex = preset?.Preset.SelectedMatchTypeIndex ?? 0;
+        }
+
+        private void HandleSeasonRenamePatternChanged(string value, IEnumerable<IRenameMatch>? inputMatches)
+        {
+            SeasonOutput = RenameMatches(_regexProvider, inputMatches, value, out var error);
+            SeasonRenamePatternError = error;
+        }
+
+        private void HandleEpisodeRenamePatternChanged(string renamePattern, IEnumerable<IRenameMatch>? inputMatches)
+        {
+            EpisodeOutput = RenameMatches(_regexProvider, inputMatches, renamePattern, out var error);
+            EpisodeRenamePatternError = error;
         }
 
         private void TMDBParamsChanged()
@@ -193,8 +476,8 @@ namespace BarryFileMan.ViewModels.Rename.Providers
 
         private async Task<(IEnumerable<IRenameMatch>? matches, string? error)> TMDBTvFindMatches(string query, string year, string season, string episode, string language)
         {
-            IEnumerable<IRenameMatch>? matches = null;
             string? error = null;
+            IEnumerable<IRenameMatch>? matches;
             try
             {
                 matches = await _tmdbTvProvider.MatchAsync(
@@ -237,84 +520,6 @@ namespace BarryFileMan.ViewModels.Rename.Providers
             {
                 Output = string.Empty;
                 RenamePatternError = null;
-            }
-        }
-
-        public override async Task ApplyFileRenames()
-        {
-            Dictionary<int, string> matchSelectCache = new();
-            foreach (var file in ViewModel.Files)
-            {
-                try
-                {
-                    string? error;
-                    var regexMatches = RegexFindMatches(GetFileMatchInput(file), MatchPattern, out error);
-                    if (!string.IsNullOrWhiteSpace(error))
-                        throw new Exception(error);
-
-                    var queryOutput = RenameMatches(_regexProvider, regexMatches, QueryRenamePattern, out error);
-                    if (!string.IsNullOrWhiteSpace(error))
-                        throw new Exception(error);
-
-                    var yearOutput = RenameMatches(_regexProvider, regexMatches, YearRenamePattern, out error);
-                    if (!string.IsNullOrWhiteSpace(error))
-                        throw new Exception(error);
-
-                    var seasonOutput = RenameMatches(_regexProvider, regexMatches, SeasonRenamePattern, out error);
-                    if (!string.IsNullOrWhiteSpace(error))
-                        throw new Exception(error);
-
-                    var episodeOutput = RenameMatches(_regexProvider, regexMatches, EpisodeRenamePattern, out error);
-                    if (!string.IsNullOrWhiteSpace(error))
-                        throw new Exception(error);
-
-                    var languageOutput = RenameMatches(_regexProvider, regexMatches, LanguageRenamePattern, out error);
-                    if (!string.IsNullOrWhiteSpace(error))
-                        throw new Exception(error);
-
-                    var (tmdbMatches, tmdbMatchError) = await TMDBTvFindMatches(queryOutput, yearOutput, seasonOutput, episodeOutput, languageOutput);
-
-                    if (tmdbMatches != null && tmdbMatches.Count() > 1)
-                    {
-                        IRenameMatch? match = null;
-                        var hashKey = new[] 
-                        { 
-                            queryOutput?.ToLower().Trim() ?? string.Empty,
-                            yearOutput?.ToLower().Trim() ?? string.Empty,
-                            languageOutput?.ToLower().Trim() ?? string.Empty
-                        }.GetSequenceHashCode();
-
-                        if (matchSelectCache.ContainsKey(hashKey))
-                        {
-                            var seriesId = matchSelectCache[hashKey];
-                            match = tmdbMatches.FirstOrDefault(tm => tm.Groups["tmdbId"]?.FirstOrDefault()?.Value == seriesId);
-                        }
-                        
-                        if (match == null)
-                        {
-                            match = await TMDBMatchSelect.ShowAsync(tmdbMatches, AppManager.MainWindow);
-                        }
-
-                        if (match != null)
-                        {
-                            if (!matchSelectCache.ContainsKey(hashKey))
-                            {
-                                matchSelectCache.Add(hashKey, match.Groups["tmdbId"]?.FirstOrDefault()?.Value ?? string.Empty);
-                            }
-
-                            tmdbMatches = new List<IRenameMatch>() { match };
-                        }
-                    }
-
-                    var (renamedFileName, renameError) = GetRenameFromMatches(regexMatches, tmdbMatches, RenamePattern);
-                    file.RenameError = renameError;
-                    file.RenamedFileName = string.IsNullOrEmpty(renameError) ? renamedFileName : null;
-                }
-                catch (Exception e)
-                {
-                    file.RenameError = $"{e.Message}";
-                    file.RenamedFileName = null;
-                }
             }
         }
     }

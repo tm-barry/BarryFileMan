@@ -13,8 +13,9 @@ public partial class MessageBox : Window
         InitializeComponent();
     }
 
-    public static Task<MsgBoxResult> ShowAsync(Window? parent, string title, string message, 
-        MsgBoxButtons buttons, MsgBoxIcons? icon = null, WindowStartupLocation windowStartupLocation = WindowStartupLocation.CenterScreen)
+    public static Task<(MsgBoxResult result, string? input)> ShowAsync(Window? parent, string title, string message,
+        MsgBoxButtons buttons, MsgBoxIcons? icon = null, bool hasInput = false, string? defaultInputValue = null, int? maxInputLength = null, 
+        WindowStartupLocation windowStartupLocation = WindowStartupLocation.CenterScreen)
     {
         var msgbox = new MessageBox()
         {
@@ -23,6 +24,10 @@ public partial class MessageBox : Window
         };
 
         msgbox.MsgText.Text = message;
+        msgbox.Input.IsVisible = hasInput;
+        msgbox.Input.Text = defaultInputValue;
+        if (maxInputLength.HasValue)
+            msgbox.Input.MaxLength = maxInputLength.Value;
         
         var materialIconKind = GetMaterialIconKind(icon);
         msgbox.MsgIcon.Kind = materialIconKind.GetValueOrDefault();
@@ -40,8 +45,8 @@ public partial class MessageBox : Window
         if (buttons == MsgBoxButtons.OkCancel || buttons == MsgBoxButtons.YesNoCancel)
             msgbox.AddButton(BarryFileMan.Resources.Resources.Cancel, MsgBoxResult.Cancel, true);
 
-        var tcs = new TaskCompletionSource<MsgBoxResult>();
-        msgbox.Closed += delegate { tcs.TrySetResult(msgbox._msgBoxResult); };
+        var tcs = new TaskCompletionSource<(MsgBoxResult result, string? input)>();
+        msgbox.Closed += delegate { tcs.TrySetResult((msgbox._msgBoxResult, msgbox.Input.Text)); };
 
         if (parent != null)
             msgbox.ShowDialog(parent);

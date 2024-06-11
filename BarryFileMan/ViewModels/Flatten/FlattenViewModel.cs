@@ -99,8 +99,6 @@ namespace BarryFileMan.ViewModels.Flatten
         {
             Files.CollectionChanged += Files_CollectionChanged;
 
-            // Load default option from config
-            OnUserConfigChanged(AppManager.UserConfig.Config);
             AppManager.UserConfig.ConfigObservable.Subscribe(OnUserConfigChanged);
         }
 
@@ -115,11 +113,11 @@ namespace BarryFileMan.ViewModels.Flatten
             OnPropertyChanged(nameof(FilteredFiles));
         }
 
-        private void OnUserConfigChanged(UserConfig userConfig)
+        private void OnUserConfigChanged((UserConfig config, string? key) value)
         {
-            FileFilterRegexPattern = userConfig.Flatten.DefaultRegexFileFilter;
-            ShouldDeleteExcludedFiles = userConfig.Flatten.DeleteExcludedFilesDefault;
-            ShouldDeleteEmptyFolders = userConfig.Flatten.DeleteEmptyFoldersDefault;
+            FileFilterRegexPattern = value.config.Flatten.DefaultRegexFileFilter;
+            ShouldDeleteExcludedFiles = value.config.Flatten.DeleteExcludedFilesDefault;
+            ShouldDeleteEmptyFolders = value.config.Flatten.DeleteEmptyFoldersDefault;
         }
 
         [RelayCommand]
@@ -190,7 +188,7 @@ namespace BarryFileMan.ViewModels.Flatten
                 MsgBoxButtons.YesNo, 
                 MsgBoxIcons.Question);
 
-            if (mbResult == MsgBoxResult.Yes)
+            if (mbResult.result == MsgBoxResult.Yes)
             {
                 // Move files
                 foreach (var file in FilteredFiles.Where((ff) => !ff.Exclude))

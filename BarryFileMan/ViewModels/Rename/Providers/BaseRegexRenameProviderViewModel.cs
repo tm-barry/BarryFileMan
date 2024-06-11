@@ -2,6 +2,8 @@
 using Avalonia.Controls.Models.TreeDataGrid;
 using BarryFileMan.Attributes.Validation;
 using BarryFileMan.Enums.Rename;
+using BarryFileMan.Interfaces;
+using BarryFileMan.Models.Presets;
 using BarryFileMan.Rename.Exceptions;
 using BarryFileMan.Rename.Interfaces;
 using BarryFileMan.Rename.Models;
@@ -122,21 +124,10 @@ namespace BarryFileMan.ViewModels.Rename.Providers
             await base.ApplyFileRenames();
         }
 
-        private void ViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(ViewModel.SelectedFile))
-            {
-                if (ViewModel.SelectedFile != null)
-                {
-                    Input = GetFileMatchInput(ViewModel.SelectedFile);
-                }
-            }
-        }
-
         protected string GetFileMatchInput(RenameFileViewModel? file)
         {
             string? input = null;
-            switch(SelectedMatchType)
+            switch (SelectedMatchType)
             {
                 case RegexRenameMatchTypes.Filename:
                     input = file?.FileNameWithoutExtension;
@@ -170,6 +161,17 @@ namespace BarryFileMan.ViewModels.Rename.Providers
             }
 
             return matches;
+        }
+
+        private void ViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(ViewModel.SelectedFile))
+            {
+                if (ViewModel.SelectedFile != null)
+                {
+                    Input = GetFileMatchInput(ViewModel.SelectedFile);
+                }
+            }
         }
     }
 }

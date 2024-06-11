@@ -1,8 +1,10 @@
 ﻿using Avalonia.Platform.Storage;
 using BarryFileMan.Enums.Rename;
 using BarryFileMan.Helpers;
+using BarryFileMan.Interfaces;
 using BarryFileMan.Managers;
 using BarryFileMan.Models.Config;
+using BarryFileMan.Models.Presets;
 using BarryFileMan.Rename.Enums;
 using BarryFileMan.ViewModels.Rename.Providers;
 using BarryFileMan.Views.Common;
@@ -18,6 +20,8 @@ namespace BarryFileMan.ViewModels.Rename
 {
     public partial class RenameViewModel : ObservableObject
     {
+        private Dictionary<RenameProviderTypes, BaseRenameProviderViewModel> _renameProviderCache = new();
+
         [ObservableProperty]
         public bool _isBusy;
 
@@ -37,22 +41,38 @@ namespace BarryFileMan.ViewModels.Rename
         private int? _selectedProviderTypeIndex;
         partial void OnSelectedProviderTypeIndexChanged(int? value)
         {
-            switch (SelectedProviderType?.Type)
+            BaseRenameProviderViewModel? renameProvider = null;
+
+            if (SelectedProviderType?.Type != null
+                && _renameProviderCache.ContainsKey(SelectedProviderType.Type))
             {
-                case RenameProviderTypes.Regex:
-                    RenameProvider = new RegexRenameProviderViewModel(this);
-                    break;
-                case RenameProviderTypes.TMDB_Movie:
-                    RenameProvider = new TMDBMovieRenameProviderViewModel(this);
-                    break;
-                case RenameProviderTypes.TMDB_TV:
-                    RenameProvider = new TMDBTvRenameProviderViewModel(this);
-                    break;
-                default:
-                    RenameProvider = null;
-                    break;
+                renameProvider = _renameProviderCache[SelectedProviderType.Type];
+            }
+            else
+            {
+                switch (SelectedProviderType?.Type)
+                {
+                    case RenameProviderTypes.Regex:
+                        renameProvider = new RegexRenameProviderViewModel(this);
+                        break;
+                    case RenameProviderTypes.TMDB_Movie:
+                        renameProvider = new TMDBMovieRenameProviderViewModel(this);
+                        break;
+                    case RenameProviderTypes.TMDB_TV:
+                        renameProvider = new TMDBTvRenameProviderViewModel(this);
+                        break;
+                    default:
+                        RenameProvider = null;
+                        break;
+                }
+
+                if(renameProvider != null && SelectedProviderType?.Type != null)
+                {
+                    _renameProviderCache.Add(SelectedProviderType.Type, renameProvider);
+                }
             }
 
+            RenameProvider = renameProvider;
             ProviderSettingsExpanded = true;
         }
 
@@ -86,10 +106,8 @@ namespace BarryFileMan.ViewModels.Rename
             Files.CollectionChanged += Files_CollectionChanged;
 
             // Load default option from config
-            OnUserConfigChanged(AppManager.UserConfig.Config);
             AppManager.UserConfig.ConfigObservable.Subscribe(OnUserConfigChanged);
 
-            // TODO - make this default configurable through settings when we add more provider types
             SelectedProviderTypeIndex = 0;
         }
 
@@ -118,9 +136,9 @@ namespace BarryFileMan.ViewModels.Rename
             SaveFileRenamesCommand.NotifyCanExecuteChanged();
         }
 
-        private void OnUserConfigChanged(UserConfig userConfig)
+        private void OnUserConfigChanged((UserConfig config, string? key) value)
         {
-            SelectedLoadOption = LoadOptions.FirstOrDefault((option) => option.Type == userConfig.Rename.DefaultLoadOption) ?? LoadOptions.First();
+            SelectedLoadOption = LoadOptions.FirstOrDefault((option) => option.Type == value.config.Rename.DefaultLoadOption) ?? LoadOptions.First();
             OnPropertyChanged(nameof(ProviderTypes));
         }
 
@@ -202,7 +220,7 @@ namespace BarryFileMan.ViewModels.Rename
         [RelayCommand(CanExecute = nameof(CanSaveFileRenames))]
         private async Task SaveFileRenames()
         {
-            MsgBoxResult? result = null;
+            (MsgBoxResult result, string? input)? result = null;
             if(Files.Any((file) => file.RenameError != null))
                 result = await AppManager.MsgBoxShowWindowDialogAsync(
                     Resources.Resources.Error, Resources.Resources.RenameFilesSaveErrorsConfirmation, MsgBoxButtons.YesNo, MsgBoxIcons.Error);
@@ -210,7 +228,7 @@ namespace BarryFileMan.ViewModels.Rename
             result ??= await AppManager.MsgBoxShowWindowDialogAsync(
                     Resources.Resources.Rename, Resources.Resources.RenameFilesSaveConfirmation, MsgBoxButtons.YesNo, MsgBoxIcons.Question);
 
-            if(result == MsgBoxResult.Yes)
+            if(result?.result == MsgBoxResult.Yes)
             {
                 var filesToSave = Files.Where((file) => file.RenameError == null).ToList();
                 var failedFiles = new List<string>();

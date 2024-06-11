@@ -7,11 +7,11 @@ namespace BarryFileMan.Managers.Config
 {
     public interface IConfigManager<T>
     {
-        public IObservable<T> ConfigObservable { get; }
+        public IObservable<(T config, string? key)> ConfigObservable { get; }
         public T Config { get; }
 
-        public T SetConfig(T config);
-        public Task<T> SetConfigAsync(T config);
+        public T SetConfig(T config, string? key = null);
+        public Task<T> SetConfigAsync(T config, string? key = null);
         public T GetConfig();
         public Task<T> GetConfigAsync();
         public T RestoreDefaultConfig();

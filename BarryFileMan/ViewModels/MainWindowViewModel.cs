@@ -77,13 +77,12 @@ namespace BarryFileMan.ViewModels
         public MainWindowViewModel()
         {
             ChangeViewContent(SelectedToolPaneItem);
-            OnUserConfigChanged(AppManager.UserConfig.Config);
             AppManager.UserConfig.ConfigObservable.Subscribe(OnUserConfigChanged);
         }
 
-        private void OnUserConfigChanged(UserConfig userConfig)
+        private void OnUserConfigChanged((UserConfig config, string? key) value)
         {
-            ToolPaneOpen = AppManager.UserConfig.Config.General.SidebarExpandedDefault;
+            ToolPaneOpen = value.config.General.SidebarExpandedDefault;
         }
 
         private void ChangeViewContent(string tool)

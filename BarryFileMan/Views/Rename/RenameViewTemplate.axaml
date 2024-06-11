@@ -7,6 +7,7 @@
 					xmlns:idd="using:Avalonia.Xaml.Interactions.DragAndDrop"
 					xmlns:ia="using:Avalonia.Xaml.Interactions.Core"
 					xmlns:b="using:BarryFileMan.Behaviors"
+					xmlns:h="using:BarryFileMan.Helpers"
 					xmlns:lang="using:BarryFileMan.Resources"
 					xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
 					xmlns:svg="using:Avalonia.Svg.Skia">
@@ -67,8 +68,9 @@
 
 			<!-- Match Provider Selection -->
 			<ComboBox Grid.Row="0" Margin="5"
-					  MinWidth="175" 
+					  MinWidth="170" 
 					  Height="30"
+					  FontSize="12"
 					  HorizontalAlignment="Center"
 					  SelectedIndex="{Binding SelectedProviderTypeIndex}"
 					  ItemsSource="{Binding ProviderTypes}">
@@ -97,27 +99,70 @@
 					  IsExpanded="{Binding ProviderSettingsExpanded}"
 					  ExpandDirection="Down">
 				<Expander.Header>
-					<StackPanel Orientation="Horizontal">
-						<materialIcons:MaterialIcon Height="{Binding SelectedProviderType.IconHeight}"
-													Width="{Binding SelectedProviderType.IconWidth}"
-													Kind="{Binding SelectedProviderType.Icon}"
-													IsVisible="{Binding !SelectedProviderType.IsImage}"/>
-						<Svg Height="{Binding SelectedProviderType.IconHeight}"
-							 Width="{Binding SelectedProviderType.IconWidth}"
-							 Path="{Binding SelectedProviderType.Icon}"
-							 IsVisible="{Binding SelectedProviderType.IsImage}"/>
-						<TextBlock Text="{Binding SelectedProviderType.SettingsDisplay}" Margin="10,0,0,0"
-								   VerticalAlignment="Center"/>
-					</StackPanel>
+					<Grid ColumnDefinitions="*,Auto">
+						<StackPanel Grid.Column="0" Orientation="Horizontal" Margin="0,0,10,0"
+									DataContext="{Binding SelectedProviderType}">
+							<materialIcons:MaterialIcon Height="{Binding IconHeight}"
+														Width="{Binding IconWidth}"
+														Kind="{Binding Icon}"
+														IsVisible="{Binding !IsImage}"/>
+							<Svg Height="{Binding IconHeight}"
+								 Width="{Binding IconWidth}"
+								 Path="{Binding Icon}"
+								 IsVisible="{Binding IsImage}"/>
+							<TextBlock Text="{Binding SettingsDisplay}" Margin="5,0,0,0"
+									   FontSize="12"
+									   VerticalAlignment="Center"/>
+						</StackPanel>
+						<StackPanel Grid.Column="1"
+									Orientation="Horizontal"
+									DataContext="{Binding RenameProvider}">
+							<Border Height="25" Margin="5,0,5,0"
+									BorderBrush="{DynamicResource SystemBaseMediumColor}" 
+									BorderThickness="1,0,0,0"/>
+							<TextBlock Text="{x:Static lang:Resources.Preset}" Margin="0,0,5,0"
+									   FontSize="12"
+									   VerticalAlignment="Center"/>
+							<ComboBox MaxWidth="150" MinWidth="150"
+									  FontSize="12"
+									  VerticalAlignment="Center"
+									  SelectedItem="{Binding SelectedPreset}"
+									  DisplayMemberBinding="{Binding Name}"
+									  ItemsSource="{Binding Presets}">
+								
+							</ComboBox>
+							<Button Margin="5,0,0,0"
+									Foreground="{x:Static h:ColorHelper.StrongBlueBrush}"
+									Command="{Binding SavePresetCommand}">
+								<materialIcons:MaterialIcon Kind="ContentSave"/>
+							</Button>
+							<Button Margin="5,0,0,0"
+									Command="{Binding RenamePresetCommand}">
+								<materialIcons:MaterialIcon Kind="Rename"/>
+							</Button>
+							<Button Margin="5,0,0,0"
+									Foreground="{x:Static h:ColorHelper.VividGreenBrush}"
+									Command="{Binding SaveNewPresetCommand}">
+								<materialIcons:MaterialIcon Kind="ContentSaveAdd"/>
+							</Button>
+							<Button Margin="5,0,0,0"
+									Foreground="{x:Static h:ColorHelper.VividRedBrush}"
+									Command="{Binding DeletePresetCommand}">
+								<materialIcons:MaterialIcon Kind="Delete"/>
+							</Button>
+						</StackPanel>
+					</Grid>
 				</Expander.Header>
 				<ContentControl Content="{Binding RenameProvider}"/>
 			</Expander>
 
 			<!-- File List Header -->
 			<TextBlock Grid.Row="2" HorizontalAlignment="Left" Margin="5"
+					   FontSize="12"
 					   Text="{x:Static lang:Resources.OriginalFiles}"/>
 
 			<TextBlock Grid.Row="2" HorizontalAlignment="Right" Margin="5"
+					   FontSize="12"
 					   Text="{x:Static lang:Resources.NewNames}"/>
 
 			<!-- File List -->
@@ -282,6 +327,7 @@
 							Background="Goldenrod"
 							CornerRadius="3"/>
 					<TextBlock Text="{x:Static lang:Resources.Duplicate}" Margin="5,0,15,0"
+							   FontSize="12"
 							   VerticalAlignment="Center"/>
 				</StackPanel>
 

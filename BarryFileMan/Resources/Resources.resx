@@ -177,6 +177,12 @@
   <data name="DeleteExcludedFilesDescription" xml:space="preserve">
     <value>Used to indicate if files marked excluded should be deleted on save.</value>
   </data>
+  <data name="DeletePreset" xml:space="preserve">
+    <value>Delete Preset</value>
+  </data>
+  <data name="DeletePresetPrompt" xml:space="preserve">
+    <value>Are you sure you want to delete this preset?</value>
+  </data>
   <data name="Description" xml:space="preserve">
     <value>Description</value>
   </data>
@@ -409,6 +415,21 @@ Full Path - Match the full path of the file/directory</value>
   </data>
   <data name="Pages" xml:space="preserve">
     <value>Pages</value>
+  </data>
+  <data name="Preset" xml:space="preserve">
+    <value>Preset</value>
+  </data>
+  <data name="PresetName" xml:space="preserve">
+    <value>Preset Name</value>
+  </data>
+  <data name="PresetNameAlreadyExistsError" xml:space="preserve">
+    <value>There is already a preset with that name.</value>
+  </data>
+  <data name="PresetNameEmptyError" xml:space="preserve">
+    <value>The preset name cannot be an empty string.</value>
+  </data>
+  <data name="PresetNamePrompt" xml:space="preserve">
+    <value>Enter a name for the preset:</value>
   </data>
   <data name="Query" xml:space="preserve">
     <value>Query</value>

@@ -241,6 +241,24 @@ namespace BarryFileMan.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete Preset.
+        /// </summary>
+        public static string DeletePreset {
+            get {
+                return ResourceManager.GetString("DeletePreset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete this preset?.
+        /// </summary>
+        public static string DeletePresetPrompt {
+            get {
+                return ResourceManager.GetString("DeletePresetPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Description.
         /// </summary>
         public static string Description {
@@ -878,6 +896,51 @@ namespace BarryFileMan.Resources {
         public static string Pages {
             get {
                 return ResourceManager.GetString("Pages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preset.
+        /// </summary>
+        public static string Preset {
+            get {
+                return ResourceManager.GetString("Preset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preset Name.
+        /// </summary>
+        public static string PresetName {
+            get {
+                return ResourceManager.GetString("PresetName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There is already a preset with that name..
+        /// </summary>
+        public static string PresetNameAlreadyExistsError {
+            get {
+                return ResourceManager.GetString("PresetNameAlreadyExistsError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The preset name cannot be an empty string..
+        /// </summary>
+        public static string PresetNameEmptyError {
+            get {
+                return ResourceManager.GetString("PresetNameEmptyError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter a name for the preset:.
+        /// </summary>
+        public static string PresetNamePrompt {
+            get {
+                return ResourceManager.GetString("PresetNamePrompt", resourceCulture);
             }
         }
         

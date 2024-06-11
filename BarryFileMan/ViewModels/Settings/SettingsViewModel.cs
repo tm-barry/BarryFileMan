@@ -53,7 +53,7 @@ namespace BarryFileMan.ViewModels.Settings
                     MsgBoxButtons.YesNo, 
                     MsgBoxIcons.Question);
 
-                if(result == MsgBoxResult.Yes)
+                if(result.result == MsgBoxResult.Yes)
                 {
                     var config = await AppManager.UserConfig.SetConfigAsync(new());
 

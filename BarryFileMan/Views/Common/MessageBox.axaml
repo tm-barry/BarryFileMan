@@ -18,7 +18,10 @@
 					   VerticalAlignment="Center" 
 					   Name="MsgText"/>
 		</Grid>
-		<StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Name="Buttons">
+		<TextBox Name="Input" MaxWidth="400" MinWidth="300" Margin="0,0,0,20"></TextBox>
+		<StackPanel Name="Buttons"
+					HorizontalAlignment="Right" 
+					Orientation="Horizontal">
 			<StackPanel.Styles>
 				<Style Selector="Button">
 					<Setter Property="Margin" Value="10,0,0,0"/>
@@ -26,7 +29,6 @@
 					<Setter Property="MinWidth" Value="50"/>
 				</Style>
 			</StackPanel.Styles>
-
 		</StackPanel>
 	</StackPanel>
 </Window>
