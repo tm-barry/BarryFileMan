@@ -5,6 +5,7 @@
         Help,
         Rename,
         RenameRegex,
+        RenameTMDB,
         Flatten
     }
 }

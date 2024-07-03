@@ -19,6 +19,7 @@
 				<ResourceInclude Source="/Views/Help/Sections/HelpSectionViewTemplate.axaml"/>
 				<ResourceInclude Source="/Views/Help/Sections/RenameRegexSectionViewTemplate.axaml"/>
 				<ResourceInclude Source="/Views/Help/Sections/RenameSectionViewTemplate.axaml"/>
+				<ResourceInclude Source="/Views/Help/Sections/RenameTMDBSectionViewTemplate.axaml"/>
 			</ResourceDictionary.MergedDictionaries>
 		</ResourceDictionary>
 	</Window.Resources>
@@ -84,6 +85,7 @@
 				<StaticResource ResourceKey="helpSectionView"/>
 				<StaticResource ResourceKey="renameRegexSectionView"/>
 				<StaticResource ResourceKey="renameSectionView"/>
+				<StaticResource ResourceKey="renameTMDBSectionView"/>
 			</ScrollViewer.DataTemplates>
 			
 			<ContentControl Content="{Binding CurrentSectionVM}"/>

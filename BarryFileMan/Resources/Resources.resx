@@ -545,6 +545,24 @@ Full Path - Match the full path of the file/directory</value>
   <data name="RenameRegexHelpTitle" xml:space="preserve">
     <value>Rename - Regex</value>
   </data>
+  <data name="RenameTMDBEpisodeDescription" xml:space="preserve">
+    <value>Episode number of tv show episode.</value>
+  </data>
+  <data name="RenameTMDBHelpTitle" xml:space="preserve">
+    <value>Rename - TMDB</value>
+  </data>
+  <data name="RenameTMDBLanguageDescription" xml:space="preserve">
+    <value>Language of movie/tv show.</value>
+  </data>
+  <data name="RenameTMDBQueryDescription" xml:space="preserve">
+    <value>Query used to find movie/tv show.</value>
+  </data>
+  <data name="RenameTMDBSeasonDescription" xml:space="preserve">
+    <value>Season number of tv show episode.</value>
+  </data>
+  <data name="RenameTMDBYearDescription" xml:space="preserve">
+    <value>Release/aired year of movie/tv show.</value>
+  </data>
   <data name="RevertToDefault" xml:space="preserve">
     <value>Revert to Default</value>
   </data>
@@ -617,6 +635,9 @@ Full Path - Match the full path of the file/directory</value>
   <data name="TMDB" xml:space="preserve">
     <value>TMDB</value>
   </data>
+  <data name="TmdbAPIDocumentationUri" xml:space="preserve">
+    <value>https://developer.themoviedb.org/docs/getting-started</value>
+  </data>
   <data name="TmdbApiKeyWatermark" xml:space="preserve">
     <value>https://www.themoviedb.org/settings/api</value>
   </data>
@@ -625,6 +646,12 @@ Full Path - Match the full path of the file/directory</value>
   </data>
   <data name="TMDBMatchSelect" xml:space="preserve">
     <value>TMDB Match Select</value>
+  </data>
+  <data name="TMDBOptions" xml:space="preserve">
+    <value>TMDB Options</value>
+  </data>
+  <data name="TMDBRenameMatchProviderDescription" xml:space="preserve">
+    <value>Uses regex along with the TMDB API to match files to movies &amp; television shows.  A valid API key must be configured in the settings page for this provider to show up.</value>
   </data>
   <data name="TV" xml:space="preserve">
     <value>TV</value>

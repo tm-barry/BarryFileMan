@@ -19,6 +19,7 @@ namespace BarryFileMan.ViewModels.Help
         private readonly HelpSectionViewModel _helpSectionViewModel = new();
         private readonly RenameRegexSectionViewModel _renameRegexSectionViewModel = new();
         private readonly RenameSectionViewModel _renameSectionViewModel = new();
+        private readonly RenameTMDBSectionViewModel _renameTMDBSectionViewModel = new();
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(CurrentSection))]
@@ -34,6 +35,7 @@ namespace BarryFileMan.ViewModels.Help
                 {
                     HelpSections.Rename => _renameSectionViewModel,
                     HelpSections.RenameRegex => _renameRegexSectionViewModel,
+                    HelpSections.RenameTMDB => _renameTMDBSectionViewModel,
                     HelpSections.Flatten => _flattenSectionViewModel,
                     _ => _helpSectionViewModel,
                 };

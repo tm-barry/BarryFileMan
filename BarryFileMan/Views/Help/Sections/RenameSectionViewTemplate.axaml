@@ -53,7 +53,7 @@
 			<Separator Margin="0,5,0,5"/>
 
 			<Grid ColumnDefinitions="Auto,Auto,*"
-				  RowDefinitions="Auto,Auto,Auto,Auto">
+				  RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto">
 
 				<!--Headers-->
 				<TextBlock Grid.Column="0" Grid.Row="0" Margin="5"
@@ -81,6 +81,20 @@
 						   TextWrapping="Wrap" Classes="cell-text"
 						   Text="{x:Static lang:Resources.RegexRenameMatchProviderDescription}"/>
 				<Border Grid.ColumnSpan="3" Grid.Row="3" Padding="0"
+						Opacity="0.75"
+						BorderBrush="{DynamicResource SystemBaseMediumColor}"
+						BorderThickness="0,1,0,0"/>
+
+				<!--TMDB-->
+				<help:HelpLink Grid.Column="0" Grid.Row="4" Margin="10"
+							   FontWeight="Bold" Classes="cell-text"
+							   Content="{x:Static lang:Resources.TMDB}"
+							   VerticalAlignment="Center"
+							   Section="{x:Static enums:HelpSections.RenameTMDB}"/>
+				<TextBlock Grid.Column="2" Grid.Row="4" Margin="10"
+						   TextWrapping="Wrap" Classes="cell-text"
+						   Text="{x:Static lang:Resources.TMDBRenameMatchProviderDescription}"/>
+				<Border Grid.ColumnSpan="3" Grid.Row="5" Padding="0"
 						Opacity="0.75"
 						BorderBrush="{DynamicResource SystemBaseMediumColor}"
 						BorderThickness="0,1,0,0"/>

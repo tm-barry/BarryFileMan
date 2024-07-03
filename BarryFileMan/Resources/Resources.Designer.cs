@@ -1311,6 +1311,60 @@ namespace BarryFileMan.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Episode number of tv show episode..
+        /// </summary>
+        public static string RenameTMDBEpisodeDescription {
+            get {
+                return ResourceManager.GetString("RenameTMDBEpisodeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rename - TMDB.
+        /// </summary>
+        public static string RenameTMDBHelpTitle {
+            get {
+                return ResourceManager.GetString("RenameTMDBHelpTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Language of movie/tv show..
+        /// </summary>
+        public static string RenameTMDBLanguageDescription {
+            get {
+                return ResourceManager.GetString("RenameTMDBLanguageDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Query used to find movie/tv show..
+        /// </summary>
+        public static string RenameTMDBQueryDescription {
+            get {
+                return ResourceManager.GetString("RenameTMDBQueryDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Season number of tv show episode..
+        /// </summary>
+        public static string RenameTMDBSeasonDescription {
+            get {
+                return ResourceManager.GetString("RenameTMDBSeasonDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Release/aired year of movie/tv show..
+        /// </summary>
+        public static string RenameTMDBYearDescription {
+            get {
+                return ResourceManager.GetString("RenameTMDBYearDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Revert to Default.
         /// </summary>
         public static string RevertToDefault {
@@ -1527,6 +1581,15 @@ namespace BarryFileMan.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to https://developer.themoviedb.org/docs/getting-started.
+        /// </summary>
+        public static string TmdbAPIDocumentationUri {
+            get {
+                return ResourceManager.GetString("TmdbAPIDocumentationUri", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to https://www.themoviedb.org/settings/api.
         /// </summary>
         public static string TmdbApiKeyWatermark {
@@ -1550,6 +1613,24 @@ namespace BarryFileMan.Resources {
         public static string TMDBMatchSelect {
             get {
                 return ResourceManager.GetString("TMDBMatchSelect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TMDB Options.
+        /// </summary>
+        public static string TMDBOptions {
+            get {
+                return ResourceManager.GetString("TMDBOptions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Uses regex along with the TMDB API to match files to movies &amp; television shows.  A valid API key must be configured in the settings page for this provider to show up..
+        /// </summary>
+        public static string TMDBRenameMatchProviderDescription {
+            get {
+                return ResourceManager.GetString("TMDBRenameMatchProviderDescription", resourceCulture);
             }
         }
         

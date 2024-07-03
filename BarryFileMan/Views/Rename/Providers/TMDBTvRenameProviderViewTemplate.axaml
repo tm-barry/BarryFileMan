@@ -96,9 +96,13 @@
 										  DisplayMemberBinding="{Binding Display}"
 										  SelectedIndex="{Binding SelectedMatchTypeIndex}"/>
 
-								<TextBlock Margin="0,10,0,0"
-										   FontWeight="Bold"
-										   Text="{x:Static lang:Resources.Query}"/>
+
+								<StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+									<TextBlock FontWeight="Bold"
+											   Text="{x:Static lang:Resources.Query}"/>
+									<vh:HelpButton Margin="5,0,0,0" Height="16" Width="16"
+												   Section="{x:Static he:HelpSections.RenameTMDB}"/>
+								</StackPanel>
 								<Grid ColumnDefinitions="*,*">
 									<TextBox Grid.Column="0"
 											 Text="{Binding QueryRenamePattern}"
@@ -118,9 +122,12 @@
 									</Border>
 								</Grid>
 
-								<TextBlock Margin="0,10,0,0"
-										   FontWeight="Bold"
-										   Text="{x:Static lang:Resources.Year}"/>
+								<StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+									<TextBlock FontWeight="Bold"
+											   Text="{x:Static lang:Resources.Year}"/>
+									<vh:HelpButton Margin="5,0,0,0" Height="16" Width="16"
+												   Section="{x:Static he:HelpSections.RenameTMDB}"/>
+								</StackPanel>
 								<Grid ColumnDefinitions="*,*">
 									<TextBox Grid.Column="0"
 											 Text="{Binding YearRenamePattern}"
@@ -140,9 +147,12 @@
 									</Border>
 								</Grid>
 
-								<TextBlock Margin="0,10,0,0"
-										   FontWeight="Bold"
-										   Text="{x:Static lang:Resources.Season}"/>
+								<StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+									<TextBlock FontWeight="Bold"
+											   Text="{x:Static lang:Resources.Season}"/>
+									<vh:HelpButton Margin="5,0,0,0" Height="16" Width="16"
+												   Section="{x:Static he:HelpSections.RenameTMDB}"/>
+								</StackPanel>
 								<Grid ColumnDefinitions="*,*">
 									<TextBox Grid.Column="0"
 											 Text="{Binding SeasonRenamePattern}"
@@ -162,9 +172,12 @@
 									</Border>
 								</Grid>
 
-								<TextBlock Margin="0,10,0,0"
-										   FontWeight="Bold"
-										   Text="{x:Static lang:Resources.Episode}"/>
+								<StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+									<TextBlock FontWeight="Bold"
+											   Text="{x:Static lang:Resources.Episode}"/>
+									<vh:HelpButton Margin="5,0,0,0" Height="16" Width="16"
+												   Section="{x:Static he:HelpSections.RenameTMDB}"/>
+								</StackPanel>
 								<Grid ColumnDefinitions="*,*">
 									<TextBox Grid.Column="0"
 											 Text="{Binding EpisodeRenamePattern}"
@@ -184,9 +197,12 @@
 									</Border>
 								</Grid>
 
-								<TextBlock Margin="0,10,0,0"
-										   FontWeight="Bold"
-										   Text="{x:Static lang:Resources.Language}"/>
+								<StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+									<TextBlock FontWeight="Bold"
+											   Text="{x:Static lang:Resources.Language}"/>
+									<vh:HelpButton Margin="5,0,0,0" Height="16" Width="16"
+												   Section="{x:Static he:HelpSections.RenameTMDB}"/>
+								</StackPanel>
 								<Grid ColumnDefinitions="*,*">
 									<TextBox Grid.Column="0"
 											 Text="{Binding LanguageRenamePattern}"
