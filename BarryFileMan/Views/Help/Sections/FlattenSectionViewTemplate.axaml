@@ -57,14 +57,14 @@
 				
 				<!--Headers-->
 				<TextBlock Grid.Column="0" Grid.Row="0" Margin="5"
-						   FontWeight="Light"
+						   FontWeight="Bold"
 						   Text="{x:Static lang:Resources.Name}"/>
 				<Border Grid.Column="1" Grid.RowSpan="100"
 						Opacity="0.75"
 						BorderBrush="{DynamicResource SystemBaseMediumColor}"
 						BorderThickness="1,0,0,0"/>
 				<TextBlock Grid.Column="2" Grid.Row="0" Margin="5"
-						   FontWeight="Light"
+						   FontWeight="Bold"
 						   Text="{x:Static lang:Resources.Description}"/>
 				<Border Grid.ColumnSpan="3" Grid.Row="1" Padding="0"
 						Opacity="0.75"
@@ -73,11 +73,11 @@
 
 				<!--Regex File Filter-->
 				<TextBlock Grid.Column="0" Grid.Row="2" Margin="10"
-						   FontWeight="Bold"
+						   FontWeight="Bold" Classes="cell-text"
 						   VerticalAlignment="Center"
 						   Text="{x:Static lang:Resources.RegexFileFilter}"/>
 				<TextBlock Grid.Column="2" Grid.Row="2" Margin="10"
-						   TextWrapping="Wrap"
+						   TextWrapping="Wrap" Classes="cell-text"
 						   Text="{x:Static lang:Resources.RegexFileFilterDescription}"/>
 				<Border Grid.ColumnSpan="3" Grid.Row="3" Padding="0"
 						Opacity="0.75"
@@ -86,11 +86,11 @@
 
 				<!--Delete Excluded Files-->
 				<TextBlock Grid.Column="0" Grid.Row="4" Margin="10"
-						   FontWeight="Bold"
+						   FontWeight="Bold" Classes="cell-text"
 						   VerticalAlignment="Center"
 						   Text="{x:Static lang:Resources.DeleteExcludedFiles}"/>
 				<TextBlock Grid.Column="2" Grid.Row="4" Margin="10"
-						   TextWrapping="Wrap"
+						   TextWrapping="Wrap" Classes="cell-text"
 						   Text="{x:Static lang:Resources.DeleteExcludedFilesDescription}"/>
 				<Border Grid.ColumnSpan="3" Grid.Row="5" Padding="0"
 						Opacity="0.75"
@@ -99,11 +99,11 @@
 
 				<!--Delete Empty Folders-->
 				<TextBlock Grid.Column="0" Grid.Row="6" Margin="10"
-						   FontWeight="Bold"
+						   FontWeight="Bold" Classes="cell-text"
 						   VerticalAlignment="Center"
 						   Text="{x:Static lang:Resources.DeleteEmptyFolders}"/>
 				<TextBlock Grid.Column="2" Grid.Row="6" Margin="10"
-						   TextWrapping="Wrap"
+						   TextWrapping="Wrap" Classes="cell-text"
 						   Text="{x:Static lang:Resources.DeleteEmptyFoldersDescription}"/>
 				<Border Grid.ColumnSpan="3" Grid.Row="7" Padding="0"
 						Opacity="0.75"

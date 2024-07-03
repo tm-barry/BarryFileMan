@@ -284,38 +284,98 @@
   <data name="Function" xml:space="preserve">
     <value>Function</value>
   </data>
-  <data name="FunctionPad" xml:space="preserve">
-    <value>pad( type, char, length )
-
-Used to pad a tag to a certain length, such as padding a number with leading 0s.
-
-type - left|right
-char - character to use to pad
-length - what length to pad to</value>
+  <data name="FunctionAppendCompactDefinition" xml:space="preserve">
+    <value>ap( value )</value>
+  </data>
+  <data name="FunctionAppendCompactExample" xml:space="preserve">
+    <value>&lt;tagName.ap(' - end')&gt;</value>
+  </data>
+  <data name="FunctionAppendDefinition" xml:space="preserve">
+    <value>append( value )</value>
+  </data>
+  <data name="FunctionAppendDescription" xml:space="preserve">
+    <value>Appends a string to the end of the tag.</value>
+  </data>
+  <data name="FunctionAppendExample" xml:space="preserve">
+    <value>&lt;tagName.append(' - end)&gt;</value>
+  </data>
+  <data name="FunctionAppendParams" xml:space="preserve">
+    <value>value - string to append</value>
+  </data>
+  <data name="FunctionPadCompactDefinition" xml:space="preserve">
+    <value>pd( type, char, length )</value>
+  </data>
+  <data name="FunctionPadCompactExample" xml:space="preserve">
+    <value>&lt;tagName.pd( l, '0', 2 )&gt;</value>
+  </data>
+  <data name="FunctionPadDefinition" xml:space="preserve">
+    <value>pad( type, char, length )</value>
+  </data>
+  <data name="FunctionPadDescription" xml:space="preserve">
+    <value>Used to pad a tag to a certain length, such as padding a number with leading 0s.</value>
   </data>
   <data name="FunctionPadExample" xml:space="preserve">
     <value>&lt;tagName.pad( left, '0', 2 )&gt;</value>
   </data>
-  <data name="FunctionReplace" xml:space="preserve">
-    <value>replace( input, replace )
-
-Used to replace a string within a tag with another string.
-
-input - string to replace
-replace - string to replace the input with</value>
+  <data name="FunctionPadParams" xml:space="preserve">
+    <value>type     - left|l|right|r
+char     - pad character
+length  - pad to length</value>
+  </data>
+  <data name="FunctionPrependCompactDefinition" xml:space="preserve">
+    <value>pp( value )</value>
+  </data>
+  <data name="FunctionPrependCompactExample" xml:space="preserve">
+    <value>&lt;tagName.pp('start - ')&gt;</value>
+  </data>
+  <data name="FunctionPrependDefinition" xml:space="preserve">
+    <value>prepend( value )</value>
+  </data>
+  <data name="FunctionPrependDescription" xml:space="preserve">
+    <value>Prepends a string to the start of the tag.</value>
+  </data>
+  <data name="FunctionPrependExample" xml:space="preserve">
+    <value>&lt;tagName.prepend('start - ')&gt;</value>
+  </data>
+  <data name="FunctionPrependParams" xml:space="preserve">
+    <value>value - string to prepend</value>
+  </data>
+  <data name="FunctionReplaceCompactDefinition" xml:space="preserve">
+    <value>rp( input, replace )</value>
+  </data>
+  <data name="FunctionReplaceCompactExample" xml:space="preserve">
+    <value>&lt;tagName.rp( '.', ' ' )&gt;</value>
+  </data>
+  <data name="FunctionReplaceDefinition" xml:space="preserve">
+    <value>replace( input, replace )</value>
+  </data>
+  <data name="FunctionReplaceDescription" xml:space="preserve">
+    <value>Used to replace a string with another string.</value>
   </data>
   <data name="FunctionReplaceExample" xml:space="preserve">
     <value>&lt;tagName.replace( '.', ' ' )&gt;</value>
   </data>
-  <data name="FunctionTrim" xml:space="preserve">
-    <value>trim( type )
-
-Used to trim whitespace from a tag.
-
-type - left|right|both</value>
+  <data name="FunctionReplaceParams" xml:space="preserve">
+    <value>input      - string to replace
+replace  - replace with</value>
+  </data>
+  <data name="FunctionTrimCompactDefinition" xml:space="preserve">
+    <value>tm( type )</value>
+  </data>
+  <data name="FunctionTrimCompactExample" xml:space="preserve">
+    <value>&lt;tagName.tm()&gt;</value>
+  </data>
+  <data name="FunctionTrimDefinition" xml:space="preserve">
+    <value>trim( type )</value>
+  </data>
+  <data name="FunctionTrimDescription" xml:space="preserve">
+    <value>Used to trim whitespace.</value>
   </data>
   <data name="FunctionTrimExample" xml:space="preserve">
     <value>&lt;tagName.trim( both )&gt;</value>
+  </data>
+  <data name="FunctionTrimParams" xml:space="preserve">
+    <value>type - left|l|right|r|both|b</value>
   </data>
   <data name="General" xml:space="preserve">
     <value>General</value>
@@ -514,6 +574,15 @@ Full Path - Match the full path of the file/directory</value>
   </data>
   <data name="SystemDefault" xml:space="preserve">
     <value>System Default</value>
+  </data>
+  <data name="TagFallback" xml:space="preserve">
+    <value>Tag Fallback</value>
+  </data>
+  <data name="TagFallbackDescription" xml:space="preserve">
+    <value>Tags can be given a fallback value for when a match is not found using ?? followed by the fallback string like shown below.</value>
+  </data>
+  <data name="TagFallbackExample" xml:space="preserve">
+    <value>&lt;tagName.replace('.',' ') ?? ''&gt;</value>
   </data>
   <data name="TagFormatFunctions" xml:space="preserve">
     <value>Tag Format Functions</value>

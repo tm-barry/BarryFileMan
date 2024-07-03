@@ -57,14 +57,14 @@
 
 				<!--Headers-->
 				<TextBlock Grid.Column="0" Grid.Row="0" Margin="5"
-						   FontWeight="Light"
+						   FontWeight="Bold"
 						   Text="{x:Static lang:Resources.Name}"/>
 				<Border Grid.Column="1" Grid.RowSpan="100"
 						Opacity="0.75"
 						BorderBrush="{DynamicResource SystemBaseMediumColor}"
 						BorderThickness="1,0,0,0"/>
 				<TextBlock Grid.Column="2" Grid.Row="0" Margin="5"
-						   FontWeight="Light"
+						   FontWeight="Bold"
 						   Text="{x:Static lang:Resources.Description}"/>
 				<Border Grid.ColumnSpan="3" Grid.Row="1" Padding="0"
 						Opacity="0.75"
@@ -73,13 +73,13 @@
 
 				<!--Match Pattern-->
 				<TextBlock Grid.Column="0" Grid.Row="2" Margin="10"
-						   FontWeight="Bold"
+						   FontWeight="Bold" Classes="cell-text"
 						   VerticalAlignment="Center"
 						   Text="{x:Static lang:Resources.MatchPattern}"/>
 				<StackPanel Grid.Column="2" Grid.Row="2" Margin="10">
-					<TextBlock TextWrapping="Wrap"
+					<TextBlock TextWrapping="Wrap" Classes="cell-text"
 							   Text="{x:Static lang:Resources.MatchPatternDescription}"/>
-					<vc:Hyperlink Margin="0,10,0,0"
+					<vc:Hyperlink Margin="0,10,0,0" Classes="cell-text"
 								  Content="{x:Static lang:Resources.DotNetRegexQuickReferenceTitle}"
 								  Uri="{Binding DotNetRegexQuickReferenceUri}"/>
 				</StackPanel>
@@ -90,11 +90,11 @@
 
 				<!--Match Type-->
 				<TextBlock Grid.Column="0" Grid.Row="4" Margin="10"
-						   FontWeight="Bold"
+						   FontWeight="Bold" Classes="cell-text"
 						   VerticalAlignment="Center"
 						   Text="{x:Static lang:Resources.MatchType}"/>
 				<TextBlock Grid.Column="2" Grid.Row="4" Margin="10"
-						   TextWrapping="Wrap"
+						   TextWrapping="Wrap" Classes="cell-text"
 						   Text="{x:Static lang:Resources.MatchTypeDescription}"/>
 				<Border Grid.ColumnSpan="3" Grid.Row="5" Padding="0"
 						Opacity="0.75"
@@ -103,11 +103,11 @@
 
 				<!--Test String-->
 				<TextBlock Grid.Column="0" Grid.Row="6" Margin="10"
-						   FontWeight="Bold"
+						   FontWeight="Bold" Classes="cell-text"
 						   VerticalAlignment="Center"
 						   Text="{x:Static lang:Resources.Input}"/>
 				<TextBlock Grid.Column="2" Grid.Row="6" Margin="10"
-						   TextWrapping="Wrap"
+						   TextWrapping="Wrap" Classes="cell-text"
 						   Text="{x:Static lang:Resources.InputDescription}"/>
 				<Border Grid.ColumnSpan="3" Grid.Row="7" Padding="0"
 						Opacity="0.75"
@@ -116,13 +116,13 @@
 
 				<!--Rename Pattern-->
 				<TextBlock Grid.Column="0" Grid.Row="8" Margin="10"
-						   FontWeight="Bold"
+						   FontWeight="Bold" Classes="cell-text"
 						   VerticalAlignment="Center"
 						   Text="{x:Static lang:Resources.RenamePattern}"/>
 				<StackPanel Grid.Column="2" Grid.Row="8" Margin="10">
-					<TextBlock TextWrapping="Wrap"
+					<TextBlock TextWrapping="Wrap" Classes="cell-text"
 							   Text="{x:Static lang:Resources.RenamePatternDescription}"/>
-					<help:HelpLink Margin="0,10,0,0"
+					<help:HelpLink Margin="0,10,0,0" Classes="cell-text"
 								   Content="{x:Static lang:Resources.RenamePatternSyntax}"
 								   Section="{x:Static enums:HelpSections.Rename}"/>
 				</StackPanel>
@@ -131,13 +131,13 @@
 						BorderBrush="{DynamicResource SystemBaseMediumColor}"
 						BorderThickness="0,1,0,0"/>
 
-				<!--Renamed String-->
+				<!--Output String-->
 				<TextBlock Grid.Column="0" Grid.Row="10" Margin="10"
-						   FontWeight="Bold"
+						   FontWeight="Bold" Classes="cell-text"
 						   VerticalAlignment="Center"
 						   Text="{x:Static lang:Resources.Output}"/>
 				<TextBlock Grid.Column="2" Grid.Row="10" Margin="10"
-						   TextWrapping="Wrap"
+						   TextWrapping="Wrap" Classes="cell-text"
 						   Text="{x:Static lang:Resources.OutputDescription}"/>
 				<Border Grid.ColumnSpan="3" Grid.Row="11" Padding="0"
 						Opacity="0.75"
@@ -146,11 +146,11 @@
 
 				<!--Match Groups-->
 				<TextBlock Grid.Column="0" Grid.Row="12" Margin="10"
-						   FontWeight="Bold"
+						   FontWeight="Bold" Classes="cell-text"
 						   VerticalAlignment="Center"
 						   Text="{x:Static lang:Resources.MatchGroups}"/>
 				<TextBlock Grid.Column="2" Grid.Row="12" Margin="10"
-						   TextWrapping="Wrap"
+						   TextWrapping="Wrap" Classes="cell-text"
 						   Text="{x:Static lang:Resources.MatchGroupsDescription}"/>
 				<Border Grid.ColumnSpan="3" Grid.Row="13" Padding="0"
 						Opacity="0.75"

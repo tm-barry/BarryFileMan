@@ -546,17 +546,92 @@ namespace BarryFileMan.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pad( type, char, length )
-        ///
-        ///Used to pad a tag to a certain length, such as padding a number with leading 0s.
-        ///
-        ///type - left|right
-        ///char - character to use to pad
-        ///length - what length to pad to.
+        ///   Looks up a localized string similar to ap( value ).
         /// </summary>
-        public static string FunctionPad {
+        public static string FunctionAppendCompactDefinition {
             get {
-                return ResourceManager.GetString("FunctionPad", resourceCulture);
+                return ResourceManager.GetString("FunctionAppendCompactDefinition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;tagName.ap(&apos; - end&apos;)&gt;.
+        /// </summary>
+        public static string FunctionAppendCompactExample {
+            get {
+                return ResourceManager.GetString("FunctionAppendCompactExample", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to append( value ).
+        /// </summary>
+        public static string FunctionAppendDefinition {
+            get {
+                return ResourceManager.GetString("FunctionAppendDefinition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Appends a string to the end of the tag..
+        /// </summary>
+        public static string FunctionAppendDescription {
+            get {
+                return ResourceManager.GetString("FunctionAppendDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;tagName.append(&apos; - end)&gt;.
+        /// </summary>
+        public static string FunctionAppendExample {
+            get {
+                return ResourceManager.GetString("FunctionAppendExample", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to value - string to append.
+        /// </summary>
+        public static string FunctionAppendParams {
+            get {
+                return ResourceManager.GetString("FunctionAppendParams", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pd( type, char, length ).
+        /// </summary>
+        public static string FunctionPadCompactDefinition {
+            get {
+                return ResourceManager.GetString("FunctionPadCompactDefinition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;tagName.pd( l, &apos;0&apos;, 2 )&gt;.
+        /// </summary>
+        public static string FunctionPadCompactExample {
+            get {
+                return ResourceManager.GetString("FunctionPadCompactExample", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pad( type, char, length ).
+        /// </summary>
+        public static string FunctionPadDefinition {
+            get {
+                return ResourceManager.GetString("FunctionPadDefinition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Used to pad a tag to a certain length, such as padding a number with leading 0s..
+        /// </summary>
+        public static string FunctionPadDescription {
+            get {
+                return ResourceManager.GetString("FunctionPadDescription", resourceCulture);
             }
         }
         
@@ -570,16 +645,103 @@ namespace BarryFileMan.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to replace( input, replace )
-        ///
-        ///Used to replace a string within a tag with another string.
-        ///
-        ///input - string to replace
-        ///replace - string to replace the input with.
+        ///   Looks up a localized string similar to type     - left|l|right|r
+        ///char     - pad character
+        ///length  - pad to length.
         /// </summary>
-        public static string FunctionReplace {
+        public static string FunctionPadParams {
             get {
-                return ResourceManager.GetString("FunctionReplace", resourceCulture);
+                return ResourceManager.GetString("FunctionPadParams", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pp( value ).
+        /// </summary>
+        public static string FunctionPrependCompactDefinition {
+            get {
+                return ResourceManager.GetString("FunctionPrependCompactDefinition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;tagName.pp(&apos;start - &apos;)&gt;.
+        /// </summary>
+        public static string FunctionPrependCompactExample {
+            get {
+                return ResourceManager.GetString("FunctionPrependCompactExample", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to prepend( value ).
+        /// </summary>
+        public static string FunctionPrependDefinition {
+            get {
+                return ResourceManager.GetString("FunctionPrependDefinition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Prepends a string to the start of the tag..
+        /// </summary>
+        public static string FunctionPrependDescription {
+            get {
+                return ResourceManager.GetString("FunctionPrependDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;tagName.prepend(&apos;start - &apos;)&gt;.
+        /// </summary>
+        public static string FunctionPrependExample {
+            get {
+                return ResourceManager.GetString("FunctionPrependExample", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to value - string to prepend.
+        /// </summary>
+        public static string FunctionPrependParams {
+            get {
+                return ResourceManager.GetString("FunctionPrependParams", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to rp( input, replace ).
+        /// </summary>
+        public static string FunctionReplaceCompactDefinition {
+            get {
+                return ResourceManager.GetString("FunctionReplaceCompactDefinition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;tagName.rp( &apos;.&apos;, &apos; &apos; )&gt;.
+        /// </summary>
+        public static string FunctionReplaceCompactExample {
+            get {
+                return ResourceManager.GetString("FunctionReplaceCompactExample", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to replace( input, replace ).
+        /// </summary>
+        public static string FunctionReplaceDefinition {
+            get {
+                return ResourceManager.GetString("FunctionReplaceDefinition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Used to replace a string with another string..
+        /// </summary>
+        public static string FunctionReplaceDescription {
+            get {
+                return ResourceManager.GetString("FunctionReplaceDescription", resourceCulture);
             }
         }
         
@@ -593,15 +755,48 @@ namespace BarryFileMan.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to trim( type )
-        ///
-        ///Used to trim whitespace from a tag.
-        ///
-        ///type - left|right|both.
+        ///   Looks up a localized string similar to input      - string to replace
+        ///replace  - replace with.
         /// </summary>
-        public static string FunctionTrim {
+        public static string FunctionReplaceParams {
             get {
-                return ResourceManager.GetString("FunctionTrim", resourceCulture);
+                return ResourceManager.GetString("FunctionReplaceParams", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to tm( type ).
+        /// </summary>
+        public static string FunctionTrimCompactDefinition {
+            get {
+                return ResourceManager.GetString("FunctionTrimCompactDefinition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;tagName.tm()&gt;.
+        /// </summary>
+        public static string FunctionTrimCompactExample {
+            get {
+                return ResourceManager.GetString("FunctionTrimCompactExample", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to trim( type ).
+        /// </summary>
+        public static string FunctionTrimDefinition {
+            get {
+                return ResourceManager.GetString("FunctionTrimDefinition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Used to trim whitespace..
+        /// </summary>
+        public static string FunctionTrimDescription {
+            get {
+                return ResourceManager.GetString("FunctionTrimDescription", resourceCulture);
             }
         }
         
@@ -611,6 +806,15 @@ namespace BarryFileMan.Resources {
         public static string FunctionTrimExample {
             get {
                 return ResourceManager.GetString("FunctionTrimExample", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to type - left|l|right|r|both|b.
+        /// </summary>
+        public static string FunctionTrimParams {
+            get {
+                return ResourceManager.GetString("FunctionTrimParams", resourceCulture);
             }
         }
         
@@ -1193,6 +1397,33 @@ namespace BarryFileMan.Resources {
         public static string SystemDefault {
             get {
                 return ResourceManager.GetString("SystemDefault", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tag Fallback.
+        /// </summary>
+        public static string TagFallback {
+            get {
+                return ResourceManager.GetString("TagFallback", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tags can be given a fallback value for when a match is not found using ?? followed by the fallback string like shown below..
+        /// </summary>
+        public static string TagFallbackDescription {
+            get {
+                return ResourceManager.GetString("TagFallbackDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;tagName.replace(&apos;.&apos;,&apos; &apos;) ?? &apos;&apos;&gt;.
+        /// </summary>
+        public static string TagFallbackExample {
+            get {
+                return ResourceManager.GetString("TagFallbackExample", resourceCulture);
             }
         }
         

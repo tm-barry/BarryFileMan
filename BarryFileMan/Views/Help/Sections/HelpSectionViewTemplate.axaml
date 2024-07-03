@@ -53,19 +53,19 @@
 					   Text="{x:Static lang:Resources.Pages}"/>
 			<Separator Margin="0,5,0,5"/>
 
-			<Grid ColumnDefinitions="Auto,Auto,*"
+			<Grid ColumnDefinitions="Auto,Auto,*" 
 				  RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto">
 
 				<!--Headers-->
 				<TextBlock Grid.Column="0" Grid.Row="0" Margin="5"
-						   FontWeight="Light"
+						   FontWeight="Bold"
 						   Text="{x:Static lang:Resources.Name}"/>
 				<Border Grid.Column="1" Grid.RowSpan="100"
 						Opacity="0.75"
 						BorderBrush="{DynamicResource SystemBaseMediumColor}"
 						BorderThickness="1,0,0,0"/>
 				<TextBlock Grid.Column="2" Grid.Row="0" Margin="5"
-						   FontWeight="Light"
+						   FontWeight="Bold"
 						   Text="{x:Static lang:Resources.Description}"/>
 				<Border Grid.ColumnSpan="3" Grid.Row="1" Padding="0"
 						Opacity="0.75"
@@ -75,12 +75,12 @@
 
 				<!--Rename Page-->
 				<help:HelpLink Grid.Column="0" Grid.Row="2" Margin="10"
-							   FontWeight="Bold"
+							   FontWeight="Bold" Classes="cell-text"
 							   Content="{x:Static lang:Resources.Rename}"
 							   VerticalAlignment="Center"
 							   Section="{x:Static enums:HelpSections.Rename}"/>
 				<TextBlock Grid.Column="2" Grid.Row="2" Margin="10"
-						   TextWrapping="Wrap"
+						   TextWrapping="Wrap" Classes="cell-text"
 						   Text="{x:Static lang:Resources.RenamePageDescription}"/>
 				<Border Grid.ColumnSpan="3" Grid.Row="3" Padding="0"
 						Opacity="0.75"
@@ -89,12 +89,12 @@
 
 				<!--Flatten Page-->
 				<help:HelpLink Grid.Column="0" Grid.Row="4" Margin="10"
-							   FontWeight="Bold"
+							   FontWeight="Bold" Classes="cell-text"
 							   Content="{x:Static lang:Resources.Flatten}"
 							   VerticalAlignment="Center"
 							   Section="{x:Static enums:HelpSections.Flatten}"/>
 				<TextBlock Grid.Column="2" Grid.Row="4" Margin="10"
-						   TextWrapping="Wrap"
+						   TextWrapping="Wrap" Classes="cell-text"
 						   Text="{x:Static lang:Resources.FlattenPageDescription}"/>
 				<Border Grid.ColumnSpan="3" Grid.Row="5" Padding="0"
 						Opacity="0.75"

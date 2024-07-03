@@ -3,6 +3,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:vm="using:BarryFileMan.ViewModels.Help"
+		xmlns:h="using:BarryFileMan.Views.Help"
 		xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
         mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="500"
         x:Class="BarryFileMan.HelpWindow"
@@ -21,6 +22,18 @@
 			</ResourceDictionary.MergedDictionaries>
 		</ResourceDictionary>
 	</Window.Resources>
+
+	<Window.Styles>
+		<Style Selector="TextBlock.cell-text">
+			<Setter Property="FontSize" Value="12"/>
+		</Style>
+		<Style Selector="SelectableTextBlock.cell-text">
+			<Setter Property="FontSize" Value="12"/>
+		</Style>
+		<Style Selector="h|HelpLink.cell-text">
+			<Setter Property="FontSize" Value="12"/>
+		</Style>
+	</Window.Styles>
 	
 	<Grid RowDefinitions="Auto,*">
 		
