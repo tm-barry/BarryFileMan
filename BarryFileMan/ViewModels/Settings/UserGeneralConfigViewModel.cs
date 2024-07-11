@@ -1,4 +1,5 @@
 ﻿using BarryFileMan.Enums.Config;
+using BarryFileMan.Managers;
 using BarryFileMan.Models.Config;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.ObjectModel;
@@ -23,6 +24,8 @@ namespace BarryFileMan.ViewModels.Settings
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(IsDirty))]
         private bool _sidebarExpandedDefault;
+
+        public string ConfigPath => AppManager.UserConfig.FolderPath;
 
         public override bool IsDirty => SelectedTheme != _config.Theme || SidebarExpandedDefault != _config.SidebarExpandedDefault;
 

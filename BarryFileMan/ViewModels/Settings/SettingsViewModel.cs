@@ -42,6 +42,12 @@ namespace BarryFileMan.ViewModels.Settings
         }
 
         [RelayCommand]
+        private async Task CopyText(string text)
+        {
+            await AppManager.CopyText(text);
+        }
+
+        [RelayCommand]
         private async Task RevertToDefault()
         {
             IsBusy = true;

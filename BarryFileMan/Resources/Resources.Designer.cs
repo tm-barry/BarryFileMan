@@ -133,6 +133,15 @@ namespace BarryFileMan.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Config Path.
+        /// </summary>
+        public static string ConfigPath {
+            get {
+                return ResourceManager.GetString("ConfigPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Copy New.
         /// </summary>
         public static string CopyNew {

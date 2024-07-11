@@ -141,6 +141,9 @@
   <data name="Clear" xml:space="preserve">
     <value>Clear</value>
   </data>
+  <data name="ConfigPath" xml:space="preserve">
+    <value>Config Path</value>
+  </data>
   <data name="CopyNew" xml:space="preserve">
     <value>Copy New</value>
   </data>

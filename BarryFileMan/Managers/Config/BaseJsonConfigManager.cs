@@ -9,14 +9,16 @@ namespace BarryFileMan.Managers.Config
 {
     public class BaseJsonConfigManager<T> : IConfigManager<T> where T : new()
     {
-        private static readonly string _portableFolderPath = "user";
+        private static readonly string _executableFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+        private static readonly string? _executableDirectory = Path.GetDirectoryName(_executableFilePath);
+        private static readonly string _portableFolderPath = Path.Combine(_executableDirectory ?? string.Empty, "user");
         private static readonly string _appDatafolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "BarryFileMan");
 
         private readonly T _defaultConfig = new();
         private readonly BehaviorSubject<(T config, string? key)> _configSubject = new(new());
 
-        private string FolderPath => Directory.Exists(_portableFolderPath) ? _portableFolderPath : _appDatafolderPath;
-        private string FilePath => Path.Combine(FolderPath, FileName);
+        public string FolderPath => Directory.Exists(_portableFolderPath) ? _portableFolderPath : _appDatafolderPath;
+        public string FilePath => Path.Combine(FolderPath, FileName);
 
         protected virtual string FileName => "config.json";
 

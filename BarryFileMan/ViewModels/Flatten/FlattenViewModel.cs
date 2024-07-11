@@ -140,7 +140,7 @@ namespace BarryFileMan.ViewModels.Flatten
                     AllowMultiple = false,
                 });
 
-                if (folders != null)
+                if (folders != null && folders.Any())
                 {
                     StorageFolder = folders[0];
                 }
