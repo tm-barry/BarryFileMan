@@ -1,5 +1,6 @@
 ﻿using Avalonia.Platform.Storage;
 using BarryFileMan.Attributes.Validation;
+using BarryFileMan.Helpers;
 using BarryFileMan.Managers;
 using BarryFileMan.Models.Config;
 using BarryFileMan.Rename.Extensions;
@@ -335,8 +336,13 @@ namespace BarryFileMan.ViewModels.Flatten
 
             Files.Clear();
             if (files != null)
+            {
                 foreach (var file in files)
-                    Files.Add(file);
+                {
+                    Files.AddSorted(file,
+                        Comparer<FlattenFileViewModel>.Create((x, y) => string.Compare(x.FullPath, y.FullPath)));
+                }
+            }
 
             ApplyingFilters = false;
         }

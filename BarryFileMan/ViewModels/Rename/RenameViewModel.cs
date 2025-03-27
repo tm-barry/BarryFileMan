@@ -1,10 +1,8 @@
 ﻿using Avalonia.Platform.Storage;
 using BarryFileMan.Enums.Rename;
 using BarryFileMan.Helpers;
-using BarryFileMan.Interfaces;
 using BarryFileMan.Managers;
 using BarryFileMan.Models.Config;
-using BarryFileMan.Models.Presets;
 using BarryFileMan.Rename.Enums;
 using BarryFileMan.ViewModels.Rename.Providers;
 using BarryFileMan.Views.Common;
@@ -277,7 +275,10 @@ namespace BarryFileMan.ViewModels.Rename
                 foreach(var file in files)
                 {
                     if(!Files.Any((f) => f.File.Path == file.Path))
-                        Files.Add(new RenameFileViewModel(file));
+                    {
+                        Files.AddSorted(new RenameFileViewModel(file),
+                            Comparer<RenameFileViewModel>.Create((x, y) => string.Compare(x.File.Name, y.File.Name)));
+                    }
                 }
             }
 
