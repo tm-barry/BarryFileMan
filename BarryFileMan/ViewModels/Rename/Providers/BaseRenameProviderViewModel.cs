@@ -60,9 +60,10 @@ namespace BarryFileMan.ViewModels.Rename.Providers
             AppManager.PresetsConfig.ConfigObservable.Subscribe(OnPresetsConfigChanged);
         }
 
-        public virtual async Task ApplyFileRenames()
+        public virtual Task ApplyFileRenames()
         {
             HandleDuplicateFilenames();
+            return Task.CompletedTask;
         }
 
         protected virtual void OnPresetsConfigChanged((Presets presets, string? key) value) { }
@@ -170,21 +171,21 @@ namespace BarryFileMan.ViewModels.Rename.Providers
         private bool CanSavePreset() => !IsBusy && SelectedPreset != null && !SelectedPreset.IsSystem;
 
         [RelayCommand(CanExecute = nameof(CanSavePreset))]
-        protected virtual async Task SavePreset() { }
+        protected virtual Task SavePreset() => Task.CompletedTask;
 
         private bool CanRenamePreset() => !IsBusy && SelectedPreset != null && !SelectedPreset.IsSystem;
 
         [RelayCommand(CanExecute = nameof(CanRenamePreset))]
-        protected virtual async Task RenamePreset() { }
+        protected virtual Task RenamePreset() => Task.CompletedTask;
 
         private bool CanSaveNewPreset() => !IsBusy;
 
         [RelayCommand(CanExecute = nameof(CanSaveNewPreset))]
-        protected virtual async Task SaveNewPreset() { }
+        protected virtual Task SaveNewPreset() => Task.CompletedTask;
 
         private bool CanDeletePreset() => !IsBusy && SelectedPreset != null && !SelectedPreset.IsSystem;
 
         [RelayCommand(CanExecute = nameof(CanDeletePreset))]
-        protected virtual async Task DeletePreset() { }
+        protected virtual Task DeletePreset() => Task.CompletedTask;
     }
 }

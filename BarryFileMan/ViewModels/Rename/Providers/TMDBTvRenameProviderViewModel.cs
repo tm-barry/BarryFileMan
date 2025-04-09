@@ -143,6 +143,8 @@ namespace BarryFileMan.ViewModels.Rename.Providers
                     file.RenamedFileName = null;
                 }
             }
+
+            HandleDuplicateFilenames();
         }
 
         protected override void OnPresetsConfigChanged((Presets presets, string? key) value)

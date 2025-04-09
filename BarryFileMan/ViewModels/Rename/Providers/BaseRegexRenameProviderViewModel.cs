@@ -111,7 +111,7 @@ namespace BarryFileMan.ViewModels.Rename.Providers
             ViewModel.PropertyChanged -= ViewModel_PropertyChanged;
         }
 
-        public override async Task ApplyFileRenames()
+        public override Task ApplyFileRenames()
         {
             foreach (var file in ViewModel.Files)
             {
@@ -121,7 +121,7 @@ namespace BarryFileMan.ViewModels.Rename.Providers
                 file.RenamedFileName = string.IsNullOrEmpty(renameError) ? renamedFileName : null;
             }
 
-            await base.ApplyFileRenames();
+            return base.ApplyFileRenames();
         }
 
         protected string GetFileMatchInput(RenameFileViewModel? file)

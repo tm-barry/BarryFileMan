@@ -58,9 +58,8 @@ namespace BarryFileMan.ViewModels.Rename.Providers
 
     public class TMDBMatch
     {
-        private static readonly string _baseUrl = "https://image.tmdb.org/t/p/";
-        private static readonly string _secureBaseUrl = "https://image.tmdb.org/t/p/";
-        private static readonly IEnumerable<string> _posterSizes = new List<string>()
+        private readonly string _secureBaseUrl = "https://image.tmdb.org/t/p/";
+        private readonly IEnumerable<string> _posterSizes = new List<string>()
         {
             "w92",
             "w154",
