@@ -199,7 +199,6 @@
 			</ScrollViewer>
 
 			<Button Grid.Row="1" Margin="0,10,0,5" Height="32"
-					Content="{x:Static lang:Resources.Default}"
 					HorizontalAlignment="Left"
 					Command="{Binding RevertToDefaultCommand}">
 				<Grid ColumnDefinitions="Auto,*">
@@ -212,7 +211,6 @@
 						Orientation="Horizontal"
 						HorizontalAlignment="Right">
 				<Button Height="32"
-						Content="{x:Static lang:Resources.Undo}"
 						Command="{Binding UndoChangesCommand}">
 					<Grid ColumnDefinitions="Auto,*">
 						<materialIcons:MaterialIcon Grid.Column="0" Kind="Undo"/>
@@ -220,7 +218,6 @@
 					</Grid>
 				</Button>
 				<Button Height="32" Margin="10,0,0,0"
-						Content="{x:Static lang:Resources.Save}"
 						Command="{Binding SaveChangesCommand}">
 					<Grid ColumnDefinitions="Auto,*">
 						<materialIcons:MaterialIcon Grid.Column="0" Kind="ContentSave"/>

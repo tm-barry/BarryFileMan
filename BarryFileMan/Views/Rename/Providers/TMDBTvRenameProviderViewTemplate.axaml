@@ -64,8 +64,7 @@
 							<Button Grid.Row="1" Margin="10,5" Height="32"
 									Command="{Binding FindInputMatchesCommand}"
 									HorizontalAlignment="Right"
-									BorderBrush="{DynamicResource SystemBaseMediumColor}"
-									Content="{x:Static lang:Resources.FindMatch}">
+									BorderBrush="{DynamicResource SystemBaseMediumColor}">
 								<Grid ColumnDefinitions="Auto,*">
 									<materialIcons:MaterialIcon Grid.Column="0" Kind="Magnify"/>
 									<TextBlock Grid.Column="1" Margin="5,0,0,0" VerticalAlignment="Center" Text="{x:Static lang:Resources.FindMatch}"/>
