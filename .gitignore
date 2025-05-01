@@ -364,16 +364,4 @@ FodyWeavers.xsd
 /user.json
 
 # Rider
-# Default ignored files
-/shelf/
-/workspace.xml
-# Rider ignored files
-/contentModel.xml
-/modules.xml
-.idea/
-/projectSettingsUpdater.xml
-# Editor-based HTTP Client requests
-/httpRequests/
-# Datasource local storage ignored files
-/dataSources/
-/dataSources.local.xml
+.idea
