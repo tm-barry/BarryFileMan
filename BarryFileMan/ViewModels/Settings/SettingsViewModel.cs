@@ -76,8 +76,7 @@ namespace BarryFileMan.ViewModels.Settings
             }
             catch(Exception ex)
             {
-                await AppManager.MsgBoxShowWindowDialogAsync(
-                        Resources.Resources.Error, $"{ex.Message}\n{ex.InnerException?.Message}", MsgBoxButtons.Ok, MsgBoxIcons.Error);
+                await AppManager.ExceptionMsgBoxShowWindowDialogAsync(ex);
             }
 
             IsBusy = false;
@@ -104,8 +103,7 @@ namespace BarryFileMan.ViewModels.Settings
             }
             catch (Exception ex)
             {
-                await AppManager.MsgBoxShowWindowDialogAsync(
-                        Resources.Resources.Error, $"{ex.Message}\n{ex.InnerException?.Message}", MsgBoxButtons.Ok, MsgBoxIcons.Error);
+                await AppManager.ExceptionMsgBoxShowWindowDialogAsync(ex);
             }
         }
 

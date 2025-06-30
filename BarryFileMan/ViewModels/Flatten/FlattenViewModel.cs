@@ -250,7 +250,7 @@ namespace BarryFileMan.ViewModels.Flatten
                 {
                     try
                     {
-                        DeleteEmptyFolders(FolderPath);
+                        await DeleteEmptyFolders(FolderPath);
                     }
                     catch (Exception ex)
                     {
@@ -327,11 +327,7 @@ namespace BarryFileMan.ViewModels.Flatten
             catch (Exception ex)
             {
                 files.Clear();
-                await AppManager.MsgBoxShowWindowDialogAsync(
-                        Resources.Resources.Error, 
-                        $"{ex.Message}\n{ex.InnerException?.Message}", 
-                        MsgBoxButtons.Ok, 
-                        MsgBoxIcons.Error);
+                await AppManager.ExceptionMsgBoxShowWindowDialogAsync(ex);
             }
 
             Files.Clear();
@@ -369,7 +365,7 @@ namespace BarryFileMan.ViewModels.Flatten
             return string.Format("{0}({1}){2}", plainName, number, extension);
         }
 
-        private void DeleteEmptyFolders(string path)
+        private async Task DeleteEmptyFolders(string path)
         {
             if (Directory.Exists(path))
             {
@@ -377,7 +373,7 @@ namespace BarryFileMan.ViewModels.Flatten
                 foreach (var folder in rootFolders)
                 {
                     // Delete empty subfolders
-                    DeleteEmptyFolders(folder);
+                    await DeleteEmptyFolders(folder);
 
                     // Delete folder if empty
                     var folders = Directory.GetDirectories(folder, "*", SearchOption.TopDirectoryOnly);
@@ -389,7 +385,10 @@ namespace BarryFileMan.ViewModels.Flatten
                         {
                             Directory.Delete(folder);
                         }
-                        catch { }
+                        catch (Exception ex)
+                        {
+                            await AppManager.ExceptionMsgBoxShowWindowDialogAsync(ex);
+                        }
                     }
                 }
             }

@@ -9,15 +9,15 @@ namespace BarryFileMan.Managers.Config
 {
     public class BaseJsonConfigManager<T> : IConfigManager<T> where T : new()
     {
-        private static readonly string _executableFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
-        private static readonly string? _executableDirectory = Path.GetDirectoryName(_executableFilePath);
-        private static readonly string _portableFolderPath = Path.Combine(_executableDirectory ?? string.Empty, "user");
-        private static readonly string _appDatafolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "BarryFileMan");
-
         private readonly T _defaultConfig = new();
         private readonly BehaviorSubject<(T config, string? key)> _configSubject = new(new());
+        
+        private static string ExecutableFilePath => System.Reflection.Assembly.GetExecutingAssembly().Location;
+        private static string? ExecutableDirectory => Path.GetDirectoryName(ExecutableFilePath);
+        private static string PortableFolderPath => Path.Combine(ExecutableDirectory ?? string.Empty, "user");
+        private static string AppDataFolderPath => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "BarryFileMan");
 
-        public string FolderPath => Directory.Exists(_portableFolderPath) ? _portableFolderPath : _appDatafolderPath;
+        public string FolderPath => Directory.Exists(PortableFolderPath) ? PortableFolderPath : AppDataFolderPath;
         public string FilePath => Path.Combine(FolderPath, FileName);
 
         protected virtual string FileName => "config.json";
@@ -50,7 +50,10 @@ namespace BarryFileMan.Managers.Config
                     SetConfig(_defaultConfig);
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                AppManager.ExceptionMsgBoxShowWindowDialogAsync(ex);
+            }
 
             return config ?? _defaultConfig;
         }
@@ -75,7 +78,10 @@ namespace BarryFileMan.Managers.Config
                     await SetConfigAsync(_defaultConfig);
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                await AppManager.ExceptionMsgBoxShowWindowDialogAsync(ex);
+            }
 
             return config ?? _defaultConfig;
         }
@@ -98,7 +104,10 @@ namespace BarryFileMan.Managers.Config
                 File.WriteAllText(FilePath, JsonSerializer.Serialize(config, new JsonSerializerOptions { WriteIndented = true }));
                 UpdateConfigSubject(config, key);
             }
-            catch { }
+            catch (Exception ex)
+            {
+                AppManager.ExceptionMsgBoxShowWindowDialogAsync(ex);
+            }
             return config;
         }
 
@@ -110,7 +119,10 @@ namespace BarryFileMan.Managers.Config
                 await File.WriteAllTextAsync(FilePath, JsonSerializer.Serialize(config, new JsonSerializerOptions { WriteIndented = true }));
                 UpdateConfigSubject(config, key);
             }
-            catch { }
+            catch (Exception ex)
+            {
+                await AppManager.ExceptionMsgBoxShowWindowDialogAsync(ex);
+            }
             return config;
         }
 

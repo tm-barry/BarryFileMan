@@ -61,7 +61,7 @@ namespace BarryFileMan.Managers
                 {
                     TMDBConfig = await new TMDBRepository(UserConfig.Config.Tmdb.ApiKey).GetConfigurationAsync();
                 }
-                catch { }
+                catch { /* Ignore exception */ }
             }
         }
 
@@ -80,6 +80,17 @@ namespace BarryFileMan.Managers
              WindowStartupLocation windowStartupLocation = WindowStartupLocation.CenterScreen)
         {
             return MessageBox.ShowAsync(MainWindow, title, message, buttons, icon, hasInput, defaultInputValue, maxInputLength, windowStartupLocation);
+        }
+        
+        public static Task<(MsgBoxResult result, string? input)> ExceptionMsgBoxShowWindowDialogAsync(Exception exception,
+            WindowStartupLocation windowStartupLocation = WindowStartupLocation.CenterScreen)
+        {
+            return MsgBoxShowWindowDialogAsync(
+                Resources.Resources.Error,
+                $"{exception.Message}\n{exception.InnerException?.Message}",
+                MsgBoxButtons.Ok,
+                MsgBoxIcons.Error,
+                windowStartupLocation: windowStartupLocation);
         }
 
         public static Task HelpWindowShowAsync(HelpSections section = HelpSections.Help, bool isDialog = false, 

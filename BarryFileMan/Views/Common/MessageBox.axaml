@@ -6,8 +6,9 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="BarryFileMan.Views.Common.MessageBox"
 		Icon="/Assets/barry-file-man-logo.ico"
-        SizeToContent="WidthAndHeight" 
-		CanResize="False">
+        SizeToContent="WidthAndHeight"
+		CanResize="False"
+        Topmost="True">
 	<StackPanel HorizontalAlignment="Center" Margin="10">
 		<Grid ColumnDefinitions="Auto,*" Margin="0,0,0,10">
 			<materialIcons:MaterialIcon Grid.Column="0" Name="MsgIcon" Margin="0,0,10,0"
