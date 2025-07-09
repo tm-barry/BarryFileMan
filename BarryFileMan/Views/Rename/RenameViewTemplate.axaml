@@ -3,14 +3,11 @@
 					xmlns:vm="using:BarryFileMan.ViewModels.Rename"
 					xmlns:vmp="using:BarryFileMan.ViewModels.Rename.Providers"
 					xmlns:i="using:Avalonia.Xaml.Interactivity"
-					xmlns:id="using:Avalonia.Xaml.Interactions.Draggable"
 					xmlns:idd="using:Avalonia.Xaml.Interactions.DragAndDrop"
-					xmlns:ia="using:Avalonia.Xaml.Interactions.Core"
 					xmlns:b="using:BarryFileMan.Behaviors"
 					xmlns:h="using:BarryFileMan.Helpers"
 					xmlns:lang="using:BarryFileMan.Resources"
-					xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
-					xmlns:svg="using:Avalonia.Svg.Skia">
+					xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia">
 	<!-- Preview DataTemplate -->
 	<Design.PreviewWith>
 		<Grid Width="600" Height="600">
@@ -50,7 +47,7 @@
 			</Grid.DataTemplates>
 			
 			<Grid.Styles>
-				<StyleInclude Source="avares://Avalonia.Xaml.Interactions.Draggable/Styles.axaml" />
+				<StyleInclude Source="avares://Xaml.Behaviors.Interactions.Draggable/Styles.axaml" />
 
 				<Style Selector="ListBox.fileDragAndDrop">
 					<Style.Resources>
@@ -278,7 +275,7 @@
 			<!-- Files Listbox Placeholder -->
 			<Grid Grid.Row="3" IsHitTestVisible="false" IsVisible="{Binding !HasFiles}">
 				<TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
-						   Text="{x:Static lang:Resources.DragDropFilesFolders}"
+						   Text="{x:Static lang:Resources.NoFilesFound}"
 						   Opacity="0.5"/>
 			</Grid>
 

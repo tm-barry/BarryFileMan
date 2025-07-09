@@ -3,11 +3,9 @@ using Avalonia.Input;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using Avalonia.Xaml.Interactions.DragAndDrop;
-using BarryFileMan.ViewModels;
 using BarryFileMan.ViewModels.Rename;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace BarryFileMan.Behaviors
 {
