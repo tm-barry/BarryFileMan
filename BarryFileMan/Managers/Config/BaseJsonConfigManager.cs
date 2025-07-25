@@ -15,7 +15,7 @@ namespace BarryFileMan.Managers.Config
         private static string ExecutableFilePath => System.Reflection.Assembly.GetExecutingAssembly().Location;
         private static string? ExecutableDirectory => Path.GetDirectoryName(ExecutableFilePath);
         private static string PortableFolderPath => Path.Combine(ExecutableDirectory ?? string.Empty, "user");
-        private static string AppDataFolderPath => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "BarryFileMan");
+        private static string AppDataFolderPath => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "tm-barry/BarryFileMan");
 
         public string FolderPath => Directory.Exists(PortableFolderPath) ? PortableFolderPath : AppDataFolderPath;
         public string FilePath => Path.Combine(FolderPath, FileName);
