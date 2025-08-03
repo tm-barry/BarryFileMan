@@ -1,11 +1,8 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-					xmlns:vm="using:BarryFileMan.ViewModels"
 					xmlns:vmhs="using:BarryFileMan.ViewModels.Help.Sections"
 					xmlns:vc="using:BarryFileMan.Views.Common"
-					xmlns:help="using:BarryFileMan.Views.Help"
-					xmlns:lang="using:BarryFileMan.Resources"
-					xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia">
+					xmlns:lang="using:BarryFileMan.Resources">
 	<!-- Preview DataTemplate -->
 	<Design.PreviewWith>
 		<Grid Width="500" Height="500">
@@ -31,8 +28,8 @@
 			
 			<!-- Rename TMDB Header -->
 			<StackPanel Orientation="Horizontal">
-				<Svg Width="96" Margin="0,0,10,0"
-					 Path="/Assets/tmdb-alt-short-logo.svg"/>
+				<Image Width="96"
+				       Source="/Assets/tmdb-alt-short-logo.96x12.png"/>
 				<TextBlock FontSize="32" FontWeight="Bold"
 						   VerticalAlignment="Center"
 						   TextWrapping="Wrap"

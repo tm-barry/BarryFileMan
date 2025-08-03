@@ -1,5 +1,8 @@
-﻿using BarryFileMan.Rename.Enums;
+﻿using Avalonia.Media.Imaging;
+using Avalonia.Platform;
+using BarryFileMan.Rename.Enums;
 using CommunityToolkit.Mvvm.ComponentModel;
+using System;
 
 namespace BarryFileMan.ViewModels.Rename.Providers
 {
@@ -16,6 +19,9 @@ namespace BarryFileMan.ViewModels.Rename.Providers
 
         [ObservableProperty]
         private string _icon;
+        
+        [ObservableProperty]
+        private Bitmap? _iconBitmap;
 
         [ObservableProperty]
         private int? _iconHeight;
@@ -26,7 +32,7 @@ namespace BarryFileMan.ViewModels.Rename.Providers
         [ObservableProperty]
         private bool _isImage;
 
-        public RenameProviderTypeItemViewModel(RenameProviderTypes type, string display, string icon, 
+        public RenameProviderTypeItemViewModel(RenameProviderTypes type, string display, string icon,
             int? iconHeight = null, int? iconWidth = null, bool isImage = false)
         {
             Type = type;
@@ -35,6 +41,13 @@ namespace BarryFileMan.ViewModels.Rename.Providers
             IconHeight = iconHeight;
             IconWidth = iconWidth;
             IsImage = isImage;
+
+            if (isImage && !string.IsNullOrWhiteSpace(icon))
+            {
+                var path = icon.TrimStart('/');
+                var uri = new Uri($"avares://BarryFileMan/{path}");
+                IconBitmap = new Bitmap(AssetLoader.Open(uri));
+            }
         }
     }
 }

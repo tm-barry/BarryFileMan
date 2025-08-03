@@ -5,7 +5,6 @@
 		xmlns:cc="using:BarryFileMan.Converters"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-		xmlns:svg="using:Avalonia.Svg.Skia"
 		xmlns:lang="using:BarryFileMan.Resources"
 		xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
@@ -45,7 +44,7 @@
 				<Image Grid.Row="0" Margin="10,0,10,0"
 					   MaxWidth="96"
 					   HorizontalAlignment="Center"
-					   Source="{svg:SvgImage /Assets/barry-file-man-logo.svg}"/>
+					   Source="/Assets/barry-file-man-logo.96x96.png"/>
 
 				<Separator Grid.Row="1"/>
 

@@ -6,6 +6,9 @@
 
 BarryFileMan is a file manager with a primary focus of renaming and managing media files and folders.
 
+## Build
+pupnet --runtime linux-x64 --kind appimage
+
 ## License
 
 BarryFileMan is licensed under the MIT license.

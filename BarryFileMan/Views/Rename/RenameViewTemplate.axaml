@@ -78,9 +78,9 @@
 														Width="{Binding IconWidth}"
 														Kind="{Binding Icon}"
 														IsVisible="{Binding !IsImage}"/>
-							<Svg Height="{Binding IconHeight}"
+							<Image Height="{Binding IconHeight}"
 								 Width="{Binding IconWidth}"
-								 Path="{Binding Icon}" 
+								 Source="{Binding IconBitmap}" 
 								 IsVisible="{Binding IsImage}"/>
 							<TextBlock Margin="10,0,0,0" Width="50"
 									   VerticalAlignment="Center"
@@ -103,9 +103,9 @@
 														Width="{Binding IconWidth}"
 														Kind="{Binding Icon}"
 														IsVisible="{Binding !IsImage}"/>
-							<Svg Height="{Binding IconHeight}"
+							<Image Height="{Binding IconHeight}"
 								 Width="{Binding IconWidth}"
-								 Path="{Binding Icon}"
+								 Source="{Binding IconBitmap}"
 								 IsVisible="{Binding IsImage}"/>
 							<TextBlock Text="{Binding SettingsDisplay}" Margin="5,0,0,0"
 									   FontSize="12"
