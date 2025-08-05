@@ -1,5 +1,5 @@
 <p align="center">
-	<img alt="logo" src="BarryFileMan/Assets/barry-file-man-logo.svg" width="190" height="190">
+	<img alt="logo" src="BarryFileMan/Assets/barry-file-man-logo.svg" width="256" height="256">
 </p>
 
 <h1 align="center">BarryFileMan</h1>
