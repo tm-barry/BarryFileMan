@@ -92,7 +92,7 @@ namespace BarryFileMan.ViewModels.Rename.Providers
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(HasTmdbMatches))]
-        private IEnumerable<IRenameMatch>? _tmdbMatches;
+        private IEnumerable<BarryFileMan.Rename.Interfaces.IRenameMatch>? _tmdbMatches;
         protected virtual void OnTmdbMatchesChangedBefore(IEnumerable<IRenameMatch>? value) { }
         partial void OnTmdbMatchesChanged(IEnumerable<IRenameMatch>? value)
         {

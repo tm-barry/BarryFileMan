@@ -8,13 +8,17 @@ namespace BarryFileMan.Views.Rename.Providers
 {
     public partial class TMDBMatchSelect : Window
     {
-        TMDBMatchSelectViewModel _viewModel;
+        TMDBMatchSelectViewModel? _viewModel;
+        
+        public TMDBMatchSelect()
+        {
+            InitializeComponent();
+        }
 
-        public TMDBMatchSelect(TMDBMatchSelectViewModel viewModel)
+        public TMDBMatchSelect(TMDBMatchSelectViewModel viewModel) : this()
         {
             _viewModel = viewModel;
             DataContext = viewModel;
-            InitializeComponent();
         }
 
         public static Task<IRenameMatch?> ShowAsync(IEnumerable<IRenameMatch>? matches, Window? parent = null, WindowStartupLocation windowStartupLocation = WindowStartupLocation.CenterScreen)
@@ -25,7 +29,7 @@ namespace BarryFileMan.Views.Rename.Providers
             };
 
             var tcs = new TaskCompletionSource<IRenameMatch?>();
-            promptWindow.Closed += delegate { tcs.TrySetResult(promptWindow._viewModel.SelectedMatch?.RenameMatch); };
+            promptWindow.Closed += delegate { tcs.TrySetResult(promptWindow._viewModel!.SelectedMatch?.RenameMatch); };
 
             if (parent != null)
                 promptWindow.ShowDialog(parent);

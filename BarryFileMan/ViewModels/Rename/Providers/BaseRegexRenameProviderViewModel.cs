@@ -1,12 +1,8 @@
 ﻿using Avalonia.Controls;
-using Avalonia.Controls.Models.TreeDataGrid;
 using BarryFileMan.Attributes.Validation;
 using BarryFileMan.Enums.Rename;
-using BarryFileMan.Interfaces;
-using BarryFileMan.Models.Presets;
 using BarryFileMan.Rename.Exceptions;
 using BarryFileMan.Rename.Interfaces;
-using BarryFileMan.Rename.Models;
 using BarryFileMan.Rename.Providers.Regex;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.Generic;
@@ -84,7 +80,7 @@ namespace BarryFileMan.ViewModels.Rename.Providers
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(HasInputMatches))]
-        private IEnumerable<IRenameMatch>? _inputMatches;
+        private IEnumerable<BarryFileMan.Rename.Interfaces.IRenameMatch>? _inputMatches;
         protected virtual void OnInputMatchesChangedBefore(IEnumerable<IRenameMatch>? value) { }
         partial void OnInputMatchesChanged(IEnumerable<IRenameMatch>? value)
         {

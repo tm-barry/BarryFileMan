@@ -13,7 +13,7 @@ namespace BarryFileMan.Behaviors
     {
         private bool Validate<T>(DragEventArgs e, object? targetContext, bool bExecute) where T : RenameFileViewModel
         {
-            var storageItems = e.Data.GetFiles();
+            var storageItems = e.DataTransfer.TryGetFiles();
             if (storageItems != null
                 && storageItems.Any()
                 && targetContext is RenameViewModel vm)
