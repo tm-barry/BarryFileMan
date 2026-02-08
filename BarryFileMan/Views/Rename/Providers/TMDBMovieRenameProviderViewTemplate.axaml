@@ -186,28 +186,30 @@
 					<!--TMDB Settings-->
 					<TabItem Header="{x:Static lang:Resources.TMDB}">
 						<Grid>
-							<TreeDataGrid VerticalAlignment="Stretch"
-										  BorderThickness="1"
-										  BorderBrush="{DynamicResource SystemBaseMediumColor}"
-										  CornerRadius="3"
-										  Source="{Binding TmdbMatchNodeColumns}">
-								<TreeDataGrid.Resources>
-									<!-- Template for Name column cells -->
-									<DataTemplate x:Key="MatchNameCell" DataType="vm:RenameMatchNodeViewModel">
-										<StackPanel Orientation="Horizontal">
-											<materialIcons:MaterialIcon Height="16" Width="16"
-																	Kind="{Binding Icon}"/>
-											<TextBlock Text="{Binding DisplayName}" VerticalAlignment="Center" Margin="5,0,0,0"/>
-										</StackPanel>
-									</DataTemplate>
-								</TreeDataGrid.Resources>
+							<TreeView VerticalAlignment="Stretch"
+							          BorderThickness="0,1,0,0"
+							          BorderBrush="{DynamicResource SystemBaseMediumColor}"
+							          ItemsSource="{Binding TmdbMatchNodes}">
+								<TreeView.ItemTemplate>
+									<TreeDataTemplate DataType="vm:RenameMatchNodeViewModel" ItemsSource="{Binding SubNodes}">
+										<Grid ColumnDefinitions="*,*">
+											<StackPanel Orientation="Horizontal" Grid.Column="0">
+												<materialIcons:MaterialIcon Height="16" Width="16"
+												                            Kind="{Binding Icon}"/>
+												<TextBlock Text="{Binding DisplayName}" VerticalAlignment="Center" Margin="5,0,10,0"/>
+											</StackPanel>
+											<TextBlock Grid.Column="1" Text="{Binding Value}" VerticalAlignment="Center"/>
+										</Grid>
+									</TreeDataTemplate>
+								</TreeView.ItemTemplate>
 
-								<TreeDataGrid.Styles>
-									<Style Selector="TreeDataGridRow" x:DataType="vm:RenameMatchNodeViewModel">
+								<TreeView.Styles>
+									<Style Selector="TreeViewItem" x:DataType="vm:RenameMatchNodeViewModel">
 										<Setter Property="Background" Value="{Binding GroupKey, Converter={StaticResource intToColorConverter}}"/>
+										<Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
 									</Style>
-								</TreeDataGrid.Styles>
-							</TreeDataGrid>
+								</TreeView.Styles>
+							</TreeView>
 
 							<!-- Matches Placeholder -->
 							<Grid IsHitTestVisible="false"
@@ -221,28 +223,30 @@
 					<!--Regex Matches-->
 					<TabItem Header="{x:Static lang:Resources.Regex}">
 						<Grid>
-							<TreeDataGrid VerticalAlignment="Stretch"
-									  BorderThickness="1"
-									  BorderBrush="{DynamicResource SystemBaseMediumColor}"
-									  CornerRadius="3"
-									  Source="{Binding InputMatchNodeColumns}">
-								<TreeDataGrid.Resources>
-									<!-- Template for Name column cells -->
-									<DataTemplate x:Key="MatchNameCell" DataType="vm:RenameMatchNodeViewModel">
-										<StackPanel Orientation="Horizontal">
-											<materialIcons:MaterialIcon Height="16" Width="16"
-																	Kind="{Binding Icon}"/>
-											<TextBlock Text="{Binding DisplayName}" VerticalAlignment="Center" Margin="5,0,0,0"/>
-										</StackPanel>
-									</DataTemplate>
-								</TreeDataGrid.Resources>
+							<TreeView VerticalAlignment="Stretch"
+							          BorderThickness="0,1,0,0"
+							          BorderBrush="{DynamicResource SystemBaseMediumColor}"
+							          ItemsSource="{Binding InputMatchNodes}">
+								<TreeView.ItemTemplate>
+									<TreeDataTemplate DataType="vm:RenameMatchNodeViewModel" ItemsSource="{Binding SubNodes}">
+										<Grid ColumnDefinitions="*,*">
+											<StackPanel Orientation="Horizontal" Grid.Column="0">
+												<materialIcons:MaterialIcon Height="16" Width="16"
+												                            Kind="{Binding Icon}"/>
+												<TextBlock Text="{Binding DisplayName}" VerticalAlignment="Center" Margin="5,0,10,0"/>
+											</StackPanel>
+											<TextBlock Grid.Column="1" Text="{Binding Value}" VerticalAlignment="Center"/>
+										</Grid>
+									</TreeDataTemplate>
+								</TreeView.ItemTemplate>
 
-								<TreeDataGrid.Styles>
-									<Style Selector="TreeDataGridRow" x:DataType="vm:RenameMatchNodeViewModel">
+								<TreeView.Styles>
+									<Style Selector="TreeViewItem" x:DataType="vm:RenameMatchNodeViewModel">
 										<Setter Property="Background" Value="{Binding GroupKey, Converter={StaticResource intToColorConverter}}"/>
+										<Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
 									</Style>
-								</TreeDataGrid.Styles>
-							</TreeDataGrid>
+								</TreeView.Styles>
+							</TreeView>
 							
 							<!-- Matches Placeholder -->
 							<Grid IsHitTestVisible="false"

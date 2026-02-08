@@ -1,5 +1,4 @@
-﻿using Avalonia.Controls;
-using BarryFileMan.Attributes.Validation;
+﻿using BarryFileMan.Attributes.Validation;
 using BarryFileMan.Enums.Rename;
 using BarryFileMan.Rename.Exceptions;
 using BarryFileMan.Rename.Interfaces;
@@ -90,8 +89,6 @@ namespace BarryFileMan.ViewModels.Rename.Providers
 
         [ObservableProperty]
         private ObservableCollection<RenameMatchNodeViewModel> _inputMatchNodes = new();
-
-        public HierarchicalTreeDataGridSource<RenameMatchNodeViewModel> InputMatchNodeColumns => CreateMatchNodeColumns(InputMatchNodes);
 
         public bool HasInputMatches => InputMatches != null && InputMatches.Any();
 

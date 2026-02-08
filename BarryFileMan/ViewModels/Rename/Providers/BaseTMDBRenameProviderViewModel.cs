@@ -1,5 +1,4 @@
-﻿using Avalonia.Controls;
-using BarryFileMan.Attributes.Validation;
+﻿using BarryFileMan.Attributes.Validation;
 using BarryFileMan.Managers;
 using BarryFileMan.Rename.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -102,8 +101,6 @@ namespace BarryFileMan.ViewModels.Rename.Providers
 
         [ObservableProperty]
         private ObservableCollection<RenameMatchNodeViewModel> _tmdbMatchNodes = new();
-
-        public HierarchicalTreeDataGridSource<RenameMatchNodeViewModel> TmdbMatchNodeColumns => CreateMatchNodeColumns(TmdbMatchNodes);
 
         public bool HasTmdbMatches => TmdbMatches != null && TmdbMatches.Any();
 

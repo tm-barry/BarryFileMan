@@ -1,6 +1,4 @@
-﻿using Avalonia.Controls.Models.TreeDataGrid;
-using Avalonia.Controls;
-using BarryFileMan.Rename.Interfaces;
+﻿using BarryFileMan.Rename.Interfaces;
 using BarryFileMan.Rename.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.Generic;
@@ -118,20 +116,6 @@ namespace BarryFileMan.ViewModels.Rename.Providers
                     }
                 }
             }
-        }
-
-        protected HierarchicalTreeDataGridSource<RenameMatchNodeViewModel> CreateMatchNodeColumns(ObservableCollection<RenameMatchNodeViewModel> matchNodes)
-        {
-            return new(matchNodes)
-            {
-                Columns =
-                {
-                    new HierarchicalExpanderColumn<RenameMatchNodeViewModel>(
-                        new TemplateColumn<RenameMatchNodeViewModel>(Resources.Resources.Name, "MatchNameCell"),
-                        x => x.SubNodes, x => x.HasSubNodes, x=> x.IsExpanded),
-                    new TextColumn<RenameMatchNodeViewModel, string>(Resources.Resources.Value, x => x.Value),
-                }
-            };
         }
 
         protected void HandleDuplicateFilenames()
