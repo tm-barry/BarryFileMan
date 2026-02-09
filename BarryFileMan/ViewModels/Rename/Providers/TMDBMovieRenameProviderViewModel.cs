@@ -80,8 +80,8 @@ namespace BarryFileMan.ViewModels.Rename.Providers
                     new PresetViewModel<RenameTMDBMoviePreset>($"-- { Resources.Resources.Movie } --", true, new()
                     {
                         MatchPattern = "(?<movie>[^\\\\/]+?)\\W(?:(?<year>\\d{4})(?:\\W(?<resolution>\\d+p)?)|(?<resolution>\\d+p)(?:\\W(?<year>\\d{4}))?)",
-                        QueryRenamePattern = "<movie.replace('.',' ')>",
-                        YearRenamePattern = "<year>",
+                        QueryRenamePattern = "<movie.replace('.',' ').separate()>",
+                        YearRenamePattern = "<year ?? ''>",
                         LanguageRenamePattern = string.Empty,
                         RenamePattern = "<tmdbName> (<tmdbReleaseYear>)",
                         Input = "\\ParentFolder\\Movie.2000.1080p",

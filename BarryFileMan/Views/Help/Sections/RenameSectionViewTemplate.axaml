@@ -180,7 +180,8 @@
 				  ColumnDefinitions="*,Auto,*"
 				  RowDefinitions="Auto,Auto,Auto,Auto,
 								  Auto,Auto,Auto,Auto,
-								  Auto,Auto,Auto,Auto">
+								  Auto,Auto,Auto,Auto
+								  Auto, Auto">
 
 				<!--Headers-->
 				<TextBlock Grid.Column="0" Grid.Row="0" Margin="5"
@@ -313,9 +314,34 @@
 						Opacity="0.75"
 						BorderBrush="{DynamicResource SystemBaseMediumColor}"
 						BorderThickness="0,1,0,0"/>
+				
+				<!--Separate-->
+				<StackPanel Grid.Column="0" Grid.Row="10" Margin="10">
+					<TextBlock Margin="0,0,0,5"
+					           FontWeight="Bold" Classes="cell-text"
+					           TextWrapping="Wrap"
+					           Text="{x:Static lang:Resources.FunctionSeparateDefinition}"/>
+					<TextBlock Margin="0,0,0,5"
+					           FontWeight="Bold" Classes="cell-text"
+					           TextWrapping="Wrap"
+					           Text="{x:Static lang:Resources.FunctionSeparateCompactDefinition}"/>
+					<TextBlock Classes="cell-text"
+					           TextWrapping="Wrap"
+					           Text="{x:Static lang:Resources.FunctionSeparateDescription}"/>
+				</StackPanel>
+				<StackPanel Grid.Column="2" Grid.Row="10" Margin="10">
+					<SelectableTextBlock Margin="0,0,0,5" TextWrapping="Wrap" Classes="cell-text"
+					                     Text="{x:Static lang:Resources.FunctionSeparateExample}"/>
+					<SelectableTextBlock TextWrapping="Wrap" Classes="cell-text"
+					                     Text="{x:Static lang:Resources.FunctionSeparateCompactExample}"/>
+				</StackPanel>
+				<Border Grid.ColumnSpan="3" Grid.Row="11" Padding="0"
+				        Opacity="0.75"
+				        BorderBrush="{DynamicResource SystemBaseMediumColor}"
+				        BorderThickness="0,1,0,0"/>
 
 				<!--Trim-->
-				<StackPanel Grid.Column="0" Grid.Row="10" Margin="10">
+				<StackPanel Grid.Column="0" Grid.Row="12" Margin="10">
 					<TextBlock Margin="0,0,0,5"
 							   FontWeight="Bold" Classes="cell-text"
 							   TextWrapping="Wrap"
@@ -332,13 +358,13 @@
 							   TextWrapping="Wrap"
 							   Text="{x:Static lang:Resources.FunctionTrimDescription}"/>
 				</StackPanel>
-				<StackPanel Grid.Column="2" Grid.Row="10" Margin="10">
+				<StackPanel Grid.Column="2" Grid.Row="12" Margin="10">
 					<SelectableTextBlock Margin="0,0,0,5" TextWrapping="Wrap" Classes="cell-text"
 										 Text="{x:Static lang:Resources.FunctionTrimExample}"/>
 					<SelectableTextBlock TextWrapping="Wrap" Classes="cell-text"
 										 Text="{x:Static lang:Resources.FunctionTrimCompactExample}"/>
 				</StackPanel>
-				<Border Grid.ColumnSpan="3" Grid.Row="11" Padding="0"
+				<Border Grid.ColumnSpan="3" Grid.Row="13" Padding="0"
 						Opacity="0.75"
 						BorderBrush="{DynamicResource SystemBaseMediumColor}"
 						BorderThickness="0,1,0,0"/>

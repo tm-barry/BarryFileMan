@@ -35,14 +35,14 @@ namespace BarryFileMan.ViewModels.Rename.Providers
                     new PresetViewModel<RenameRegexPreset>($"-- { Resources.Resources.Movie } --", true, new()
                     {
                         MatchPattern = "(?<movie>[^\\\\/]+?)\\W(?:(?<year>\\d{4})(?:\\W(?<resolution>\\d+p)?)|(?<resolution>\\d+p)(?:\\W(?<year>\\d{4}))?)",
-                        RenamePattern = "<movie.replace('.',' ').trim(both)> (<year>)",
+                        RenamePattern = "<movie.replace('.',' ').trim(both).separate()><year.prepend(' (').append(')') ?? ''>",
                         Input = "\\ParentFolder\\Movie.Name.2000.1080p",
                         SelectedMatchTypeIndex = 1,
                     }),
                     new PresetViewModel<RenameRegexPreset>($"-- { Resources.Resources.TV } --", true, new()
                     {
                         MatchPattern = "(?<show>[^\\\\/]+)\\W(?:s|S)(?<season>\\d+)(?:e|E)(?<episode>\\d+)",
-                        RenamePattern = "<show{-1}.replace(\'.\',\' \').append(' - ')>S<season{-1}.pad(left,\'0\',2)>E<episode{-1}.pad(left,\'0\',2)>",
+                        RenamePattern = "<show{-1}.separate().replace('.',' ').append(' - ')>S<season{-1}.pad(left,'0',2)>E<episode{-1}.pad(left,'0',2)>",
                         Input = "\\ParentFolder\\Show.Name.S01E01",
                         SelectedMatchTypeIndex = 1,
                     })

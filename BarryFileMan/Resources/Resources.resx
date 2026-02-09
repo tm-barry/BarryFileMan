@@ -671,4 +671,22 @@ Full Path - Match the full path of the file/directory</value>
   <data name="Yes" xml:space="preserve">
     <value>Yes</value>
   </data>
+  <data name="FunctionSeparateCompactDefinition" xml:space="preserve">
+    <value>sp()</value>
+  </data>
+  <data name="FunctionSeparateCompactExample" xml:space="preserve">
+    <value>&lt;tagName.sp()&gt;</value>
+  </data>
+  <data name="FunctionSeparateDefinition" xml:space="preserve">
+    <value>separate()</value>
+  </data>
+  <data name="FunctionSeparateDescription" xml:space="preserve">
+    <value>Adds spaces between camelCase words and numbers.</value>
+  </data>
+  <data name="FunctionSeparateExample" xml:space="preserve">
+    <value>&lt;tagName.separate()&gt;</value>
+  </data>
+  <data name="FunctionSeparateParams" xml:space="preserve">
+    <value>none</value>
+  </data>
 </root>

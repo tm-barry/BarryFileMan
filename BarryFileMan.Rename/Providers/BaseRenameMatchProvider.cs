@@ -213,7 +213,8 @@ namespace BarryFileMan.Rename.Providers
         private static readonly string _renameFunctionPadParamPattern = "\\G\\s*(?<type>left|l|right|r)\\s*,\\s*\'(?<char>.)\'\\s*,\\s*(?<length>\\d+)\\s*$";
         private static readonly string _renameFunctionReplaceParamPattern = "\\G\\s*\'(?<input>.*)\'\\s*,\\s*\'(?<replace>.*)\'\\s*$";
         private static readonly string _renameFunctionTrimParamPattern = "\\G\\s*(?<type>left|l|right|r|both|b)?\\s*$";
-
+        private static readonly string _renameFunctionNoParamPattern = "\\G\\s*$";
+        
         public string Name { get; }
         public int NameIndex { get; }
         public int NameLength { get; }
@@ -261,6 +262,10 @@ namespace BarryFileMan.Rename.Providers
                 case "replace":
                 case "rp":
                     SetReplaceFunction(@params);
+                    break;
+                case "separate":
+                case "sp":
+                    SetSeparateFunction(@params);
                     break;
                 case "trim":
                 case "tm":
@@ -337,6 +342,61 @@ namespace BarryFileMan.Rename.Providers
                 Error = $"{Name}({Params}) params are not valid!";
             }
         }
+        
+        private void SetSeparateFunction(string @params)
+        {
+            var regex = new System.Text.RegularExpressions.Regex(_renameFunctionNoParamPattern);
+            var match = regex.Match(@params);
+            if (match?.Success == true)
+            {
+                Function = (input) =>
+                {
+                    if (string.IsNullOrWhiteSpace(input))
+                        return input;
+
+                    var sb = new System.Text.StringBuilder();
+                    sb.Append(input[0]);
+
+                    for (var i = 1; i < input.Length; i++)
+                    {
+                        char current = input[i];
+                        char previous = input[i - 1];
+                        char? next = i < input.Length - 1 ? input[i + 1] : null;
+
+                        bool isCurrentUpper = char.IsUpper(current);
+                        bool isPreviousLower = char.IsLower(previous);
+                        bool isPreviousUpper = char.IsUpper(previous);
+                        bool isCurrentDigit = char.IsDigit(current);
+                        bool isPreviousDigit = char.IsDigit(previous);
+
+                        bool isAcronymBoundary =
+                            isPreviousUpper &&
+                            isCurrentUpper &&
+                            next.HasValue &&
+                            char.IsLower(next.Value);
+
+                        if (
+                            (isCurrentUpper && isPreviousLower) ||        // camelCase boundary
+                            isAcronymBoundary ||                          // XMLParser boundary
+                            (isCurrentDigit && !isPreviousDigit) ||       // Word1
+                            (!isCurrentDigit && isPreviousDigit)          // 1Word
+                        )
+                        {
+                            sb.Append(' ');
+                        }
+
+                        sb.Append(current);
+                    }
+
+                    return sb.ToString();
+                };
+            }
+            else
+            {
+                Error = $"{Name}({Params}) params are not valid!";
+            }
+        }
+        
         private void SetTrimFunction(string @params)
         {
             var regex = new System.Text.RegularExpressions.Regex(_renameFunctionTrimParamPattern);
@@ -347,12 +407,18 @@ namespace BarryFileMan.Rename.Providers
 
                 Function = (str) =>
                 {
-                    return trimType switch
+                    // trim end whitespace
+                    str = trimType switch
                     {
                         "left" or "l" => str.TrimStart(),
                         "right" or "r" => str.TrimEnd(),
                         _ => str.Trim(),
                     };
+                    
+                    // trim extra whitespace
+                    str = System.Text.RegularExpressions.Regex.Replace(str, @"\s+", " ");
+
+                    return str;
                 };
             }
             else
@@ -360,6 +426,5 @@ namespace BarryFileMan.Rename.Providers
                 Error = $"{Name}({Params}) params are not valid!";
             }
         }
-
     }
 }
