@@ -4,7 +4,7 @@
 
 <h1 align="center">BarryFileMan</h1>
 
-BarryFileMan is a file manager with a primary focus of renaming and managing media files and folders.
+BarryFileMan is a desktop file manager focused on bulk renaming and organizing media files using regex and TMDB metadata.
 
 <p align="center">
 	<img alt="BarryFileMan Main" src="Images/barryfileman-main.png">
