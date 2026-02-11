@@ -14,8 +14,10 @@ BarryFileMan is a file manager with a primary focus of renaming and managing med
 	<img alt="BarryFileMan Settings" src="Images/barryfileman-settings.png">
 </p>
 
-## Build
+## Build Linux (AppImage)
+```
 pupnet --runtime linux-x64 --kind appimage
+```
 
 ## Acknowledgements
 
