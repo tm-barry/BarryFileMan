@@ -1,4 +1,5 @@
-﻿using BarryFileMan.Rename.Enums;
+﻿using BarryFileMan.Rename.Constants;
+using BarryFileMan.Rename.Enums;
 using BarryFileMan.Rename.Exceptions;
 using BarryFileMan.Rename.Extensions;
 using BarryFileMan.Rename.Interfaces;
@@ -28,12 +29,24 @@ namespace BarryFileMan.Rename.Providers.Regex
                 {
                     var renameMatch = new RegexRenameMatch(match.Index, match.Length);
                     var groups = match.Groups;
+
+                    // Add Input group
+                    renameMatch.Groups.Add(GroupTags.Input, new List<IRenameMatchGroupValue>());
+                    renameMatch.Groups[GroupTags.Input].Add(
+                        new RegexRenameMatchGroupValue(options?.Input ?? "", 0, options?.Input?.Length ?? 0));
+                    
+                    // Add File Group
+                    var file = options?.Input?.Split('\\', '/').Last() ?? "";
+                    renameMatch.Groups.Add(GroupTags.File, new List<IRenameMatchGroupValue>());
+                    renameMatch.Groups[GroupTags.File].Add(
+                        new RegexRenameMatchGroupValue(file, 0, file.Length));
+                    
                     foreach (Group group in groups.Cast<Group>())
                     {
                         var groupName = group.Name;
                         if (groupName == "0")
                         {
-                            groupName = "Match";
+                            groupName = GroupTags.Match;
                         }
 
                         // Add tag if not already there

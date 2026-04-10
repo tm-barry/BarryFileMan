@@ -2,429 +2,574 @@
 using BarryFileMan.Rename.Interfaces;
 using BarryFileMan.Rename.Models;
 using System.Text.RegularExpressions;
+using BarryFileMan.Rename.Constants;
 
 namespace BarryFileMan.Rename.Providers
 {
-    public abstract class BaseRenameMatchProvider<TMatchOptions> : IRenameMatchProvider<TMatchOptions> where TMatchOptions : class
+    public abstract class BaseRenameMatchProvider<TMatchOptions>(RenameProviderTypes providerType)
+        : IRenameMatchProvider<TMatchOptions>
+        where TMatchOptions : class
     {
-        private static readonly string _renameTagPattern = "(?:<(?<=<)(?<tag>.*?)(?=>)>)";
-
-        public RenameProviderTypes ProviderType { get; }
-
-        public BaseRenameMatchProvider(RenameProviderTypes providerType)
-        {
-            ProviderType = providerType;
-        }
+        public RenameProviderTypes ProviderType { get; } = providerType;
 
         public abstract IEnumerable<IRenameMatch>? Match(TMatchOptions? options);
-
         public abstract Task<IEnumerable<IRenameMatch>?> MatchAsync(TMatchOptions? options);
 
-        public RenameResult Rename(IEnumerable<IRenameMatch> matches, string renamePattern, string? defaultTagFallbackValue = null)
+        // =========================================================
+        // Rename Engine
+        // =========================================================
+
+        public RenameResult Rename(
+            IEnumerable<IRenameMatch> matches,
+            string renamePattern,
+            string? defaultTagFallbackValue = null)
         {
-            var output = renamePattern;
-            var tags = new List<RenameTag>();
             var errors = new List<string>();
-            if (matches == null || !matches.Any())
-            {
-                errors.Add("No matches found!");
-            }
 
-            var regex = new System.Text.RegularExpressions.Regex(_renameTagPattern);
-            var renamePatternMatches = regex.Matches(renamePattern);
-            if (renamePatternMatches.Any())
+            var renameMatches = matches.ToList();
+            if (renameMatches.Count == 0)
+                return new RenameResult(renamePattern, ["No matches found!"]);
+
+            var context = BuildContext(renameMatches);
+
+            var result = renamePattern;
+            foreach (var tag in ExtractTags(renamePattern))
             {
-                foreach (Match renameMatch in renamePatternMatches.Cast<Match>())
+                try
                 {
-                    var renameTag = new RenameTag(renameMatch.Value, renameMatch.Groups["tag"].Value, renameMatch.Index, renameMatch.Length, defaultTagFallbackValue);
+                    var expr = TagParser.ParseTag(tag.Content, defaultTagFallbackValue);
+                    var evaluated = expr.Evaluate(context);
 
-                    if (string.IsNullOrEmpty(renameTag.Error) && renameTag.Functions.All((function) => string.IsNullOrEmpty(function.Error)))
-                    {
-                        IRenameMatch? match = null;
-                        if (renameTag.MatchIndex == -1)
-                            match = matches?.LastOrDefault();
-                        else
-                            match = matches?.ElementAtOrDefault(renameTag.MatchIndex);
-
-                        if (match != null)
-                        {
-                            IRenameMatchGroupValue? groupValue = null;
-                            if (match.Groups.ContainsKey(renameTag.TagName))
-                            {
-                                if (renameTag.GroupIndex == -1)
-                                    groupValue = match.Groups[renameTag.TagName].LastOrDefault();
-                                else
-                                    groupValue = match.Groups[renameTag.TagName].ElementAtOrDefault(renameTag.GroupIndex);
-                            }
-
-                            if (groupValue != null)
-                            {
-                                try
-                                {
-                                    var renamedTagStr = BaseRenameMatchProvider<TMatchOptions>.CalculateRenamedTag(groupValue, renameTag);
-                                    output = output.Replace(renameTag.Tag, renamedTagStr);
-                                }
-                                catch (Exception ex)
-                                {
-                                    errors.Add(ex.Message);
-                                }
-                            }
-                            else
-                            {
-                                if (renameTag.FallbackValue != null)
-                                {
-                                    output = output.Replace(renameTag.Tag, renameTag.FallbackValue);
-                                }
-                                else
-                                {
-                                    errors.Add($"No match found for { renameTag.Tag }");
-                                }
-                            }
-                        }
-                        else
-                        {
-                            if (renameTag.FallbackValue != null)
-                            {
-                                output = output.Replace(renameTag.Tag, renameTag.FallbackValue);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (!string.IsNullOrEmpty(renameTag.Error))
-                        {
-                            errors.Add(renameTag.Error);
-                        }
-
-                        foreach (var function in renameTag.Functions)
-                        {
-                            if (!string.IsNullOrEmpty(function.Error))
-                            {
-                                errors.Add(function.Error);
-                            }
-                        }
-                    }
-
-                    tags.Add(renameTag);
+                    result = result.Replace(tag.Full, evaluated ?? tag.Full);
+                }
+                catch (Exception ex)
+                {
+                    errors.Add(ex.Message);
                 }
             }
 
-            return new RenameResult(output, tags, errors.Count > 0 ? errors : null);
+            return new RenameResult(result, errors.Count > 0 ? errors : null);
+        }
+        
+        private static IEnumerable<(string Full, string Content)> ExtractTags(string input)
+        {
+            var results = new List<(string, string)>();
+
+            int depth = 0;
+            int start = -1;
+
+            for (int i = 0; i < input.Length; i++)
+            {
+                if (input[i] == '<')
+                {
+                    if (depth == 0)
+                        start = i;
+
+                    depth++;
+                }
+                else if (input[i] == '>')
+                {
+                    depth--;
+
+                    if (depth == 0 && start != -1)
+                    {
+                        var full = input[start..(i + 1)];
+                        var content = input[(start + 1)..i];
+                        results.Add((full, content));
+                    }
+                }
+            }
+
+            return results;
         }
 
-        private static string CalculateRenamedTag(IRenameMatchGroupValue groupValue, RenameTag renameTag)
+        // =========================================================
+        // Context Builder
+        // =========================================================
+
+        private static RenameContext BuildContext(IEnumerable<IRenameMatch> matches)
         {
-            var renamedValue = groupValue.Value;
-            foreach(var function in renameTag.Functions)
+            var renameMatches = matches.ToList();
+
+            var firstMatch = renameMatches.FirstOrDefault();
+            var lastMatch = renameMatches.LastOrDefault();
+
+            string GetValue(IRenameMatch? m, string key)
             {
-                renamedValue = function.Function(renamedValue);
+                return m?.Groups.TryGetValue(key, out var list) == true
+                    ? list.FirstOrDefault()?.Value ?? ""
+                    : "";
             }
-            return renamedValue;
+
+            return new RenameContext
+            {
+                Input = GetValue(firstMatch, GroupTags.Input),
+                FileName = GetValue(firstMatch, GroupTags.File),
+                Matches = renameMatches
+            };
         }
     }
 
-    public class RenameTag
+    public class RenameContext
     {
-        private static readonly string _renameInnerTagPattern = "\\G\\s*(?<tagName>(?:[a-zA-Z]|\\d)+)(?:{\\s*(?<matchIndex>-?\\d+)\\s*})?(?:\\[\\s*(?<groupIndex>-?\\d+)\\s*\\])?(?<function>.(?<functionName>(?:[a-zA-Z]|\\d)+)(?:\\((?<functionParams>.*?)\\)))*?(?:\\s*\\?\\?\\s*\'(?<fallbackValue>.*)\')?\\s*$";
+        public string Input { get; init; } = "";
+        public string FileName { get; init; } = "";
+        
+        public List<IRenameMatch> Matches { get; init; } = [];
+    }
 
-        /// <summary>
-        /// Entire tag value including angle brackets, tag name, and functions ex.. <tagName.functions()>
-        /// </summary>
-        public string Tag { get; }
-        /// <summary>
-        /// Inner tag value excluding angle brackets
-        /// </summary>
-        public string InnerTag { get; }
-        public int Index { get; }
-        public int Length { get; }
-        public string TagName { get; private set; } = string.Empty;
-        public int MatchIndex { get; private set; } = 0;
-        public int GroupIndex { get; private set; } = 0;
-        public IList<RenameTagFunction> Functions { get; } = new List<RenameTagFunction>();
-        public string? FallbackValue { get; set; }
-        public string? Error { get; private set; }
+    public class TagExpression(string source)
+    {
+        private string Source { get; } = source;
+        public int MatchIndex { get; init; } = 0;
+        public List<IFunction> Functions { get; } = [];
+        public string? Fallback { get; init; }
 
-        public RenameTag(string tag, string innerTag, int index, int length, string? fallbackValue)
+        public string? Evaluate(RenameContext context)
         {
-            Tag = tag;
-            InnerTag = innerTag;
-            Index = index;
-            Length = length;
-            FallbackValue = fallbackValue;
+            var value = Resolve(context);
 
-            ParseInnerTag(innerTag);
+            if (value != null)
+            {
+                value = Functions.Aggregate(value, (current, fn) => fn.Apply(current, context));
+            }
+
+            return string.IsNullOrEmpty(value)
+                ? Fallback
+                : value;
         }
 
-        private void ParseInnerTag(string value)
+        private string? Resolve(RenameContext ctx)
         {
-            var regex = new System.Text.RegularExpressions.Regex(_renameInnerTagPattern);
-            var match = regex.Match(value);
-            if(match?.Success == true)
+            var match = MatchIndex switch
             {
-                Group? group = match.Groups["tagName"];
-                if (group != null && group.Captures.Any())
-                {
-                    TagName = group.Value;
-                }
+                -1 => ctx.Matches.LastOrDefault(),
+                _ => ctx.Matches.ElementAtOrDefault(MatchIndex)
+            };
 
-                group = match.Groups["matchIndex"];
-                if (group != null && group.Captures.Any() && int.TryParse(group.Value, out int matchIndex))
-                {
-                    MatchIndex = matchIndex;
-                }
+            if (match == null)
+                return null;
 
-                group = match.Groups["groupIndex"];
-                if (group != null && group.Captures.Any() && int.TryParse(group.Value, out int groupIndex))
-                {
-                    GroupIndex = groupIndex;
-                }
-
-                var functions = match.Groups["function"]?.Captures;
-                var functionNames = match.Groups["functionName"]?.Captures;
-                var functionParams = match.Groups["functionParams"]?.Captures;
-                if (functions != null && functionNames != null && functionParams != null 
-                    && functions.Count == functionNames.Count 
-                    && functionNames.Count == functionParams.Count)
-                {
-                    for(int i = 0; i < functionNames.Count; i++)
-                    {
-                        Functions.Add(new RenameTagFunction(functionNames[i].Value, functionNames[i].Index, functionNames[i].Length,
-                            functionParams[i].Value, functionParams[i].Index, functionParams[i].Length,
-                            functions[i].Index, functions[i].Length));
-                    }
-                }
-
-                group = match.Groups["fallbackValue"];
-                if (group != null && group.Captures.Any())
-                {
-                    FallbackValue = group.Value;
-                }
-            }
-            else
-            {
-                Error = $"<{InnerTag}> tag is invalid!";
-            }
+            return match.Groups.TryGetValue(Source, out var group)
+                ? group.FirstOrDefault()?.Value ?? ""
+                : null;
         }
     }
 
-    public class RenameTagFunction
+    public static class TagParser
     {
-        private static readonly string _renameFunctionAppendPrependParamPattern = "\\G\\s*'(?<value>.*)'\\s*$";
-        private static readonly string _renameFunctionPadParamPattern = "\\G\\s*(?<type>left|l|right|r)\\s*,\\s*\'(?<char>.)\'\\s*,\\s*(?<length>\\d+)\\s*$";
-        private static readonly string _renameFunctionReplaceParamPattern = "\\G\\s*\'(?<input>.*)\'\\s*,\\s*\'(?<replace>.*)\'\\s*$";
-        private static readonly string _renameFunctionTrimParamPattern = "\\G\\s*(?<type>left|l|right|r|both|b)?\\s*$";
-        private static readonly string _renameFunctionNoParamPattern = "\\G\\s*$";
-        
-        public string Name { get; }
-        public int NameIndex { get; }
-        public int NameLength { get; }
-        public string Params { get; }
-        public int ParamsIndex { get; }
-        public int ParamsLength { get; }
-        public int Index { get; }
-        public int Length { get; }
-        public Func<string, string> Function { get; private set; } = (str) => str;
-        public string? Error { get; private set; }
-
-
-        public RenameTagFunction(string name, int nameIndex, int nameLength, 
-            string @params, int paramsIndex, int paramsLength,
-            int index, int length)
+        public static TagExpression ParseTag(string raw, string? fallback)
         {
-            Name = name;
-            NameIndex = nameIndex;
-            NameLength = nameLength;
-            Params = @params;
-            ParamsIndex = paramsIndex;
-            ParamsLength = paramsLength;
-            Index = index;
-            Length = length;
+            raw = ExtractFallback(raw, ref fallback);
 
-            SetFunction(name, @params);
-        }
+            var (cleaned, matchIndex) = ParseMatchIndex(raw);
+            raw = cleaned;
 
-        private void SetFunction(string name, string @params)
-        {
-            switch(name.ToLower())
+            var parts = SplitByDotRespectingQuotes(raw);
+
+            var tag = new TagExpression(parts[0])
             {
-                case "append":
-                case "ap":
-                    SetAppendPrependFunction(@params, true);
-                    break;
-                case "pad":
-                case "pd":
-                    SetPadFunction(@params);
-                    break;
-                case "prepend":
-                case "pp":
-                    SetAppendPrependFunction(@params, false);
-                    break;
-                case "replace":
-                case "rp":
-                    SetReplaceFunction(@params);
-                    break;
-                case "separate":
-                case "sp":
-                    SetSeparateFunction(@params);
-                    break;
-                case "trim":
-                case "tm":
-                    SetTrimFunction(@params);
-                    break;
-                default:
-                    Error = $"{name} is not a valid function!";
-                    break;
-            }
-        }
+                Fallback = fallback,
+                MatchIndex = matchIndex
+            };
 
-        private void SetAppendPrependFunction(string @params, bool append = true)
-        {
-            var regex = new System.Text.RegularExpressions.Regex(_renameFunctionAppendPrependParamPattern);
-            var match = regex.Match(@params);
-            if (match?.Success == true)
+            for (var i = 1; i < parts.Count; i++)
             {
-                var value = match.Groups["value"].Value;
+                tag.Functions.Add(FunctionParser.Parse(parts[i]));
+            }
 
-                Function = (str) =>
-                {
-                    return append ? str + value : value + str;
-                };
-            }
-            else
-            {
-                Error = $"{Name}({Params}) params are not valid!";
-            }
-        }
-
-        private void SetPadFunction(string @params)
-        {
-            var regex = new System.Text.RegularExpressions.Regex(_renameFunctionPadParamPattern);
-            var match = regex.Match(@params);
-            if (match?.Success == true)
-            {
-                var padType = match.Groups["type"].Value;
-                var padChar = match.Groups["char"].Value;
-                var padLengthStr = match.Groups["length"].Value;
-                var padLength = int.Parse(padLengthStr);
-
-                Function = (str) =>
-                {
-                    return padType switch
-                    {
-                        "left" or "l" => str.PadLeft(padLength, padChar[0]),
-                        "right" or "r" => str.PadRight(padLength, padChar[0]),
-                        _ => str,
-                    };
-                };
-            }
-            else
-            {
-                Error = $"{Name}({Params}) params are not valid!";
-            }
-        }
-
-        private void SetReplaceFunction(string @params)
-        {
-            var regex = new System.Text.RegularExpressions.Regex(_renameFunctionReplaceParamPattern);
-            var match = regex.Match(@params);
-            if (match?.Success == true)
-            {
-                var input = match.Groups["input"].Value;
-                var replace = match.Groups["replace"].Value;
-
-                Function = (str) =>
-                {
-                    return str.Replace(input, replace);
-                };
-            }
-            else
-            {
-                Error = $"{Name}({Params}) params are not valid!";
-            }
+            return tag;
         }
         
-        private void SetSeparateFunction(string @params)
+        private static string ExtractFallback(string raw, ref string? fallback)
         {
-            var regex = new System.Text.RegularExpressions.Regex(_renameFunctionNoParamPattern);
-            var match = regex.Match(@params);
-            if (match?.Success == true)
-            {
-                Function = (input) =>
-                {
-                    if (string.IsNullOrWhiteSpace(input))
-                        return input;
+            var fallbackIndex = raw.IndexOf("??", StringComparison.Ordinal);
 
-                    var sb = new System.Text.StringBuilder();
-                    sb.Append(input[0]);
+            if (fallbackIndex < 0)
+                return raw;
 
-                    for (var i = 1; i < input.Length; i++)
-                    {
-                        char current = input[i];
-                        char previous = input[i - 1];
-                        char? next = i < input.Length - 1 ? input[i + 1] : null;
+            var main = raw[..fallbackIndex].Trim();
+            var fallbackPart = raw[(fallbackIndex + 2)..].Trim();
 
-                        bool isCurrentUpper = char.IsUpper(current);
-                        bool isPreviousLower = char.IsLower(previous);
-                        bool isPreviousUpper = char.IsUpper(previous);
-                        bool isCurrentDigit = char.IsDigit(current);
-                        bool isPreviousDigit = char.IsDigit(previous);
+            fallback = ParseFallbackValue(fallbackPart);
 
-                        bool isAcronymBoundary =
-                            isPreviousUpper &&
-                            isCurrentUpper &&
-                            next.HasValue &&
-                            char.IsLower(next.Value);
-
-                        if (
-                            (isCurrentUpper && isPreviousLower) ||        // camelCase boundary
-                            isAcronymBoundary ||                          // XMLParser boundary
-                            (isCurrentDigit && !isPreviousDigit) ||       // Word1
-                            (!isCurrentDigit && isPreviousDigit)          // 1Word
-                        )
-                        {
-                            sb.Append(' ');
-                        }
-
-                        sb.Append(current);
-                    }
-
-                    return sb.ToString();
-                };
-            }
-            else
-            {
-                Error = $"{Name}({Params}) params are not valid!";
-            }
+            return main;
         }
         
-        private void SetTrimFunction(string @params)
+        private static (string cleaned, int matchIndex) ParseMatchIndex(string raw)
         {
-            var regex = new System.Text.RegularExpressions.Regex(_renameFunctionTrimParamPattern);
-            var match = regex.Match(@params);
-            if (match?.Success == true)
+            var start = raw.IndexOf('{');
+            var end = raw.IndexOf('}');
+
+            if (start < 0 || end < 0 || end <= start)
+                return (raw, 0);
+
+            var inside = raw[(start + 1)..end].Trim();
+
+            if (!int.TryParse(inside, out var index))
+                index = 0;
+
+            var cleaned = raw[..start] + raw[(end + 1)..];
+
+            return (cleaned, index);
+        }
+        
+        private static string ParseFallbackValue(string input)
+        {
+            input = input.Trim();
+
+            // allow: 'text'
+            if (input.StartsWith($"'") && input.EndsWith($"'") && input.Length >= 2)
+                return input[1..^1];
+
+            // allow: empty or raw text
+            return input;
+        }
+        
+        private static List<string> SplitByDotRespectingQuotes(string input)
+        {
+            var result = new List<string>();
+            var current = new System.Text.StringBuilder();
+
+            var inQuotes = false;
+            var parenDepth = 0;
+
+            foreach (var c in input)
             {
-                var trimType = match.Groups["type"].Value;
-
-                Function = (str) =>
+                switch (c)
                 {
-                    // trim end whitespace
-                    str = trimType switch
-                    {
-                        "left" or "l" => str.TrimStart(),
-                        "right" or "r" => str.TrimEnd(),
-                        _ => str.Trim(),
-                    };
-                    
-                    // trim extra whitespace
-                    str = System.Text.RegularExpressions.Regex.Replace(str, @"\s+", " ");
+                    case '\'':
+                        inQuotes = !inQuotes;
+                        current.Append(c);
+                        continue;
 
-                    return str;
+                    case '(' when !inQuotes:
+                        parenDepth++;
+                        current.Append(c);
+                        continue;
+
+                    case ')' when !inQuotes:
+                        parenDepth--;
+                        current.Append(c);
+                        continue;
+
+                    case '.' when !inQuotes && parenDepth == 0:
+                        result.Add(current.ToString());
+                        current.Clear();
+                        continue;
+
+                    default:
+                        current.Append(c);
+                        break;
+                }
+            }
+
+            if (current.Length > 0)
+                result.Add(current.ToString());
+
+            return result;
+        }
+    }
+
+    // =============================================================
+    // Functions
+    // =============================================================
+
+    public interface IFunction
+    {
+        string Apply(string input, RenameContext context);
+    }
+    
+    public interface IParam
+    {
+        string? Evaluate(RenameContext context);
+    }
+    
+    public class LiteralParam(string value) : IParam
+    {
+        public string? Evaluate(RenameContext context) => value;
+    }
+    
+    public class TagParam(TagExpression expression) : IParam
+    {
+        public string? Evaluate(RenameContext context)
+            => expression.Evaluate(context);
+    }
+
+    public static class FunctionParser
+    {
+        public static IFunction Parse(string input)
+        {
+            var nameEnd = input.IndexOf('(');
+
+            if (nameEnd == -1)
+            {
+                return input.ToLower() switch
+                {
+                    "trim" => new TrimFunction(),
+                    "separate" => new SeparateFunction(),
+                    _ => throw new Exception($"Unknown function: {input}")
                 };
             }
-            else
+
+            var name = input[..nameEnd].ToLower();
+            var args = input[(nameEnd + 1)..^1];
+
+            if (Aliases.TryGetValue(name, out var fullName))
+                name = fullName;
+
+            return name switch
             {
-                Error = $"{Name}({Params}) params are not valid!";
+                "append" => new AppendFunction(Unquote(args)),
+                "pad" => ParsePad(args),
+                "prepend" => new PrependFunction(Unquote(args)),
+                "replace" => ParseReplace(args),
+                "separate" => new SeparateFunction(),
+                "trim" => ParseTrim(args),
+                _ => throw new Exception($"Unknown function: {name}")
+            };
+        }
+        
+        private static readonly Dictionary<string, string> Aliases = new()
+        {
+            { "ap", "append" },
+            { "pd", "pad" },
+            { "pp", "prepend" },
+            { "rp", "replace" },
+            { "sp", "separate" },
+            { "tm", "trim" },
+        };
+        
+        private static IParam ParseParam(string input)
+        {
+            input = input.Trim();
+            
+            if (input.StartsWith('<') && input.EndsWith('>'))
+            {
+                var inner = input[1..^1];
+                return new TagParam(TagParser.ParseTag(inner, null));
             }
+            
+            return new LiteralParam(Unquote(input));
+        }
+
+        private static PadFunction ParsePad(string args)
+        {
+            var parts = SplitArgs(args);
+
+            if (parts.Length < 3)
+                throw new Exception($"pad() requires 3 arguments: type, char, length");
+
+            var typeRaw = Unquote(parts[0]).ToLowerInvariant();
+            var padChar = Unquote(parts[1]);
+
+            if (string.IsNullOrEmpty(padChar))
+                throw new Exception("pad() char cannot be empty");
+
+            if (!int.TryParse(Unquote(parts[2]), out var length))
+                throw new Exception("pad() length must be a number");
+
+            var type = typeRaw switch
+            {
+                "left" or "l" => PadType.Left,
+                "right" or "r" => PadType.Right,
+                _ => throw new Exception($"Invalid pad type: {parts[0]}")
+            };
+
+            return new PadFunction(type, padChar[0], length);
+        }
+
+        private static ReplaceFunction ParseReplace(string args)
+        {
+            var parts = SplitArgs(args);
+
+            var from = ParseParam(parts[0]);
+            var to = ParseParam(parts[1]);
+
+            return new ReplaceFunction(from, to);
+        }
+        
+        private static TrimFunction ParseTrim(string args)
+        {
+            var value = Unquote(args).Trim().ToLowerInvariant();
+
+            return value switch
+            {
+                "left" or "l" => new TrimFunction(TrimType.Left),
+                "right" or "r" => new TrimFunction(TrimType.Right),
+                "both" or "b" or "" => new TrimFunction(TrimType.Both),
+                _ => throw new Exception($"Invalid trim type: {args}")
+            };
+        }
+
+        private static string[] SplitArgs(string args)
+        {
+            var result = new List<string>();
+            var current = new System.Text.StringBuilder();
+
+            var inQuotes = false;
+            var parenDepth = 0;
+            var tagDepth = 0;
+
+            foreach (var c in args)
+            {
+                switch (c)
+                {
+                    case '\'':
+                        inQuotes = !inQuotes;
+                        current.Append(c);
+                        continue;
+
+                    case '(' when !inQuotes:
+                        parenDepth++;
+                        current.Append(c);
+                        continue;
+
+                    case ')' when !inQuotes:
+                        parenDepth--;
+                        current.Append(c);
+                        continue;
+
+                    case '<' when !inQuotes:
+                        tagDepth++;
+                        current.Append(c);
+                        continue;
+
+                    case '>' when !inQuotes:
+                        tagDepth--;
+                        current.Append(c);
+                        continue;
+
+                    case ',' when !inQuotes && parenDepth == 0 && tagDepth == 0:
+                        result.Add(current.ToString().Trim());
+                        current.Clear();
+                        continue;
+
+                    default:
+                        current.Append(c);
+                        break;
+                }
+            }
+
+            if (current.Length > 0)
+                result.Add(current.ToString().Trim());
+
+            return result.ToArray();
+        }
+
+        private static string Unquote(string value)
+        {
+            return value.Trim().Trim('\'');
+        }
+    }
+    
+    public class AppendFunction(string value) : IFunction
+    {
+        public string Apply(string input, RenameContext context) => input + value;
+    }
+    
+    public enum PadType
+    {
+        Left,
+        Right
+    }
+
+    public class PadFunction(PadType type, char padChar, int length) : IFunction
+    {
+        public string Apply(string input, RenameContext context)
+        {
+            return type switch
+            {
+                PadType.Left => input.PadLeft(length, padChar),
+                PadType.Right => input.PadRight(length, padChar),
+                _ => input
+            };
+        }
+    }
+    
+    public class PrependFunction(string value) : IFunction
+    {
+        public string Apply(string input, RenameContext context) => value + input;
+    }
+
+    public class ReplaceFunction(IParam from, IParam to) : IFunction
+    {
+        public string Apply(string input, RenameContext context)
+        {
+            var fromVal = from.Evaluate(context);
+            var toVal = to.Evaluate(context) ?? "";
+
+            if (string.IsNullOrEmpty(fromVal))
+                return input;
+
+            return input.Replace(fromVal, toVal);
+        }
+    }
+    
+    public class SeparateFunction : IFunction
+    {
+        public string Apply(string input, RenameContext context)
+        {
+            if (string.IsNullOrWhiteSpace(input))
+                return input;
+
+            var sb = new System.Text.StringBuilder();
+            sb.Append(input[0]);
+
+            for (var i = 1; i < input.Length; i++)
+            {
+                var current = input[i];
+                var previous = input[i - 1];
+                char? next = i < input.Length - 1 ? input[i + 1] : null;
+
+                var isCurrentUpper = char.IsUpper(current);
+                var isPreviousLower = char.IsLower(previous);
+                var isPreviousUpper = char.IsUpper(previous);
+                var isCurrentDigit = char.IsDigit(current);
+                var isPreviousDigit = char.IsDigit(previous);
+
+                var isAcronymBoundary =
+                    isPreviousUpper &&
+                    isCurrentUpper &&
+                    next.HasValue &&
+                    char.IsLower(next.Value);
+
+                if (
+                    (isCurrentUpper && isPreviousLower) ||        // camelCase boundary
+                    isAcronymBoundary ||                          // XMLParser boundary
+                    (isCurrentDigit && !isPreviousDigit) ||       // Word1
+                    (!isCurrentDigit && isPreviousDigit)          // 1Word
+                )
+                {
+                    sb.Append(' ');
+                }
+
+                sb.Append(current);
+            }
+
+            return sb.ToString();
+        }
+    }
+    
+    public enum TrimType
+    {
+        Both,
+        Left,
+        Right
+    }
+
+    public class TrimFunction(TrimType type = TrimType.Both) : IFunction
+    {
+        public string Apply(string input, RenameContext context)
+        {
+            var result = type switch
+            {
+                TrimType.Left => input.TrimStart(),
+                TrimType.Right => input.TrimEnd(),
+                _ => input.Trim()
+            };
+
+            return result;
         }
     }
 }

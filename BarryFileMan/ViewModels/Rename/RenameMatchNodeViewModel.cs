@@ -2,6 +2,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using BarryFileMan.Rename.Constants;
 
 namespace BarryFileMan.ViewModels.Rename.Providers
 {
@@ -21,7 +22,7 @@ namespace BarryFileMan.ViewModels.Rename.Providers
         {
             get
             {
-                if (GroupIndex.HasValue && Name != "Match")
+                if (GroupIndex.HasValue && !GroupTags.ReservedTags.Contains(Name ?? ""))
                 {
                     return $"{Name}[{GroupIndex}]";
                 }
