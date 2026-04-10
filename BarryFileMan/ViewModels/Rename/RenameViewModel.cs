@@ -19,6 +19,7 @@ namespace BarryFileMan.ViewModels.Rename
     public partial class RenameViewModel : ObservableObject
     {
         private Dictionary<RenameProviderTypes, BaseRenameProviderViewModel> _renameProviderCache = new();
+        private bool _addingFiles = false;
 
         [ObservableProperty]
         public bool _isBusy;
@@ -116,10 +117,6 @@ namespace BarryFileMan.ViewModels.Rename
 
         private void Files_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            ApplyFileRenamesCommand.NotifyCanExecuteChanged();
-            SaveFileRenamesCommand.NotifyCanExecuteChanged();
-            OnPropertyChanged(nameof(HasFiles));
-
             if (e?.NewItems != null)
                 foreach (RenameFileViewModel item in e.NewItems)
                     item.PropertyChanged += File_PropertyChanged;
@@ -127,11 +124,20 @@ namespace BarryFileMan.ViewModels.Rename
             if (e?.OldItems != null)
                 foreach (RenameFileViewModel item in e.OldItems)
                     item.PropertyChanged -= File_PropertyChanged;
+
+            if (_addingFiles) return;
+            
+            ApplyFileRenamesCommand.NotifyCanExecuteChanged();
+            SaveFileRenamesCommand.NotifyCanExecuteChanged();
+            OnPropertyChanged(nameof(HasFiles));
         }
 
         private void File_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            SaveFileRenamesCommand.NotifyCanExecuteChanged();
+            if (_addingFiles) return;
+            
+            if (e.PropertyName == nameof(RenameFileViewModel.HasRenamedFileName))
+                SaveFileRenamesCommand.NotifyCanExecuteChanged();
         }
 
         private void OnUserConfigChanged((UserConfig config, string? key) value)
@@ -143,6 +149,7 @@ namespace BarryFileMan.ViewModels.Rename
         [RelayCommand]
         private async Task LoadFolders()
         {
+            IsBusy = true;
             SelectedLoadOption = LoadOptions.First((item) => item.Type == RenameLoadOption.Folders);
             var folders = await AppManager.OpenFolderPickerAsync(new FolderPickerOpenOptions
             {
@@ -150,11 +157,13 @@ namespace BarryFileMan.ViewModels.Rename
                 AllowMultiple = true,
             });
             await AddStorageItems(folders);
+            IsBusy = false;
         }
 
         [RelayCommand]
         private async Task LoadFiles()
         {
+            IsBusy = true;
             SelectedLoadOption = LoadOptions.First((item) => item.Type == RenameLoadOption.Files);
             var files = await AppManager.OpenFilePickerAsync(new FilePickerOpenOptions
             {
@@ -162,6 +171,7 @@ namespace BarryFileMan.ViewModels.Rename
                 AllowMultiple = true,
             });
             await AddStorageItems(files);
+            IsBusy = false;
         }
 
         [RelayCommand]
@@ -268,20 +278,59 @@ namespace BarryFileMan.ViewModels.Rename
 
         private async Task AddStorageItems(IEnumerable<IStorageItem>? items)
         {
-            if(items != null && items.Any())
+            if (items == null || !items.Any())
+                return;
+
+            var files = await StorageItemHelper.GetStorageFiles(items);
+            var newItems = await Task.Run(() =>
             {
-                var files = await StorageItemHelper.GetStorageFiles(items);
-                foreach(var file in files)
+                var existing = new HashSet<string>(
+                    Files.Select(f => f.FullPath),
+                    StringComparer.OrdinalIgnoreCase);
+
+                var result = new List<RenameFileViewModel>();
+                foreach (var file in files)
                 {
-                    if(!Files.Any((f) => f.File.Path == file.Path))
+                    var fullPath = Uri.UnescapeDataString(file.Path.LocalPath);
+                    if (existing.Add(fullPath))
                     {
-                        Files.AddSorted(new RenameFileViewModel(file),
-                            Comparer<RenameFileViewModel>.Create((x, y) => string.Compare(x.File.Name, y.File.Name)));
+                        result.Add(new RenameFileViewModel(file));
                     }
                 }
-            }
+                return result;
+            });
 
-            SelectedFile = Files.FirstOrDefault();
+            // Sort
+            var sorted = newItems
+                .OrderBy(f => f.File.Name)
+                .ToList();
+
+            // Batch UI updates
+            _addingFiles = true;
+            try
+            {
+                foreach (var batch in sorted.Chunk(200))
+                {
+                    foreach (var item in batch)
+                        Files.Add(item);
+                    
+                    await Task.Delay(1);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            finally
+            {
+                _addingFiles = false;
+                ApplyFileRenamesCommand.NotifyCanExecuteChanged();
+                SaveFileRenamesCommand.NotifyCanExecuteChanged();
+                OnPropertyChanged(nameof(HasFiles));
+                SaveFileRenamesCommand.NotifyCanExecuteChanged();
+                SelectedFile = Files.FirstOrDefault();
+            }
         }
     }
 }

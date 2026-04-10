@@ -201,6 +201,11 @@
 						</Grid>
 					</DataTemplate>
 				</ListBox.ItemTemplate>
+				<ListBox.ItemsPanel>
+					<ItemsPanelTemplate>
+						<VirtualizingStackPanel />
+					</ItemsPanelTemplate>
+				</ListBox.ItemsPanel>
 			</ListBox>
 
 			<!-- Files Listbox Placeholder -->

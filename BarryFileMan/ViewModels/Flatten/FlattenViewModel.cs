@@ -1,6 +1,5 @@
 ﻿using Avalonia.Platform.Storage;
 using BarryFileMan.Attributes.Validation;
-using BarryFileMan.Helpers;
 using BarryFileMan.Managers;
 using BarryFileMan.Models.Config;
 using BarryFileMan.Rename.Extensions;
@@ -14,11 +13,14 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using BarryFileMan.Rename.Helpers;
 
 namespace BarryFileMan.ViewModels.Flatten
 {
     public partial class FlattenViewModel : ObservableValidator
     {
+        private bool _addingFiles = false;
+        
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(IsBusy))]
         [NotifyCanExecuteChangedFor(nameof(FlattenFolderCommand))]
@@ -110,6 +112,7 @@ namespace BarryFileMan.ViewModels.Flatten
 
         private void Files_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
+            if (_addingFiles) return;
             OnPropertyChanged(nameof(HasFiles));
             OnPropertyChanged(nameof(FilteredFiles));
         }
@@ -287,6 +290,8 @@ namespace BarryFileMan.ViewModels.Flatten
         private async Task ApplyFilters()
         {
             ApplyingFilters = true;
+            _addingFiles = true;
+
             var files = new List<FlattenFileViewModel>();
 
             try
@@ -295,74 +300,52 @@ namespace BarryFileMan.ViewModels.Flatten
                 {
                     var filePaths = Directory.GetFiles(FolderPath, "*", SearchOption.AllDirectories);
 
-                    // Load initial files
-                    foreach (var filePath in filePaths)
-                    {
-                        files.Add(new FlattenFileViewModel(FolderPath, filePath));
-                    }
+                    files.AddRange(filePaths.Select(filePath =>
+                        new FlattenFileViewModel(FolderPath, filePath)));
 
-                    // Handle duplicates
-                    foreach (var file in files)
+                    foreach (var group in files.GroupBy(f => f.FileName))
                     {
-                        if (file.NewFileName == null)
+                        var usedNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+                        foreach (var item in group)
                         {
-                            var duplicateFiles = files.Where((f) => f.FileName == file.FileName).ToList();
+                            var uniqueName = RenameHelper.GetNextAvailableFileName(
+                                item.FileName,
+                                usedNames);
 
-                            if (duplicateFiles.Count > 1)
-                            {
-                                foreach (var dupFile in duplicateFiles)
-                                {
-                                    dupFile.NewFileName = GetNextAvailableFilename(dupFile.FileName, files);
-                                    dupFile.IsDuplicate = true;
-                                }
-                            }
-                            else
-                            {
-                                file.NewFileName = file.FileName;
-                            }
+                            item.NewFileName = uniqueName;
+                            item.IsDuplicate = group.Count() > 1;
                         }
                     }
                 }
+
+                var sorted = files
+                    .OrderBy(f => f.FullPath, StringComparer.OrdinalIgnoreCase)
+                    .ToList();
+
+                Files.Clear();
+
+                foreach (var batch in sorted.Chunk(200))
+                {
+                    foreach (var file in batch)
+                        Files.Add(file);
+
+                    await Task.Delay(1);
+                }
+
+                OnPropertyChanged(nameof(HasFiles));
+                OnPropertyChanged(nameof(FilteredFiles));
             }
             catch (Exception ex)
             {
-                files.Clear();
+                Files.Clear();
                 await AppManager.ExceptionMsgBoxShowWindowDialogAsync(ex);
             }
-
-            Files.Clear();
-            if (files != null)
+            finally
             {
-                foreach (var file in files)
-                {
-                    Files.AddSorted(file,
-                        Comparer<FlattenFileViewModel>.Create((x, y) => string.Compare(x.FullPath, y.FullPath)));
-                }
+                _addingFiles = false;
+                ApplyingFilters = false;
             }
-
-            ApplyingFilters = false;
-        }
-
-        private static string GetNextAvailableFilename(string filename, IEnumerable<FlattenFileViewModel> files)
-        {
-            if (!files.Any((file) => file.NewFileName == filename)) return filename;
-
-            string alternateFilename;
-            int fileNameIndex = 1;
-            do
-            {
-                fileNameIndex += 1;
-                alternateFilename = CreateNumberedFilename(filename, fileNameIndex);
-            } while (files.Any((file) => file.NewFileName == alternateFilename));
-
-            return alternateFilename;
-        }
-
-        private static string CreateNumberedFilename(string filename, int number)
-        {
-            string plainName = Path.GetFileNameWithoutExtension(filename);
-            string extension = Path.GetExtension(filename);
-            return string.Format("{0}({1}){2}", plainName, number, extension);
         }
 
         private async Task DeleteEmptyFolders(string path)

@@ -9,6 +9,9 @@ using BarryFileMan.Interfaces;
 using BarryFileMan.Managers;
 using BarryFileMan.Models.Presets;
 using System;
+using System.IO;
+using System.Text.RegularExpressions;
+using BarryFileMan.Rename.Helpers;
 using CommunityToolkit.Mvvm.Input;
 
 namespace BarryFileMan.ViewModels.Rename.Providers
@@ -120,36 +123,32 @@ namespace BarryFileMan.ViewModels.Rename.Providers
 
         protected void HandleDuplicateFilenames()
         {
-            foreach (var file in ViewModel.Files.Where((f) => f.RenamedFileName != null))
-            {
+            foreach (var file in ViewModel.Files)
                 file.IsDuplicate = false;
-                var dupFiles = ViewModel.Files.Where((df) => df.FullPath != file.FullPath && df.RenamedFullPath == file.RenamedFullPath);
-                if (dupFiles.Any())
+
+            var groups = ViewModel.Files
+                .GroupBy(f => f.RenamedFullPath ?? f.FullPath)
+                .Where(g => g.Count() > 1);
+
+            foreach (var group in groups)
+            {
+                var usedNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+                var ordered = group
+                    .OrderBy(f => f.HasRenamedFileName ? 1 : 0);
+
+                foreach (var file in ordered)
                 {
+                    var baseName = file.HasRenamedFileName
+                        ? file.CleanRenamedFileName!
+                        : file.FileNameWithoutExtension!;
+
+                    file.RenamedFileName =
+                        RenameHelper.GetNextAvailableFileName(baseName, usedNames);
+
                     file.IsDuplicate = true;
                 }
-
-                foreach (var dupFile in dupFiles)
-                {
-                    dupFile.IsDuplicate = true;
-                    dupFile.RenamedFileName = GetNextAvailableFilename(dupFile.RenamedFileName ?? string.Empty, dupFiles);
-                }
             }
-        }
-
-        private static string GetNextAvailableFilename(string filename, IEnumerable<RenameFileViewModel> files)
-        {
-            if (!files.Any((file) => file.RenamedFileName == filename)) return filename;
-
-            string alternateFilename;
-            int fileNameIndex = 1;
-            do
-            {
-                fileNameIndex += 1;
-                alternateFilename = string.Format("{0}({1})", filename, fileNameIndex);
-            } while (files.Any((file) => file.RenamedFileName == alternateFilename));
-
-            return alternateFilename;
         }
 
         private bool CanSavePreset() => !IsBusy && SelectedPreset != null && !SelectedPreset.IsSystem;
