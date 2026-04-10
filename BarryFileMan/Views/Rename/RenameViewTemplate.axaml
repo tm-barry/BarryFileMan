@@ -229,8 +229,8 @@
 							<!-- Original/New File Name Separator -->
 							<materialIcons:MaterialIcon Grid.Column="1"
 														Margin="20,0"
-														Height="24"
-														Width="24"
+														Height="16"
+														Width="16"
 														Kind="ArrowRightBold"/>
 
 							<!-- New File Name -->

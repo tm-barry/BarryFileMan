@@ -2,6 +2,7 @@ using Avalonia.Controls;
 using Avalonia.Platform.Storage;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Avalonia.Input.Platform;
 
 namespace BarryFileMan.Views
 {

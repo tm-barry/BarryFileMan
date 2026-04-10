@@ -142,7 +142,7 @@
 									   Text="{x:Static lang:Resources.DefaultRegexFileFilter}"/>
 							<TextBox Grid.Column="1" Grid.Row="0"
 									 Text="{Binding Config.Flatten.DefaultRegexFileFilter}"
-									 Watermark="{x:Static lang:Resources.FlattenRegexFileFilterWatermark}"/>
+									 PlaceholderText="{x:Static lang:Resources.FlattenRegexFileFilterWatermark}"/>
 
 							<Separator Grid.Row="1" Grid.ColumnSpan="2" Margin="0,10,0,10"/>
 
@@ -181,7 +181,7 @@
 							<TextBox Grid.Column="1" Grid.Row="0"
 									 Text="{Binding Config.Tmdb.ApiKey}"
 									 PasswordChar="*"
-									 Watermark="{x:Static lang:Resources.TmdbApiKeyWatermark}"/>
+									 PlaceholderText="{x:Static lang:Resources.TmdbApiKeyWatermark}"/>
 
 							<Separator Grid.Row="1" Grid.ColumnSpan="2" Margin="0,10,0,10"/>
 

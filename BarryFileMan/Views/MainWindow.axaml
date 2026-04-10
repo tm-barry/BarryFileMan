@@ -55,8 +55,8 @@
 								  IsChecked="{Binding SelectedToolPaneItem, Mode=OneWay,
 									Converter={StaticResource toolPaneItemConverter},
 									ConverterParameter=rename}">
-						<Grid ColumnDefinitions="Auto,*">
-							<materialIcons:MaterialIcon Grid.Column="0" Kind="Rename" Height="32" Width="32"/>
+						<Grid ColumnDefinitions="Auto,*" Margin="5">
+							<materialIcons:MaterialIcon Grid.Column="0" Kind="Rename" Height="24" Width="24"/>
 							<TextBlock Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Text="{x:Static lang:Resources.Rename}"/>
 						</Grid>
 					</ToggleButton>
@@ -66,8 +66,8 @@
 								  IsChecked="{Binding SelectedToolPaneItem, Mode=OneWay,
 									Converter={StaticResource toolPaneItemConverter},
 									ConverterParameter=flatten}">
-						<Grid ColumnDefinitions="Auto,*">
-							<materialIcons:MaterialIcon Grid.Column="0" Kind="Bulldozer" Height="32" Width="32"/>
+						<Grid ColumnDefinitions="Auto,*" Margin="5">
+							<materialIcons:MaterialIcon Grid.Column="0" Kind="Bulldozer" Height="24" Width="24"/>
 							<TextBlock Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Text="{x:Static lang:Resources.Flatten}"/>
 						</Grid>
 					</ToggleButton>
@@ -81,16 +81,16 @@
 								  IsChecked="{Binding SelectedToolPaneItem, Mode=OneWay,
 										Converter={StaticResource toolPaneItemConverter},
 										ConverterParameter=settings}">
-						<Grid ColumnDefinitions="Auto,*">
-							<materialIcons:MaterialIcon Grid.Column="0" Kind="Cog" Height="32" Width="32"/>
+						<Grid ColumnDefinitions="Auto,*" Margin="5">
+							<materialIcons:MaterialIcon Grid.Column="0" Kind="Cog" Height="24" Width="24"/>
 							<TextBlock Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Text="{x:Static lang:Resources.Settings}" IsVisible="{Binding ToolPaneOpen}"/>
 						</Grid>
 					</ToggleButton>
 					<Button Margin="5"
 								  HorizontalAlignment="Stretch"
 								  Command="{Binding ShowHelpCommand}">
-						<Grid ColumnDefinitions="Auto,*">
-							<materialIcons:MaterialIcon Grid.Column="0" Kind="HelpCircle" Height="32" Width="32"/>
+						<Grid ColumnDefinitions="Auto,*" Margin="5">
+							<materialIcons:MaterialIcon Grid.Column="0" Kind="HelpCircle" Height="24" Width="24"/>
 							<TextBlock Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Text="{x:Static lang:Resources.Help}" IsVisible="{Binding ToolPaneOpen}"/>
 						</Grid>
 					</Button>
@@ -101,8 +101,8 @@
 								  IsChecked="{Binding SelectedToolPaneItem, Mode=OneWay,
 									Converter={StaticResource toolPaneItemConverter},
 									ConverterParameter=about}">
-						<Grid ColumnDefinitions="Auto,*">
-							<materialIcons:MaterialIcon Grid.Column="0" Kind="Information" Height="32" Width="32"/>
+						<Grid ColumnDefinitions="Auto,*" Margin="5">
+							<materialIcons:MaterialIcon Grid.Column="0" Kind="Information" Height="24" Width="24"/>
 							<TextBlock Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Text="{x:Static lang:Resources.About}" IsVisible="{Binding ToolPaneOpen}"/>
 						</Grid>
 					</ToggleButton>
